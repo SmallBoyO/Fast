@@ -20,10 +20,11 @@ import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.http.stat.WebAppStat;
 import com.alibaba.druid.wall.WallConfig;
 import com.alibaba.druid.wall.WallFilter;
+
 @Configuration
 public class DruidConfig {
-	
-	@Value("${spring.datasource.url:#{null}}")
+
+    @Value("${spring.datasource.url:#{null}}")
     private String dbUrl;
     @Value("${spring.datasource.username: #{null}}")
     private String username;
@@ -62,7 +63,7 @@ public class DruidConfig {
 
     @Bean
     @Primary
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         DruidDataSource datasource = new DruidDataSource();
 
         datasource.setUrl(this.dbUrl);
@@ -70,44 +71,44 @@ public class DruidConfig {
         datasource.setPassword(password);
         datasource.setDriverClassName(driverClassName);
         //configuration
-        if(initialSize != null) {
+        if (initialSize != null) {
             datasource.setInitialSize(initialSize);
         }
-        if(minIdle != null) {
+        if (minIdle != null) {
             datasource.setMinIdle(minIdle);
         }
-        if(maxActive != null) {
+        if (maxActive != null) {
             datasource.setMaxActive(maxActive);
         }
-        if(maxWait != null) {
+        if (maxWait != null) {
             datasource.setMaxWait(maxWait);
         }
-        if(timeBetweenEvictionRunsMillis != null) {
+        if (timeBetweenEvictionRunsMillis != null) {
             datasource.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
         }
-        if(minEvictableIdleTimeMillis != null) {
+        if (minEvictableIdleTimeMillis != null) {
             datasource.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
         }
-        if(validationQuery!=null) {
+        if (validationQuery != null) {
             datasource.setValidationQuery(validationQuery);
         }
-        if(testWhileIdle != null) {
+        if (testWhileIdle != null) {
             datasource.setTestWhileIdle(testWhileIdle);
         }
-        if(testOnBorrow != null) {
+        if (testOnBorrow != null) {
             datasource.setTestOnBorrow(testOnBorrow);
         }
-        if(testOnReturn != null) {
+        if (testOnReturn != null) {
             datasource.setTestOnReturn(testOnReturn);
         }
-        if(poolPreparedStatements != null) {
+        if (poolPreparedStatements != null) {
             datasource.setPoolPreparedStatements(poolPreparedStatements);
         }
-        if(maxPoolPreparedStatementPerConnectionSize != null) {
+        if (maxPoolPreparedStatementPerConnectionSize != null) {
             datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
         }
 
-        if(connectionProperties != null) {
+        if (connectionProperties != null) {
             datasource.setConnectionProperties(connectionProperties);
         }
 
@@ -119,15 +120,16 @@ public class DruidConfig {
         return datasource;
     }
 
-	@Bean
+    @Bean
     public ServletRegistrationBean druidServlet() {
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean();
         servletRegistrationBean.setServlet(new StatViewServlet());
         servletRegistrationBean.addUrlMappings("/druid/*");
         return servletRegistrationBean;
     }
-	@Bean
-    public StatFilter statFilter(){
+
+    @Bean
+    public StatFilter statFilter() {
         StatFilter statFilter = new StatFilter();
         statFilter.setLogSlowSql(true);
         statFilter.setMergeSql(true);
@@ -135,8 +137,9 @@ public class DruidConfig {
 
         return statFilter;
     }
-	@Bean
-    public WallFilter wallFilter(){
+
+    @Bean
+    public WallFilter wallFilter() {
         WallFilter wallFilter = new WallFilter();
 
         //允许执行多条SQL
@@ -146,15 +149,16 @@ public class DruidConfig {
 
         return wallFilter;
     }
-	@Bean
-	public FilterRegistrationBean DruidWebStatFilter(){
-		FilterRegistrationBean filterRegistrationBean=new FilterRegistrationBean();
-		WebStatFilter filter = new WebStatFilter();
-		filter.setWebAppStat(new WebAppStat("**", 1000));
-		filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
-		filterRegistrationBean.addInitParameter("profileEnable", "true");
-		filterRegistrationBean.addInitParameter("sessionStatEnable", "false");
-		filterRegistrationBean.setFilter(filter);
-		return filterRegistrationBean;
-	}
+
+    @Bean
+    public FilterRegistrationBean DruidWebStatFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        WebStatFilter filter = new WebStatFilter();
+        filter.setWebAppStat(new WebAppStat("**", 1000));
+        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.addInitParameter("profileEnable", "true");
+        filterRegistrationBean.addInitParameter("sessionStatEnable", "false");
+        filterRegistrationBean.setFilter(filter);
+        return filterRegistrationBean;
+    }
 }

@@ -7,6 +7,6 @@ import com.zhanghe.Fast.entity.Test;
 
 @Mapper
 public interface TestMapper {
-	@Select("select * from test where id=#{id}")
-	public Test getTestByid(@Param(value = "id") Integer id);
+    @Select("select * from test where id=#{id}")
+    public Test getTestByid(@Param(value = "id") Integer id);
 }
