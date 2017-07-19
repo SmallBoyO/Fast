@@ -10,6 +10,7 @@ import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public class BaseController {
+
     @ExceptionHandler({UnauthorizedException.class})
     public String authenticationException(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("-------into authenticationException-------------------");

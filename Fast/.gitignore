@@ -6,3 +6,4 @@ mvnw.cmd
 .classpath
 .project
 /.idea/
+logback-spring.log
