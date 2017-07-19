@@ -36,6 +36,6 @@ public class IndexController extends BaseController {
         System.out.println(userService.getRoleByUserId(1L));
         System.out.println(userService.getPermissionByUserId(1L));
         System.out.println(userService.getUserByUserName("zhang"));
-        return "/hello";
+        return "/index";
     }
 }
