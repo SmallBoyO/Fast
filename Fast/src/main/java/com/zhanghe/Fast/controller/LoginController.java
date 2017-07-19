@@ -2,6 +2,7 @@ package com.zhanghe.Fast.controller;
 
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -13,7 +14,9 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,7 +32,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@Valid User user) {
+    public String login(@Valid User user,HttpServletRequest request) {
         String username = user.getUserName();
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
         //获取当前的Subject  
@@ -58,7 +61,7 @@ public class LoginController {
         if (currentUser.isAuthenticated()) {
             System.out.println("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
             // 此方法不处理登录成功,由shiro进行处理.
-            return "/login";
+            return "redirect:"+getSavedRequest(request).getRequestUrl();
         } else {
             token.clear();
             return "redirect:/login";
@@ -93,4 +96,14 @@ public class LoginController {
         // 此方法不处理登录成功,由shiro进行处理.
         return "/login";
     }
+    
+    public SavedRequest getSavedRequest(ServletRequest request) {  
+        SavedRequest savedRequest = null;  
+        Subject subject = SecurityUtils.getSubject();  
+        Session session = subject.getSession(false);  
+        if (session != null) {  
+            savedRequest = (SavedRequest) session.getAttribute("shiroSavedRequest");  
+        }  
+        return savedRequest;  
+    }  
 }

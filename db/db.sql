@@ -16,6 +16,67 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`Fast` /*!40100 DEFAULT CHARACTER SET ut
 
 USE `Fast`;
 
+/*Table structure for table `Permission` */
+
+DROP TABLE IF EXISTS `Permission`;
+
+CREATE TABLE `Permission` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `type` varchar(20) DEFAULT NULL,
+  `url` varchar(50) DEFAULT NULL,
+  `permission` varchar(20) DEFAULT NULL,
+  `parentId` int(10) DEFAULT NULL,
+  `parentIds` varchar(100) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Permission` */
+
+insert  into `Permission`(`id`,`type`,`url`,`permission`,`parentId`,`parentIds`,`status`) values (1,'url','index','system:index',1,NULL,1);
+
+/*Table structure for table `Role` */
+
+DROP TABLE IF EXISTS `Role`;
+
+CREATE TABLE `Role` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `role` varchar(20) DEFAULT NULL,
+  `description` varchar(20) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `Role` */
+
+insert  into `Role`(`id`,`role`,`description`,`status`) values (1,'admin','admin',1);
+
+/*Table structure for table `t_role_permission` */
+
+DROP TABLE IF EXISTS `t_role_permission`;
+
+CREATE TABLE `t_role_permission` (
+  `Role` int(10) DEFAULT NULL,
+  `Permission` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `t_role_permission` */
+
+insert  into `t_role_permission`(`Role`,`Permission`) values (1,1);
+
+/*Table structure for table `t_user_role` */
+
+DROP TABLE IF EXISTS `t_user_role`;
+
+CREATE TABLE `t_user_role` (
+  `user` int(10) DEFAULT NULL,
+  `role` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `t_user_role` */
+
+insert  into `t_user_role`(`user`,`role`) values (1,1);
+
 /*Table structure for table `test` */
 
 DROP TABLE IF EXISTS `test`;
@@ -29,6 +90,24 @@ CREATE TABLE `test` (
 /*Data for the table `test` */
 
 insert  into `test`(`id`,`name`) values (1,'name'),(2,'sd ');
+
+/*Table structure for table `User` */
+
+DROP TABLE IF EXISTS `User`;
+
+CREATE TABLE `User` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(20) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `salt` varchar(30) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `User` */
+
+insert  into `User`(`id`,`userName`,`name`,`password`,`salt`,`status`) values (1,'zhang','zhang','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','11',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
