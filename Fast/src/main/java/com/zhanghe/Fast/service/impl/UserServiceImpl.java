@@ -37,4 +37,8 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserName(String UserName) {
         return userMapper.getUserByUserName(UserName);
     }
+    @Override
+    public List<Permission> getPermissionByUserName(String username){
+    	return userMapper.getPermissionByUserName(username);
+    }
 }

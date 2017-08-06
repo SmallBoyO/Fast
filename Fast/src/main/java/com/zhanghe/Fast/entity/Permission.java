@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class Permission {
     private Long id;
+    private String name;
     private String type;
     private String url;
     private String permission;
@@ -73,7 +74,15 @@ public class Permission {
         this.status = status;
     }
 
-    public String toString() {
+    public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }
 }

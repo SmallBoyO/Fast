@@ -20,6 +20,9 @@ public interface UserMapper {
 
     @Select("SELECT * FROM Permission WHERE id IN( SELECT Permission FROM t_role_permission WHERE role IN(SELECT id FROM Role WHERE id IN (SELECT role FROM t_user_role WHERE USER=#{id}) ))")
     public List<Permission> getPermissionByUserId(@Param(value = "id") Long id);
+    
+    @Select("SELECT * FROM Permission WHERE id IN( SELECT Permission FROM t_role_permission WHERE role IN(SELECT id FROM Role WHERE id IN (SELECT role FROM t_user_role t,User u WHERE u.id = t.user AND u.userName = #{username})));")
+    public List<Permission> getPermissionByUserName(@Param(value = "username") String username);
 
     @Select("select * from User where UserName=#{UserName}")
     public User getUserByUserName(@Param(value = "UserName") String UserName);
