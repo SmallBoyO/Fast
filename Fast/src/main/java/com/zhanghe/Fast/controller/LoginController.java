@@ -78,10 +78,6 @@ public class LoginController {
     @RequestMapping(value = "/loginajax")
     @ResponseBody
     public String login(HttpServletRequest request,String username,String password,HttpServletResponse response) throws Exception {
-    	response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8010");
-    	response.setHeader("Access-Control-Allow-Credentials", "true");
-    	response.setHeader("Access-Control-Allow-Methods", "*");
-    	response.addHeader("Access-Control-Allow-Headers", "Content-Type");
     	User user=new User();
     	user.setUserName(username);
     	user.setPassword(password);

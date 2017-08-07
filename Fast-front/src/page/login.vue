@@ -39,21 +39,22 @@
         },
 		methods:{
 			submitForm(formName) {
-				console.log(this.$refs);
+				//console.log(this.$refs);
 				this.$refs[formName].validate((valid) => {
 				  if (valid) {
 					this.loading=true;
 					axios.post(`http://127.0.0.1:8081/loginajax`,qs.stringify(this.formdata)).then(res => res.data).then(data => {
 						if(data.ret == 1){
-						this.loading=false;
+							this.loading=false;
+							this.$store.commit('login',{username:data.obj.userName,name:data.obj.name});
 							this.$router.push('/home');
 						}else{
-						this.loading=false;
-						this.$message({
-						  message: data.message,
-						  type: 'error'
-						});
-						 //this.$message.error(data.message);
+							this.loading=false;
+							this.$message({
+							  message: data.message,
+							  type: 'error'
+							});
+							//this.$message.error(data.message);
 						}
 					});
 				  
@@ -62,6 +63,9 @@
 					return false;
 				  }
 				});
+			 },
+			 checkLogin(){
+				return this.$store.state.correntUser.islogin;
 			 }
 		}
     }
