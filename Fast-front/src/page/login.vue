@@ -17,6 +17,7 @@
 	import axios from 'axios';
 	import qs from 'qs';
 	axios.defaults.withCredentials=true;
+	
     export default {
         data() {
             return {
@@ -43,7 +44,7 @@
 				this.$refs[formName].validate((valid) => {
 				  if (valid) {
 					this.loading=true;
-					axios.post(`http://127.0.0.1:8081/loginajax`,qs.stringify(this.formdata)).then(res => res.data).then(data => {
+					axios.post(`http://127.0.0.1:8081/ajax/loginajax`,qs.stringify(this.formdata)).then(res => res.data).then(data => {
 						if(data.ret == 1){
 							this.loading=false;
 							this.$store.commit('login',{username:data.obj.userName,name:data.obj.name});

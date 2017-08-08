@@ -19,7 +19,7 @@ public class MenuController {
 	@Autowired
 	public UserService userService;
 	
-	@RequestMapping("/getUserMenu")
+	@RequestMapping("/ajax/getUserMenu")
 	public String getUserMenu(){
 		Subject currentUser = SecurityUtils.getSubject();
 		List<Permission> list = userService.getPermissionByUserName(currentUser.getPrincipal().toString());
@@ -31,6 +31,7 @@ public class MenuController {
 				json.addProperty("name", permission.getName());
 				json.addProperty("url", permission.getUrl());
 				json.addProperty("type", permission.getType());
+				json.addProperty("component", permission.getComponent());
 				buidChild(json,list);
 				//rootlist.add(permission);
 				array.add(json);
@@ -49,6 +50,7 @@ public class MenuController {
 					childjson.addProperty("name", permission.getName());
 					childjson.addProperty("url", permission.getUrl());
 					childjson.addProperty("type", permission.getType());
+					childjson.addProperty("component", permission.getComponent());
 					buidChild(childjson,list);
 					//rootlist.add(permission);
 					array.add(childjson);

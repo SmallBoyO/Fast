@@ -37,7 +37,7 @@ public class WebConfig {
 	public FilterRegistrationBean ControllAllowOriginFilterRegistrationBean(){
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new ControlAllowOriginFilter());
-		filterRegistrationBean.addUrlPatterns("/*");
+		filterRegistrationBean.addUrlPatterns("/ajax/*");
 		
 		return filterRegistrationBean;
 	}

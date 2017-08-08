@@ -75,7 +75,7 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "/loginajax")
+    @RequestMapping(value = "/ajax/loginajax")
     @ResponseBody
     public String login(HttpServletRequest request,String username,String password,HttpServletResponse response) throws Exception {
     	User user=new User();

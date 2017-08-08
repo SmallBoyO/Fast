@@ -5,6 +5,7 @@ import menu1 from '../page/menu1.vue'
 import menu2 from '../page/menu2.vue'
 import home from '../page/home.vue'
 import counter from '../page/counter.vue'
+import UserList from '../page/UserList.vue'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -36,6 +37,9 @@ const routes = [{
 			},{
 				path:'counter',
 				component: counter
+			},{
+				path:'UserList',
+				component:UserList
 			}
 		]
 	}];

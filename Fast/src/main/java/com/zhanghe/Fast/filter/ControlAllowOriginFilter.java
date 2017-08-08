@@ -23,10 +23,11 @@ public class ControlAllowOriginFilter implements Filter{
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		System.out.println("doFilter ControlAllowOriginFilter");
+		 System.out.println("XMLHttpRequest".equals(((HttpServletRequest)request).getHeader("X-Requested-With")));
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8010");
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Credentials", "true");
 		((HttpServletResponse)response).setHeader("Access-Control-Allow-Methods", "*");
-		((HttpServletResponse)response).addHeader("Access-Control-Allow-Headers", "Content-Type");
+		((HttpServletResponse)response).addHeader("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
 		chain.doFilter(request, response);
 	}
 

@@ -17,6 +17,7 @@ public class Permission {
     private Long parentId;
     private String parentIds;
     private Integer status;
+    private String component;
 
     public Long getId() {
         return id;
@@ -80,6 +81,14 @@ public class Permission {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getComponent() {
+		return component;
+	}
+
+	public void setComponent(String component) {
+		this.component = component;
 	}
 
 	public String toString() {

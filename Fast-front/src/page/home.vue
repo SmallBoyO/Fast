@@ -25,25 +25,25 @@
 			<el-menu default-active="1" class="el-menu-vertical-demo" style="min-height:800px"  @select="handleSelect">
                             <template v-for="(item,index) in menu">
                                 <template v-if="item.type=='url'">
-                                    <el-menu-item :index="item.name"><i :class="[item.icon]"></i>{{item.name}}
+                                    <el-menu-item :index="item.name+ '-'+item.component"><i :class="[item.icon]"></i>{{item.name}}
                                     </el-menu-item>
                                 </template>
                                 <template v-else-if="item.type=='menu'">
-                                    <el-submenu :index="item.name">
+                                    <el-submenu :index="item.name+ '-'+item.component">
                                         <template slot="title"><i class="el-icon-message"></i>{{item.name}}</template>
                                         <template v-for="(childitem,childindex) in item.child">
                                             <template v-if="childitem.type=='url'">
-                                                <el-menu-item :index="childitem.name">{{childitem.name}}
+                                                <el-menu-item :index="childitem.name+ '-'+childitem.component">{{childitem.name}}
                                                 </el-menu-item>
                                             </template>
                                             <template v-else-if="childitem.type=='menu'">
-                                                <el-submenu :index="childitem.name">
+                                                <el-submenu :index="childitem.name + '-'+childitem.component">
                                                     <template slot="title"><i
                                                             class="el-icon-message"></i>{{childitem.name}}
                                                     </template>
                                                     <template v-for="(child2item,child2index) in childitem.child">
                                                         <template v-if="child2item.type=='url'">
-                                                            <el-menu-item :index="child2item.name">
+                                                            <el-menu-item :index="child2item.name+ '-'+child2item.component">
                                                                 {{child2item.name}}
                                                             </el-menu-item>
                                                         </template>
@@ -96,8 +96,12 @@
 		methods:{
 			handleSelect(key,keyPath) {
 				console.log(key);
+				console.log(key.split('-')[1]);
 				console.log(keyPath);
-				this.$router.push('/home/counter');
+				console.log(keyPath);
+				if((key.split('-')[1])!='null'){
+					this.$router.push('/home/UserList');
+				}
             },
 			getname(){
 				return this.$store.state.correntUser.name;
@@ -106,7 +110,7 @@
 		created(){
 			console.log(this.$store.state.menu);
 			if(this.$store.state.menu === null){
-				axios.post(`http://127.0.0.1:8081/getUserMenu`).then(res => res.data).then(data => {
+				axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
 						this.menu=data;
 					});
 			}

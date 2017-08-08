@@ -29,12 +29,13 @@ CREATE TABLE `Permission` (
   `parentIds` varchar(100) DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
   `name` varchar(20) DEFAULT NULL,
+  `component` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `Permission` */
 
-insert  into `Permission`(`id`,`type`,`url`,`permission`,`parentId`,`parentIds`,`status`,`name`) values (1,'right','index','system:index',0,NULL,1,NULL),(2,'menu','','',NULL,NULL,1,'系统管理'),(3,'url','/home/userquery','system:user:query',2,NULL,1,'用户管理'),(4,'url','',NULL,2,NULL,1,'菜单管理');
+insert  into `Permission`(`id`,`type`,`url`,`permission`,`parentId`,`parentIds`,`status`,`name`,`component`) values (1,'right','index','system:index',0,NULL,1,NULL,NULL),(2,'menu','','',NULL,NULL,1,'系统管理',NULL),(3,'url','/home/userquery','system:user:query',2,NULL,1,'用户管理','UserList'),(4,'url','',NULL,2,NULL,1,'菜单管理',NULL);
 
 /*Table structure for table `Role` */
 
