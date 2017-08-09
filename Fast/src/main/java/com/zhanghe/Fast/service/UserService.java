@@ -18,4 +18,6 @@ public interface UserService {
     public User getUserByUserName(String UserName);
     
     public List<Permission> getPermissionByUserName(String username);
+    
+    public List<User> getUserList(User user);
 }

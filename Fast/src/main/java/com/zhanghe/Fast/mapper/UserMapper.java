@@ -26,4 +26,7 @@ public interface UserMapper {
 
     @Select("select * from User where UserName=#{UserName}")
     public User getUserByUserName(@Param(value = "UserName") String UserName);
+    
+    @Select("<script>select * from User where 1=1 <if test=\"userName !=null and userName!='' \"> and userName = #{userName} </if></script>")
+    public List<User> getUserList(User user);
 }

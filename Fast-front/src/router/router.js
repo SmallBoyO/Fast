@@ -26,7 +26,7 @@ const routes = [{
     },{
 		path: '/home',
         component: home,
-        name: '',
+        name: '系统管理',
         children:[
 			{
 			  path: '',
@@ -39,6 +39,7 @@ const routes = [{
 				component: counter
 			},{
 				path:'UserList',
+				name:'用户管理',
 				component:UserList
 			}
 		]

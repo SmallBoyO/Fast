@@ -226,6 +226,7 @@
         float: right;
 }
 .container .main .content-container .content-wrapper{
+		margin-top: 10px;
         background-color: #fff;
         box-sizing: border-box;
 }
