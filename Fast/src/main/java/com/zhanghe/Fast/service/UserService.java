@@ -20,4 +20,6 @@ public interface UserService {
     public List<Permission> getPermissionByUserName(String username);
     
     public List<User> getUserList(User user);
+    
+    public void updateUser(User user);
 }
