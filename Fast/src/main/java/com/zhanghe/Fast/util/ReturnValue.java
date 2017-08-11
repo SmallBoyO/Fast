@@ -2,7 +2,24 @@ package com.zhanghe.Fast.util;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class ReturnValue<T> {
+	
+	
+	public ReturnValue(){
+		super();
+	}
+	public ReturnValue(Integer ret, String message) {
+		super();
+		this.ret = ret;
+		this.message = message;
+	}
+	
+	public String toJson(){
+		Gson gson = new Gson();
+		return gson.toJson(this);
+	}
 	
 	public Integer ret = 1;
 	public String message;

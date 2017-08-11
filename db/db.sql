@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v11.33 (64 bit)
-MySQL - 5.6.35 : Database - Fast
+MySQL - 5.6.35 : Database - Fast2
 *********************************************************************
 */
 
@@ -12,9 +12,9 @@ MySQL - 5.6.35 : Database - Fast
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`Fast` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`Fast2` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 
-USE `Fast`;
+USE `Fast2`;
 
 /*Table structure for table `Permission` */
 
@@ -24,16 +24,18 @@ CREATE TABLE `Permission` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `type` varchar(20) DEFAULT NULL,
   `url` varchar(50) DEFAULT NULL,
-  `permission` varchar(20) DEFAULT NULL,
+  `permission` varchar(40) DEFAULT NULL,
   `parentId` int(10) DEFAULT NULL,
   `parentIds` varchar(100) DEFAULT NULL,
   `status` int(1) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `component` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `Permission` */
 
-insert  into `Permission`(`id`,`type`,`url`,`permission`,`parentId`,`parentIds`,`status`) values (1,'url','index','system:index',1,NULL,1);
+insert  into `Permission`(`id`,`type`,`url`,`permission`,`parentId`,`parentIds`,`status`,`name`,`component`) values (1,'right','index','system:index',0,NULL,1,NULL,NULL),(2,'menu','','',NULL,NULL,1,'系统管理',NULL),(3,'url','/home/userquery','system:user:query',2,NULL,1,'用户管理','UserList'),(4,'url','',NULL,2,NULL,1,'菜单管理',NULL),(5,'right',NULL,'system:user:query',2,NULL,NULL,'用户查询',NULL),(6,'right',NULL,'system:user:update',2,NULL,NULL,'用户修改',NULL),(7,'right',NULL,'system:user:checkUserName',2,NULL,NULL,'用户名检查',NULL),(8,'right',NULL,'system:user:checkName',NULL,NULL,NULL,'昵称检查',NULL);
 
 /*Table structure for table `Role` */
 
@@ -51,6 +53,24 @@ CREATE TABLE `Role` (
 
 insert  into `Role`(`id`,`role`,`description`,`status`) values (1,'admin','admin',1);
 
+/*Table structure for table `User` */
+
+DROP TABLE IF EXISTS `User`;
+
+CREATE TABLE `User` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(20) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `password` varchar(100) DEFAULT NULL,
+  `salt` varchar(30) DEFAULT NULL,
+  `status` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+/*Data for the table `User` */
+
+insert  into `User`(`id`,`userName`,`name`,`password`,`salt`,`status`) values (1,'zhang','zhang','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','11',1),(2,'test','zhang2','59be4bcfe8fb1a84da65fa4c198d6a2387e66b925d8ddf715a6b7a3fa47aef63','45645646',1);
+
 /*Table structure for table `t_role_permission` */
 
 DROP TABLE IF EXISTS `t_role_permission`;
@@ -62,7 +82,7 @@ CREATE TABLE `t_role_permission` (
 
 /*Data for the table `t_role_permission` */
 
-insert  into `t_role_permission`(`Role`,`Permission`) values (1,1);
+insert  into `t_role_permission`(`Role`,`Permission`) values (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8);
 
 /*Table structure for table `t_user_role` */
 
@@ -90,24 +110,6 @@ CREATE TABLE `test` (
 /*Data for the table `test` */
 
 insert  into `test`(`id`,`name`) values (1,'name'),(2,'sd ');
-
-/*Table structure for table `User` */
-
-DROP TABLE IF EXISTS `User`;
-
-CREATE TABLE `User` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `userName` varchar(20) DEFAULT NULL,
-  `name` varchar(20) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL,
-  `salt` varchar(30) DEFAULT NULL,
-  `status` int(1) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
-
-/*Data for the table `User` */
-
-insert  into `User`(`id`,`userName`,`name`,`password`,`salt`,`status`) values (1,'zhang','zhang','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92','11',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

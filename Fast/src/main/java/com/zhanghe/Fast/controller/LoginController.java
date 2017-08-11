@@ -75,13 +75,9 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(value = "/loginajax")
+    @RequestMapping(value = "/ajax/loginajax")
     @ResponseBody
     public String login(HttpServletRequest request,String username,String password,HttpServletResponse response) throws Exception {
-    	response.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8010");
-    	response.setHeader("Access-Control-Allow-Credentials", "true");
-    	response.setHeader("Access-Control-Allow-Methods", "*");
-    	response.addHeader("Access-Control-Allow-Headers", "Content-Type");
     	User user=new User();
     	user.setUserName(username);
     	user.setPassword(password);
@@ -107,9 +103,7 @@ public class LoginController {
             //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景  
             System.out.println("对用户[" + username + "]进行登录验证..验证未通过,堆栈轨迹如下");
             ae.printStackTrace();
-            ReturnValue<User> returnvalue=new ReturnValue<>();
-        	returnvalue.setRet(-1);
-        	returnvalue.setMessage("账号密码不正确!");
+            ReturnValue<User> returnvalue=new ReturnValue<>(-1,"账号密码不正确!");
             token.clear();
             Gson gson = new Gson();
             return  gson.toJson(returnvalue);
@@ -118,7 +112,7 @@ public class LoginController {
         if (currentUser.isAuthenticated()) {
             System.out.println("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
             // 此方法不处理登录成功,由shiro进行处理.
-            ReturnValue<User> returnvalue=new ReturnValue<>();
+            ReturnValue<User> returnvalue=new ReturnValue<User>();
             user = userService.getUserByUserName(username);
             returnvalue.setObj(user);
             user.setId(null);
@@ -128,7 +122,7 @@ public class LoginController {
             Gson gson = new Gson();
             return  gson.toJson(returnvalue);
         } else {
-        	ReturnValue<User> returnvalue=new ReturnValue<>();
+        	ReturnValue<User> returnvalue=new ReturnValue<User>();
         	returnvalue.setRet(-1);
         	returnvalue.setMessage("账号密码不正确!");
             token.clear();

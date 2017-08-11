@@ -11,7 +11,7 @@
 			</el-col>
 			<el-col :span="4" class="userinfo">
 				<el-dropdown trigger="hover">
-					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> 用户名</span>
+					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{correntUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item>我的消息</el-dropdown-item>
 						<el-dropdown-item>设置</el-dropdown-item>
@@ -24,26 +24,26 @@
 		<aside>
 			<el-menu default-active="1" class="el-menu-vertical-demo" style="min-height:800px"  @select="handleSelect">
                             <template v-for="(item,index) in menu">
-                                <template v-if="item.type==1">
-                                    <el-menu-item :index="item.name"><i :class="[item.icon]"></i>{{item.name}}
+                                <template v-if="item.type=='url'">
+                                    <el-menu-item :index="item.name+ '-'+item.component"><i :class="[item.icon]"></i>{{item.name}}
                                     </el-menu-item>
                                 </template>
-                                <template v-else-if="item.type==2">
-                                    <el-submenu :index="item.name">
+                                <template v-else-if="item.type=='menu'">
+                                    <el-submenu :index="item.name+ '-'+item.component">
                                         <template slot="title"><i class="el-icon-message"></i>{{item.name}}</template>
                                         <template v-for="(childitem,childindex) in item.child">
-                                            <template v-if="childitem.type==1">
-                                                <el-menu-item :index="childitem.name">{{childitem.name}}
+                                            <template v-if="childitem.type=='url'">
+                                                <el-menu-item :index="childitem.name+ '-'+childitem.component">{{childitem.name}}
                                                 </el-menu-item>
                                             </template>
-                                            <template v-else-if="childitem.type==2">
-                                                <el-submenu :index="childitem.name">
+                                            <template v-else-if="childitem.type=='menu'">
+                                                <el-submenu :index="childitem.name + '-'+childitem.component">
                                                     <template slot="title"><i
                                                             class="el-icon-message"></i>{{childitem.name}}
                                                     </template>
                                                     <template v-for="(child2item,child2index) in childitem.child">
-                                                        <template v-if="child2item.type==1">
-                                                            <el-menu-item :index="child2item.name">
+                                                        <template v-if="child2item.type=='url'">
+                                                            <el-menu-item :index="child2item.name+ '-'+child2item.component">
                                                                 {{child2item.name}}
                                                             </el-menu-item>
                                                         </template>
@@ -77,31 +77,43 @@
 	</el-row>
 </template>
 <script type="text/ecmascript-6">
+	import axios from 'axios';
+	import qs from 'qs';
+	axios.defaults.withCredentials=true;
     export default {
         data() {
 			return{
 				searchCriteria: '',
                 breadcrumbItems: ['导航一'],
-                menu: [{name: '导航一', icon: "el-icon-message", type: 1}, {name: '导航2', type: 1}, {
-                    name: '导航3',
-                    type: 1
-                }, {
-                    name: '导航42',
-                    type: 2,
-                    child: [{name: '菜单1', type: 1, child: []}, {
-                        name: '菜单2',
-                        type: 2,
-                        child: [{name: '菜单3', type: 1, child: []}]
-                    }]
-                }]
+                menu: []
+			}
+		},
+		computed:{
+			correntUserName:function(){
+				return this.$store.state.correntUser.name;
 			}
 		},
 		methods:{
 			handleSelect(key,keyPath) {
 				console.log(key);
+				console.log(key.split('-')[1]);
 				console.log(keyPath);
-				 this.$router.push('/home/counter');
-            }
+				console.log(keyPath);
+				if((key.split('-')[1])!='null'){
+					this.$router.push('/home/UserList');
+				}
+            },
+			getname(){
+				return this.$store.state.correntUser.name;
+			}
+		},
+		created(){
+			console.log(this.$store.state.menu);
+			if(this.$store.state.menu === null){
+				axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
+						this.menu=data;
+					});
+			}
 		}
     }
 </script>
@@ -214,6 +226,7 @@
         float: right;
 }
 .container .main .content-container .content-wrapper{
+		margin-top: 10px;
         background-color: #fff;
         box-sizing: border-box;
 }

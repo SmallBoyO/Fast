@@ -41,4 +41,18 @@ public class UserServiceImpl implements UserService {
     public List<Permission> getPermissionByUserName(String username){
     	return userMapper.getPermissionByUserName(username);
     }
+    @Override
+    public List<User> getUserList(User user){
+    	return userMapper.getUserList(user);
+    }
+    @Override
+    public void updateUser(User user){
+    	userMapper.updateUser(user);
+    }
+    public void insertUser(User user){
+    	userMapper.insertUser(user);
+    }
+    public User getUserByName(String name,Long id){
+    	return userMapper.getUserByName(name,id);
+    }
 }

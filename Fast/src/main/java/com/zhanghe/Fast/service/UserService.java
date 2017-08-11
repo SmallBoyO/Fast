@@ -18,4 +18,12 @@ public interface UserService {
     public User getUserByUserName(String UserName);
     
     public List<Permission> getPermissionByUserName(String username);
+    
+    public List<User> getUserList(User user);
+    
+    public void updateUser(User user);
+    
+    public void insertUser(User user);
+    
+    public User getUserByName(String name,Long id);
 }

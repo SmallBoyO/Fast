@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import com.zhanghe.Fast.filter.ControlAllowOriginFilter;
 import com.zhanghe.Fast.filter.XssFilter;
 
 @Configuration
@@ -29,6 +30,15 @@ public class WebConfig {
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new XssFilter());
 		filterRegistrationBean.addUrlPatterns("/*");
+		
+		return filterRegistrationBean;
+	}
+	@Bean
+	public FilterRegistrationBean ControllAllowOriginFilterRegistrationBean(){
+		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+		filterRegistrationBean.setFilter(new ControlAllowOriginFilter());
+		filterRegistrationBean.addUrlPatterns("/ajax/*");
+		
 		return filterRegistrationBean;
 	}
 }
