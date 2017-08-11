@@ -28,12 +28,12 @@ public class UserController {
 	
 	@RequestMapping(value = "/ajax/UserManager/userList")
 	@RequiresPermissions(value = "system:user:query")
-	public String getUserList(String name,Integer status){
+	public String getUserList(String name,Integer status) throws InterruptedException{
 		User user = new User();
 		user.setName(name);
 		user.setStatus(status);
 		List<User> userList = userService.getUserList(user);
-		ReturnValue<User> returnValue = new ReturnValue<User>(1,"哈哈哈水电费干");
+		ReturnValue<User> returnValue = new ReturnValue<User>(1,"");
 		returnValue.setResult(userList);
 		Gson gson = new Gson();
 		return gson.toJson(returnValue);
@@ -56,7 +56,41 @@ public class UserController {
 			
 		}
 	}
+	@RequestMapping(value = "/ajax/UserManager/deleteUser")
+	public String deleteUser(Long id){
+		return "";
+	}
+	@RequestMapping(value = "/ajax/UserManager/checkUserName")
+	@RequiresPermissions(value = "system:user:checkUserName")
+	public String checkUserName(String userName){
+		User user = userService.getUserByUserName(userName);
+		if(user!=null){
+			 return new ReturnValue<>(-1,"该账号已存在！").toJson();
+		}else{
+			 return new ReturnValue<>(1,"").toJson();
+		}
+	}
 	
+	@RequestMapping(value = "/ajax/UserManager/checkName")
+	@RequiresPermissions(value = "system:user:checkName")
+	public String checkName(String name,Long id){
+		User user = userService.getUserByName(name,id);
+		if(user!=null){
+			 return new ReturnValue<>(-1,"该用户名已存在！").toJson();
+		}else{
+			 return new ReturnValue<>(1,"").toJson();
+		}
+	}
+	
+	@ExceptionHandler({UnauthorizedException.class})
+    public String unauthorizedException(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("-------into unauthorizedException-------------------");
+        /*PrintWriter writer = response.getWriter();
+        writer.write(new ReturnValue<>(-100,"请登录!").toJson());
+        writer.flush();
+        writer.close();*/
+        return new ReturnValue<>(-99,"权限不足").toJson();
+    }
 	@ExceptionHandler({AuthorizationException.class})
     public String authenticationException(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("-------into authenticationException-------------------");

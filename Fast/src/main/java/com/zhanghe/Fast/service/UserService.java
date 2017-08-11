@@ -22,4 +22,8 @@ public interface UserService {
     public List<User> getUserList(User user);
     
     public void updateUser(User user);
+    
+    public void insertUser(User user);
+    
+    public User getUserByName(String name,Long id);
 }

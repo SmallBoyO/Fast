@@ -49,4 +49,10 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user){
     	userMapper.updateUser(user);
     }
+    public void insertUser(User user){
+    	userMapper.insertUser(user);
+    }
+    public User getUserByName(String name,Long id){
+    	return userMapper.getUserByName(name,id);
+    }
 }

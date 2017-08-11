@@ -52,9 +52,12 @@
 							this.$router.push('/home');
 						}else{
 							this.loading=false;
-							this.$message({
-							  message: data.message,
-							  type: 'error'
+							//this.$message({
+							//  message: data.message,
+							//  type: 'error'
+							//});
+							this.$alert(data.message, '', {
+							  confirmButtonText: '确定'
 							});
 							//this.$message.error(data.message);
 						}
