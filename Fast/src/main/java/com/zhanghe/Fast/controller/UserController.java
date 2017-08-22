@@ -25,7 +25,7 @@ public class UserController {
 	
 	@Autowired
 	public UserService userService;
-	
+
 	@RequestMapping(value = "/ajax/UserManager/userList")
 	@RequiresPermissions(value = "system:user:query")
 	public String getUserList(String name,Integer status) throws InterruptedException{
@@ -53,7 +53,24 @@ public class UserController {
 			e.printStackTrace();
 			ReturnValue<Object> returnValue = new ReturnValue<>(-1,"修改失败!");
 			return returnValue.toJson();
-			
+
+		}
+	}
+	@RequestMapping(value = "/ajax/UserManager/addUser")
+	@RequiresPermissions(value = "system:user:add")
+	public String addUser(String userName,String name,String password,Integer status){
+		System.out.println(userName+","+name+","+password+","+status);
+		User user = new User();
+		user.setName(name);
+		user.setStatus(status);
+		user.setUserName(userName);
+
+		user.setSalt("15643513");
+		try {
+			userService.insertUser(user);
+			return new ReturnValue<>(1,"添加成功").toJson();
+		}catch(Exception e){
+			return new ReturnValue<>(-1,"添加失败").toJson();
 		}
 	}
 	@RequestMapping(value = "/ajax/UserManager/deleteUser")
