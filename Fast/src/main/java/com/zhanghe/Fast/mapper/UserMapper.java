@@ -20,10 +20,10 @@ public interface UserMapper {
     @Select("select * from Role where id in (select role from t_user_role where user=#{id}) ")
     public List<Role> getRoleByUserId(@Param(value = "id") Long id);
 
-    @Select("SELECT * FROM Permission WHERE id IN( SELECT Permission FROM t_role_permission WHERE role IN(SELECT id FROM Role WHERE id IN (SELECT role FROM t_user_role WHERE USER=#{id}) )) and type = 'right'")
+    @Select("SELECT * FROM permission WHERE id IN( SELECT permission FROM t_role_permission WHERE role IN(SELECT id FROM Role WHERE id IN (SELECT role FROM t_user_role WHERE USER=#{id}) )) and type = 'right'")
     public List<Permission> getPermissionByUserId(@Param(value = "id") Long id);
     
-    @Select("SELECT * FROM Permission WHERE id IN( SELECT Permission FROM t_role_permission WHERE role IN(SELECT id FROM Role WHERE id IN (SELECT role FROM t_user_role t,User u WHERE u.id = t.user AND u.userName = #{username})));")
+    @Select("SELECT * FROM permission WHERE id IN( SELECT permission FROM t_role_permission WHERE role IN(SELECT id FROM Role WHERE id IN (SELECT role FROM t_user_role t,User u WHERE u.id = t.user AND u.userName = #{username})));")
     public List<Permission> getPermissionByUserName(@Param(value = "username") String username);
 
     @Select("select * from User where UserName=#{UserName}")

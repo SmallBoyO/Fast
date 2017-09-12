@@ -25,7 +25,7 @@ public class MenuController {
 		List<Permission> list = userService.getPermissionByUserName(currentUser.getPrincipal().toString());
 		JsonArray array = new JsonArray();
 		for(Permission permission:list){
-			if(permission.getParentId()==null||permission.getParentId()==0){
+			if(permission.getParent_id()==null||permission.getParent_id()==0){
 				JsonObject json = new JsonObject();
 				json.addProperty("id", permission.getId());
 				json.addProperty("name", permission.getName());
@@ -43,8 +43,8 @@ public class MenuController {
 	public void buidChild(JsonObject Json,List<Permission> list){
 		JsonArray array = new JsonArray();
 		for(Permission permission:list){
-			if(permission.getParentId()!=null){
-				if(Json.get("id").getAsLong()==permission.getParentId()){
+			if(permission.getParent_id()!=null){
+				if(Json.get("id").getAsLong()==permission.getParent_id()){
 					JsonObject childjson = new JsonObject();
 					childjson.addProperty("id", permission.getId());
 					childjson.addProperty("name", permission.getName());

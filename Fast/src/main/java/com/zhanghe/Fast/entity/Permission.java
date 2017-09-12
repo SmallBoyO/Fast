@@ -14,8 +14,8 @@ public class Permission {
     private String type;
     private String url;
     private String permission;
-    private Long parentId;
-    private String parentIds;
+    private Long parent_id;
+    private String parent_ids;
     private Integer status;
     private String component;
 
@@ -25,6 +25,14 @@ public class Permission {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {
@@ -51,22 +59,6 @@ public class Permission {
         this.permission = permission;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getParentIds() {
-        return parentIds;
-    }
-
-    public void setParentIds(String parentIds) {
-        this.parentIds = parentIds;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -75,23 +67,31 @@ public class Permission {
         this.status = status;
     }
 
-    public String getName() {
-		return name;
-	}
+    public String getComponent() {
+        return component;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setComponent(String component) {
+        this.component = component;
+    }
 
-	public String getComponent() {
-		return component;
-	}
+    public Long getParent_id() {
+        return parent_id;
+    }
 
-	public void setComponent(String component) {
-		this.component = component;
-	}
+    public void setParent_id(Long parent_id) {
+        this.parent_id = parent_id;
+    }
 
-	public String toString() {
+    public String getParent_ids() {
+        return parent_ids;
+    }
+
+    public void setParent_ids(String parent_ids) {
+        this.parent_ids = parent_ids;
+    }
+
+    public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }
 }
