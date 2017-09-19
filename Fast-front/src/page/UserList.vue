@@ -21,42 +21,20 @@
             </el-form>
 
         </el-col>
-        <el-table
-                v-loading="listLoading"
-                :data="tableData"
-                height="700"
-                border
-                style="width: 100%"
-                @selection-change="handleSelectionChange"
-        >
-            <el-table-column
-                    type="selection"
-                    width="55">
+        <el-table v-loading="listLoading" :data="tableData" height="700" border style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column
-                    prop="userName"
-                    label="账号"
-                    width="180">
+            <el-table-column prop="userName" label="账号" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="用户名"
-                    width="180">
+            <el-table-column prop="name" label="用户名" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="status"
-                    label="状态">
+            <el-table-column prop="status" label="状态">
             </el-table-column>
             <el-table-column label="操作">
                 <template scope="scope">
-                    <el-button
-                            size="small"
-                            @click="handleEdit(scope.$index, scope.row)">编辑
+                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑
                     </el-button>
-                    <el-button
-                            size="small"
-                            type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除
+                    <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -69,11 +47,7 @@
                 </el-form-item>
                 <el-form-item label="状态">
                     <el-select v-model="editData.status" placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -278,7 +252,6 @@
                                 this.$alert(data.message, '', {
                                     confirmButtonText: '确定'
                                 });
-                                this.dialogFormVisible = false;
                                 this.editData = {
                                     uerName: '',
                                     password: '',
@@ -286,6 +259,7 @@
                                     status: 1
                                 };
                                 this.search();
+                                this.dialogFormVisible = false;
                             } else if (data.ret == -99) {
                                 this.$alert(data.message, '', {
                                     confirmButtonText: '确定'
