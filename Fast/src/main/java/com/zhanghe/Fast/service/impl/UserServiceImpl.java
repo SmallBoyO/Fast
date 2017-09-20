@@ -2,6 +2,7 @@ package com.zhanghe.Fast.service.impl;
 
 import java.util.List;
 
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,22 +38,28 @@ public class UserServiceImpl implements UserService {
     public User getUserByUserName(String UserName) {
         return userMapper.getUserByUserName(UserName);
     }
+
     @Override
-    public List<Permission> getPermissionByUserName(String username){
-    	return userMapper.getPermissionByUserName(username);
+    public List<Permission> getPermissionByUserName(String username) {
+        return userMapper.getPermissionByUserName(username);
     }
+
     @Override
-    public List<User> getUserList(User user){
-    	return userMapper.getUserList(user);
+    public List<User> getUserList(User user) {
+        PageHelper.startPage(1, 2);
+        return userMapper.getUserList(user);
     }
+
     @Override
-    public void updateUser(User user){
-    	userMapper.updateUser(user);
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
     }
-    public void insertUser(User user){
-    	userMapper.insertUser(user);
+
+    public void insertUser(User user) {
+        userMapper.insertUser(user);
     }
-    public User getUserByName(String name,Long id){
-    	return userMapper.getUserByName(name,id);
+
+    public User getUserByName(String name, Long id) {
+        return userMapper.getUserByName(name, id);
     }
 }
