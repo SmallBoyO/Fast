@@ -25,6 +25,16 @@ public class ReturnValue<T> {
 	public String message;
 	public T obj;
 	public List<T> result;
+	public PageUtil<T> page;
+
+	public PageUtil getPage() {
+		return page;
+	}
+
+	public void setPage(PageUtil page) {
+		this.page = page;
+	}
+
 	public Integer getRet() {
 		return ret;
 	}

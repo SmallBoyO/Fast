@@ -2,7 +2,9 @@ package com.zhanghe.Fast.service.impl;
 
 import java.util.List;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.zhanghe.Fast.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,9 +47,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUserList(User user) {
-        PageHelper.startPage(1, 2);
-        return userMapper.getUserList(user);
+    public PageUtil<User> getUserListByPage(User user, PageUtil page){
+        PageHelper.startPage(page.getCorrentPage().intValue(),page.getPageSize().intValue());
+        List<User> result = userMapper.getUserList(user);
+        long total = ((Page) result).getTotal();
+        page.setResult(result);
+        page.setTotal(total);
+        return page;
     }
 
     @Override

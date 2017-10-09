@@ -2,6 +2,7 @@ package com.zhanghe.Fast.service;
 
 import java.util.List;
 
+import com.zhanghe.Fast.util.PageUtil;
 import org.apache.ibatis.annotations.Param;
 
 import com.zhanghe.Fast.entity.Permission;
@@ -19,7 +20,7 @@ public interface UserService {
     
     public List<Permission> getPermissionByUserName(String username);
     
-    public List<User> getUserList(User user);
+    public PageUtil<User> getUserListByPage(User user, PageUtil page);
     
     public void updateUser(User user);
     

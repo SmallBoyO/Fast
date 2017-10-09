@@ -27,6 +27,7 @@
 					username:'zhang',
 					password:'123456'
 				},
+                checked:false,
 				rules:{
 					username:[
 						{required:true,message:'请输入用户名',trigger: 'blur'},
@@ -75,7 +76,7 @@
 		}
     }
 </script>
-<style>
+<style lang="sass">
   .login-container {
     /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
     -webkit-border-radius: 7px;

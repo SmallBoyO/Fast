@@ -39,6 +39,10 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                       :current-page="searchData.correntPage" :page-sizes="[10, 20, 50, 100, 200]" :page-size="searchData.pageSize"
+                       layout="total, sizes, prev, pager, next, jumper" :total="searchData.total">
+        </el-pagination>
 
         <el-dialog title="编辑用户" size="tiny" :visible.sync="dialogFormVisible">
             <el-form :inline="false" :rules="rules" ref="editform" :model="editData" label-width="80px">
@@ -169,7 +173,10 @@
                 multipleSelection: [],
                 searchData: {
                     name: '',
-                    status: ''
+                    status: '',
+                    correntPage:1,
+                    pageSize:10,
+                    total:10
                 },
                 addData: {
                     name: '',
@@ -229,11 +236,26 @@
             handleDelete(index, row) {
                 console.log(index, row);
             },
+            handleSizeChange(val) {
+                this.searchData.pageSize = val;
+                console.log(`每页 ${val} 条`);
+                this.search();
+                console.log(this.searchData.pageSize);
+            },
+            handleCurrentChange(val) {
+                this.searchData.correntPage = val;
+                this.search();
+                console.log(`当前页: ${val}`);
+                console.log(this.searchData.correntPage);
+            },
             search() {
                 this.listLoading = true;
                 axios.post(`http://127.0.0.1:8081/ajax/UserManager/userList`, qs.stringify(this.searchData)).then(res => res.data).then(data => {
                     if (data.ret == 1) {
-                        this.tableData = data.result;
+                        this.tableData = data.page.result;
+                        this.searchData.correntPage = data.page.correntPage;
+                        this.searchData.pageSize = data.page.pageSize;
+                        this.searchData.total = data.page.total;
                         this.listLoading = false;
                     } else if (data.ret == -100) {
                         this.listLoading = false;

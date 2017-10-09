@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.zhanghe.Fast.util.PageUtil;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -27,13 +28,13 @@ public class UserController {
 
 	@RequestMapping(value = "/ajax/UserManager/userList")
 	@RequiresPermissions(value = "system:user:query")
-	public String getUserList(String name,Integer status) throws InterruptedException{
+	public String getUserList(String name, Integer status, PageUtil page) throws InterruptedException{
 		User user = new User();
 		user.setName(name);
 		user.setStatus(status);
-		List<User> userList = userService.getUserList(user);
+		page = userService.getUserListByPage(user,page);
 		ReturnValue<User> returnValue = new ReturnValue<User>(1,"");
-		returnValue.setResult(userList);
+		returnValue.setPage(page);
 		Gson gson = new Gson();
 		return gson.toJson(returnValue);
 	}

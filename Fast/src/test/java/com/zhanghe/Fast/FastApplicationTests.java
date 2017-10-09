@@ -1,5 +1,6 @@
 package com.zhanghe.Fast;
 
+import com.zhanghe.Fast.util.PageUtil;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,14 +23,20 @@ public class FastApplicationTests {
     	User user=new User();
     	user.setUserName("zhang");
     	Gson gson = new Gson();
-    	System.out.println(gson.toJson(userService.getUserList(user)));
+		PageUtil page = new PageUtil();
+		page.setPageSize(3L);
+		page.setCorrentPage(2L);
+    	System.out.println(gson.toJson(userService.getUserListByPage(user,page)));
     }
    // @Test
     public void testGetUserList() {
     	User user=new User();
     	user.setUserName("zhang");
     	Gson gson = new Gson();
-    	System.out.println(gson.toJson(userService.getUserList(user)));
+		PageUtil page = new PageUtil();
+		page.setPageSize(3L);
+		page.setCorrentPage(1L);
+    	System.out.println(gson.toJson(userService.getUserListByPage(user,page)));
     }
     
     //@Test
