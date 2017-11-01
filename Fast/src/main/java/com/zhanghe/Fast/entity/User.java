@@ -89,7 +89,7 @@ public class User implements Serializable {
     public String getCredentialsSalt() {
         return this.userName + this.salt;
     }
-
+    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }

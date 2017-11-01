@@ -60,11 +60,11 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         userMapper.updateUser(user);
     }
-
+    @Override
     public void insertUser(User user) {
         userMapper.insertUser(user);
     }
-
+    @Override
     public User getUserByName(String name, Long id) {
         return userMapper.getUserByName(name, id);
     }

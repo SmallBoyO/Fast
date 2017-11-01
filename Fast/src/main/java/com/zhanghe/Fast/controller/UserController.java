@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.service.UserService;
 import com.zhanghe.Fast.util.ReturnValue;
-
 @RestController
 public class UserController {
 	

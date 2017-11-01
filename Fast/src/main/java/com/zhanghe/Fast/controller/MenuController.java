@@ -40,11 +40,11 @@ public class MenuController {
 		return array.toString();
 	}
 	
-	public void buidChild(JsonObject Json,List<Permission> list){
+	public void buidChild(JsonObject json,List<Permission> list){
 		JsonArray array = new JsonArray();
 		for(Permission permission:list){
 			if(permission.getParent_id()!=null){
-				if(Json.get("id").getAsLong()==permission.getParent_id()){
+				if(json.get("id").getAsLong()==permission.getParent_id()){
 					JsonObject childjson = new JsonObject();
 					childjson.addProperty("id", permission.getId());
 					childjson.addProperty("name", permission.getName());
@@ -57,6 +57,6 @@ public class MenuController {
 				}
 			}
 		}
-		Json.add("child", array);
+		json.add("child", array);
 	}
 }

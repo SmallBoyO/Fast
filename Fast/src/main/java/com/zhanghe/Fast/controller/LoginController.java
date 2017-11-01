@@ -37,7 +37,6 @@ public class LoginController {
     public String login() {
         return "/login";
     }
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@Valid User user,HttpServletRequest request) {
         String username = user.getUserName();

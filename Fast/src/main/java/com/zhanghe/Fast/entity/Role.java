@@ -45,7 +45,7 @@ public class Role {
     public void setStatus(Integer status) {
         this.status = status;
     }
-
+    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }

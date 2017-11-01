@@ -27,7 +27,7 @@ public interface UserMapper {
     public List<Permission> getPermissionByUserName(@Param(value = "username") String username);
 
     @Select("select * from User where UserName=#{UserName}")
-    public User getUserByUserName(@Param(value = "UserName") String UserName);
+    public User getUserByUserName(@Param(value = "UserName") String userName);
     
     @Select("<script>select * from User where name=#{name} <if test=\"id!=null and id!=''\"> and id not in (#{id}) </if> </script>")
     public User getUserByName(@Param(value = "name") String name,@Param(value = "id") Long id);

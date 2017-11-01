@@ -90,7 +90,7 @@ public class Permission {
     public void setParent_ids(String parent_ids) {
         this.parent_ids = parent_ids;
     }
-
+    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }
