@@ -2,8 +2,7 @@ package com.zhanghe.Fast.service.impl;
 
 import java.util.List;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.zhanghe.Fast.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,12 +46,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageUtil<User> getUserListByPage(User user, PageUtil page){
-        PageHelper.startPage(page.getCorrentPage().intValue(),page.getPageSize().intValue());
+    public PageUtil<User> getUserListByPage(User user, PageUtil<User> page){
+        /*PageHelper.startPage(page.getCorrentPage().intValue(),page.getPageSize().intValue());
         List<User> result = userMapper.getUserList(user);
         long total = ((Page) result).getTotal();
         page.setResult(result);
-        page.setTotal(total);
+        page.setTotal(total);*/
+    	Page<User> querypage = new Page<>(page.getCorrentPage().intValue(), page.getPageSize().intValue());
+    	List<User> result = userMapper.getUserListByPage(querypage, user);
+    	page.setResult(result);
+    	page.setTotal((long) querypage.getTotal());
         return page;
     }
 
@@ -68,4 +71,9 @@ public class UserServiceImpl implements UserService {
     public User getUserByName(String name, Long id) {
         return userMapper.getUserByName(name, id);
     }
+
+	@Override
+	public void deleteUserById( Long id ) {
+		userMapper.deleteById(id);
+	}
 }

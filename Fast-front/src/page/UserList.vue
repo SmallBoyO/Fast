@@ -234,6 +234,22 @@
                 console.log(index, row);
             },
             handleDelete(index, row) {
+                this.$confirm('确认删除？')
+                .then(()=> {
+                    axios.post(`http://127.0.0.1:8081/ajax/UserManager/deleteUser`, qs.stringify({id:row.id}))
+                    .then(res =>res.data).then(data => {
+                        if (data.ret == 1) {
+                            this.$alert(data.message,"");
+                            this.search();
+                        } else if (data.ret == -100) {
+                            this.listLoading = false;
+                            this.$router.push('/login');
+                        } else{
+                            this.$alert(data.message,"");
+                        }
+                    });
+                })
+                .catch(() => {});
                 console.log(index, row);
             },
             handleSizeChange(val) {

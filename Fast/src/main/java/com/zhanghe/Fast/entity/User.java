@@ -6,11 +6,15 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 /**
  * 用户信息
  *
  * @author admin
  */
+@TableName("User")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 2574268644675415277L;
@@ -21,6 +25,7 @@ public class User implements Serializable {
     private String password;
     private String salt;
     private Integer status;
+    @TableField(exist=false)
     private List<Role> roles;
 
     public Long getId() {

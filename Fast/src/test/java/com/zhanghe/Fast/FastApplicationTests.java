@@ -1,5 +1,7 @@
 package com.zhanghe.Fast;
 
+import java.util.List;
+
 import com.zhanghe.Fast.util.PageUtil;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.junit.Test;
@@ -8,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.google.gson.Gson;
 import com.zhanghe.Fast.entity.User;
+import com.zhanghe.Fast.mapper.UserMapper;
 import com.zhanghe.Fast.service.UserService;
 
 @RunWith(SpringRunner.class)
@@ -17,6 +21,8 @@ import com.zhanghe.Fast.service.UserService;
 public class FastApplicationTests {
 	@Autowired
 	public UserService userService;
+	@Autowired
+	public UserMapper userMapper;
 	
     
     public void contextLoads() {
@@ -47,7 +53,7 @@ public class FastApplicationTests {
     	userService.updateUser(user);
     }
     
-    @Test
+    //@Test
     public void testInsertUser() {
     	User user=new User();
     	user.setName("test");
@@ -56,5 +62,31 @@ public class FastApplicationTests {
     	user.setPassword(new Sha256Hash("123456", user.getSalt()).toHex());
     	user.setStatus(1);
     	userService.insertUser(user);
+    }
+    
+    @Test
+    public void testMybatisPlus() {
+    	User user=new User();
+    //	System.out.println(userMapper.selectById("1"));
+    	//Page<User> page = new Page<>(1, 2);
+    	//page.setCurrent(3);
+    	//page.setSize(4);
+   
+    	//userMapper.getUserListByPage(page,user);
+    	Gson gson = new Gson();
+    	//page.setRecords(res);
+    	//System.out.println("--------------"+gson.toJson(page));
+    	//System.out.println("--------------"+gson.toJson(res));
+    	//for(User u:res){
+    	//	System.out.println(u);
+    	//}
+    	PageUtil<User> page = new PageUtil<>();
+    	page.setCorrentPage(1L);
+    	page.setPageSize(2L);
+    	Page<User> querypage = new Page<>(page.getCorrentPage().intValue(), page.getPageSize().intValue());
+    	List<User> result = userMapper.getUserListByPage(querypage, user);
+    	page.setResult(result);
+    	page.setTotal((long) querypage.getTotal());
+    	System.out.println("--------------"+gson.toJson(page));
     }
 }

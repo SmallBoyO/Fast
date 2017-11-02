@@ -12,13 +12,13 @@
       <el-button type="primary" style="width:100%;" :loading="loading" @click="submitForm('formdata')">登录</el-button>
     </el-form-item>
   </el-form>
-  
+
 </template>
 <script type="text/ecmascript-6">
 	import axios from 'axios';
 	import qs from 'qs';
 	axios.defaults.withCredentials=true;
-	
+
     export default {
         data() {
             return {
@@ -50,7 +50,7 @@
 						if(data.ret == 1){
 							this.loading=false;
 							this.$store.commit('login',{username:data.obj.userName,name:data.obj.name});
-							this.$router.push('/home');
+							this.$router.push({path:'/home'});
 						}else{
 							this.loading=false;
 							//this.$message({
@@ -63,7 +63,7 @@
 							//this.$message.error(data.message);
 						}
 					});
-				  
+
 				  } else {
 					console.log('error submit!!');
 					return false;

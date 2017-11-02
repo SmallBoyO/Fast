@@ -74,7 +74,8 @@ public class UserController {
 	}
 	@RequestMapping(value = "/ajax/UserManager/deleteUser")
 	public String deleteUser(Long id){
-		return "";
+		userService.deleteUserById(id);
+		return new ReturnValue<>(1,"删除成功").toJson();
 	}
 	@RequestMapping(value = "/ajax/UserManager/checkUserName")
 	@RequiresPermissions(value = "system:user:checkUserName")

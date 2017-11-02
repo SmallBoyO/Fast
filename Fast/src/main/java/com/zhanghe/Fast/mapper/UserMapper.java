@@ -8,12 +8,14 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
 
 @Mapper
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
     @Select("select * from User where id=#{id}")
     public User getUserByid(@Param(value = "id") Long id);
 
@@ -34,6 +36,9 @@ public interface UserMapper {
     
     @Select("<script>select id,userName,name,status from User <where><if test=\"userName !=null and userName!='' \"> and userName = #{userName} </if><if test=\"name !=null and name!='' \"> and name = #{name} </if><if test=\"status !=null and status!='' \"> and status = #{status} </if></where></script>")
     public List<User> getUserList(User user);
+    
+    @Select("<script>select id,userName,name,status from User <where><if test=\"userName !=null and userName!='' \"> and userName = #{userName} </if><if test=\"name !=null and name!='' \"> and name = #{name} </if><if test=\"status !=null and status!='' \"> and status = #{status} </if></where></script>")
+    public List<User> getUserListByPage(Page<User> page,User user);
     
     @Update("<script> update User <set> <if test=\"name!=null and name!=''\"> name = #{name}, </if><if test=\"status!=null and status!=''\"> status = #{status}, </if>  </set><where><if test=\"id!=null and id!=''\"> and id =#{id} </if></where></script>")
     public void updateUser(User user);

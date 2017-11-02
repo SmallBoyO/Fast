@@ -20,11 +20,13 @@ public interface UserService {
     
     public List<Permission> getPermissionByUserName(String username);
     
-    public PageUtil<User> getUserListByPage(User user, PageUtil page);
-    
     public void updateUser(User user);
     
     public void insertUser(User user);
     
     public User getUserByName(String name,Long id);
+
+	PageUtil<User> getUserListByPage( User user ,PageUtil<User> page );
+	
+	void deleteUserById(Long id);
 }
