@@ -10,10 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.google.gson.Gson;
+import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
+import com.zhanghe.Fast.mapper.PermissionMapper;
+import com.zhanghe.Fast.mapper.RoleMapper;
 import com.zhanghe.Fast.mapper.UserMapper;
+import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.service.UserService;
 
 @RunWith(SpringRunner.class)
@@ -24,6 +29,13 @@ public class FastApplicationTests {
 	@Autowired
 	public UserMapper userMapper;
 	
+	@Autowired
+	public RoleMapper roleMapper;
+	
+	@Autowired
+	public RoleService roleService;
+	@Autowired
+	public PermissionMapper permissionMapper;
     
     public void contextLoads() {
     	User user=new User();
@@ -64,7 +76,7 @@ public class FastApplicationTests {
     	userService.insertUser(user);
     }
     
-    @Test
+   // @Test
     public void testMybatisPlus() {
     	User user=new User();
     //	System.out.println(userMapper.selectById("1"));
@@ -88,5 +100,25 @@ public class FastApplicationTests {
     	page.setResult(result);
     	page.setTotal((long) querypage.getTotal());
     	System.out.println("--------------"+gson.toJson(page));
+    }
+    //@Test
+    public void testRoleList(){
+    	EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
+    	wrapper.eq(Role.STATUS, "1");
+    	
+    	PageUtil<Role> page = new PageUtil<Role>();
+    	page.setCorrentPage(1L);
+    	page.setPageSize(2L);
+    	System.out.println(roleService.getRoleListByPage(page, wrapper));
+    }
+    @Test
+    public void testGetRolePermission(){
+    	EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
+    	wrapper.eq(Role.STATUS, "1");
+    	
+    	PageUtil<Role> page = new PageUtil<Role>();
+    	page.setCorrentPage(1L);
+    	page.setPageSize(2L);
+    	System.out.println(roleService.getRoleListByPage(page, wrapper));
     }
 }

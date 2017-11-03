@@ -28,7 +28,11 @@
             </el-table-column>
             <el-table-column prop="name" label="用户名" width="180">
             </el-table-column>
-            <el-table-column prop="status" label="状态">
+            <el-table-column label="状态">
+              <template scope="scope">
+                <p v-if='scope.row.status==1'>启用</p>
+                <p v-if='scope.row.status==2'>禁用</p>
+              </template>
             </el-table-column>
             <el-table-column label="操作">
                 <template scope="scope">

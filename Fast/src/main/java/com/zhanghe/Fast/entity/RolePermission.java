@@ -1,22 +1,20 @@
 package com.zhanghe.Fast.entity;
 
 public class RolePermission {
-    public Long Role;
-    public Long Permission;
+    public Long role;
+    public Long permission;
+	public Long getRole() {
+		return role;
+	}
+	public void setRole( Long role ) {
+		this.role = role;
+	}
+	public Long getPermission() {
+		return permission;
+	}
+	public void setPermission( Long permission ) {
+		this.permission = permission;
+	}
 
-    public Long getRole() {
-        return Role;
-    }
-
-    public void setRole(Long role) {
-        Role = role;
-    }
-
-    public Long getPermission() {
-        return Permission;
-    }
-
-    public void setPermission(Long permission) {
-        Permission = permission;
-    }
+    
 }

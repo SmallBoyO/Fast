@@ -3,17 +3,25 @@ package com.zhanghe.Fast.entity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
 /**
  * 权限表
  *
  * @author admin
  */
+@TableName("role")
 public class Role {
     private Long id;
     private String role;
     private String description;
     private Integer status;
 
+    public static final String ID="id";
+    public static final String ROLE="role";
+    public static final String DESCRIPTION="description";
+    public static final String STATUS="status";
+    
     public Long getId() {
         return id;
     }

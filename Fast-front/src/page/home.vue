@@ -96,11 +96,11 @@
 		methods:{
 			handleSelect(key,keyPath) {
 				console.log(key);
-				console.log(key.split('-')[1]);
+  				console.log(key.split('-')[1]);
 				console.log(keyPath);
 				console.log(keyPath);
 				if((key.split('-')[1])!='null'){
-					this.$router.push('/home/UserList');
+					this.$router.push(key.split('-')[1]);
 				}
             },
 			getname(){

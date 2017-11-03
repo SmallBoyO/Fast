@@ -2,6 +2,8 @@ package com.zhanghe.Fast.util;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class PageUtil<T> {
     private Long correntPage;
     private Long pageSize;
@@ -39,4 +41,12 @@ public class PageUtil<T> {
     public void setTotal(Long total) {
         this.total = total;
     }
+
+	@Override
+	public String toString() {
+		Gson gson = new Gson();
+		return gson.toJson(this);
+	}
+    
+    
 }

@@ -6,6 +6,7 @@ import menu2 from '../page/menu2.vue'
 import home from '../page/home.vue'
 import counter from '../page/counter.vue'
 import UserList from '../page/UserList.vue'
+import RoleList from '../page/RoleList.vue'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -41,7 +42,11 @@ const routes = [{
 				path:'UserList',
 				name:'用户管理',
 				component:UserList
-			}
+			},{
+        path:'RoleList',
+        name:'角色管理',
+        component:RoleList,
+      }
 		]
 	}];
 const router = new VueRouter({
