@@ -17,7 +17,7 @@
                     </el-select>
                 </el-form-item>
                 <el-button @click="search">搜索</el-button>
-                <el-button @click="addUser">添加用户</el-button>
+                <el-button v-if="right.systemuseradd" @click="addUser">添加用户</el-button>
             </el-form>
 
         </el-col>
@@ -36,9 +36,9 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑
+                    <el-button size="small" v-if="right.systemuserupdate"  @click="handleEdit(scope.$index, scope.row)">编辑
                     </el-button>
-                    <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
+                    <el-button size="small" v-if="right.systemuserdelete" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -48,7 +48,7 @@
                        layout="total, sizes, prev, pager, next, jumper" :total="searchData.total">
         </el-pagination>
 
-        <el-dialog title="编辑用户" size="tiny" :visible.sync="dialogFormVisible">
+        <el-dialog v-if="right.systemuserupdate" title="编辑用户" size="tiny" :visible.sync="dialogFormVisible">
             <el-form :inline="false" :rules="rules" ref="editform" :model="editData" label-width="80px">
                 <el-form-item label="用户名" prop="name">
                     <el-input placeholder="用户名" v-model="editData.name"></el-input>
@@ -65,7 +65,7 @@
             </el-form>
         </el-dialog>
 
-        <el-dialog title="添加用户" size="tiny" :visible.sync="dialogaddFormVisible">
+        <el-dialog v-if="right.systemuseradd" title="添加用户" size="tiny" :visible.sync="dialogaddFormVisible">
             <el-form :inline="false" :rules="addrules" ref="addform" :model="addData" label-width="80px">
                 <el-form-item label="账号" prop="userName">
                     <el-input placeholder="账号" v-model="addData.userName"></el-input>
@@ -175,6 +175,7 @@
                 listLoading: false,
                 tableData: [],
                 multipleSelection: [],
+                right:{},
                 searchData: {
                     name: '',
                     status: '',
@@ -227,6 +228,12 @@
             }
         },
         methods: {
+            getRight(){
+              axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
+        					console.log(data);
+                  this.right = data;
+        			});
+            },
             handleSelectionChange(val) {
                 multipleSelection = val;
             },
@@ -348,6 +355,11 @@
                     }
                 });
             }
+        },
+        created(){
+          console.log("--------------------");
+          this.getRight();
+          console.log(this.$route);
         }
     }
 </script>

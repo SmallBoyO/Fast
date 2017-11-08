@@ -18,6 +18,7 @@ import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.mapper.PermissionMapper;
 import com.zhanghe.Fast.mapper.RoleMapper;
 import com.zhanghe.Fast.mapper.UserMapper;
+import com.zhanghe.Fast.service.PermissionService;
 import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.service.UserService;
 
@@ -36,7 +37,8 @@ public class FastApplicationTests {
 	public RoleService roleService;
 	@Autowired
 	public PermissionMapper permissionMapper;
-    
+	@Autowired
+	public PermissionService permissionService;
     public void contextLoads() {
     	User user=new User();
     	user.setUserName("zhang");
@@ -111,7 +113,7 @@ public class FastApplicationTests {
     	page.setPageSize(2L);
     	System.out.println(roleService.getRoleListByPage(page, wrapper));
     }
-    @Test
+   //
     public void testGetRolePermission(){
     	EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
     	wrapper.eq(Role.STATUS, "1");
@@ -120,5 +122,10 @@ public class FastApplicationTests {
     	page.setCorrentPage(1L);
     	page.setPageSize(2L);
     	System.out.println(roleService.getRoleListByPage(page, wrapper));
+    }
+    @Test
+    public void testgetRightListByUrlId(){
+    	System.out.println(permissionMapper.getRightListByUrlId(2L));
+    	System.out.println(permissionService.getRightByUrlId(2L));
     }
 }

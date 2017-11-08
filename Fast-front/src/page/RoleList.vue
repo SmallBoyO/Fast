@@ -19,7 +19,7 @@
 		</el-table-column>
 		<el-table-column label="操作">
 				<template scope="scope">
-						<el-button size="small" @click="handleEdit(scope.$index, scope.row)">
+						<el-button v-if="right.systemroleedit" size="small" @click="handleEdit(scope.$index, scope.row)">
 						编辑
 						</el-button>
 				</template>
@@ -34,6 +34,7 @@
 	export default {
 		data() {
 			return {
+					right:{},
 					listdata:[{id:1,role:'admin',description:'admin',status:1}],
 					searchData: {
 							role: '',
@@ -45,6 +46,12 @@
 			}
 		},
 		methods:{
+			getRight(){
+				axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
+						console.log(data);
+						this.right = data;
+				});
+			},
 			handleEdit(index, row) {
 					console.log(index, row);
 			},
@@ -52,13 +59,15 @@
 				axios.post(`http://127.0.0.1:8081/ajax/roleManager/roleList`,qs.stringify(this.searchData)).then(res => res.data).then(data => {
 						console.log(data);
 						this.listdata=data.result;
-						this.searchData.correntPage = data.page.correntPage;
-						this.searchData.pageSize = data.page.pageSize;
-						this.searchData.total = data.page.total;
+						this.searchData.correntPage = data.correntPage;
+						this.searchData.pageSize = data.pageSize;
+						this.searchData.total = data.total;
 				});
 			}
 		},
 		created(){
+			console.log('-----------');
+			this.getRight();
 			this.search();
 		}
 	}

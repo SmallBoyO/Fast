@@ -25,25 +25,25 @@
 			<el-menu default-active="1" class="el-menu-vertical-demo" style="min-height:800px"  @select="handleSelect">
                             <template v-for="(item,index) in menu">
                                 <template v-if="item.type=='url'">
-                                    <el-menu-item :index="item.name+ '-'+item.component"><i :class="[item.icon]"></i>{{item.name}}
+                                    <el-menu-item :index="item.name+ '-'+item.component+'-'+item.id"><i :class="[item.icon]"></i>{{item.name}}
                                     </el-menu-item>
                                 </template>
                                 <template v-else-if="item.type=='menu'">
-                                    <el-submenu :index="item.name+ '-'+item.component">
+                                    <el-submenu :index="item.name+ '-'+item.component+'-'+item.id">
                                         <template slot="title"><i class="el-icon-message"></i>{{item.name}}</template>
                                         <template v-for="(childitem,childindex) in item.child">
                                             <template v-if="childitem.type=='url'">
-                                                <el-menu-item :index="childitem.name+ '-'+childitem.component">{{childitem.name}}
+                                                <el-menu-item :index="childitem.name+ '-'+childitem.component+'-'+childitem.id">{{childitem.name}}
                                                 </el-menu-item>
                                             </template>
                                             <template v-else-if="childitem.type=='menu'">
-                                                <el-submenu :index="childitem.name + '-'+childitem.component">
+                                                <el-submenu :index="childitem.name + '-'+childitem.component+'-'+childitem.id">
                                                     <template slot="title"><i
                                                             class="el-icon-message"></i>{{childitem.name}}
                                                     </template>
                                                     <template v-for="(child2item,child2index) in childitem.child">
                                                         <template v-if="child2item.type=='url'">
-                                                            <el-menu-item :index="child2item.name+ '-'+child2item.component">
+                                                            <el-menu-item :index="child2item.name+ '-'+child2item.component+'-'+child2item.id">
                                                                 {{child2item.name}}
                                                             </el-menu-item>
                                                         </template>
@@ -100,7 +100,7 @@
 				console.log(keyPath);
 				console.log(keyPath);
 				if((key.split('-')[1])!='null'){
-					this.$router.push(key.split('-')[1]);
+					this.$router.push({name:key.split('-')[0],params:{rightid:key.split('-')[2]}});
 				}
             },
 			getname(){
@@ -112,6 +112,7 @@
 			if(this.$store.state.menu === null){
 				axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
 						this.menu=data;
+            this.$store.commit('setMenu',{menu:data});
 					});
 			}
 		}

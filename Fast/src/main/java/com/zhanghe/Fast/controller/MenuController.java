@@ -1,23 +1,28 @@
 package com.zhanghe.Fast.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.zhanghe.Fast.entity.Permission;
+import com.zhanghe.Fast.service.PermissionService;
 import com.zhanghe.Fast.service.UserService;
 
 @RestController
 public class MenuController {
 	@Autowired
 	public UserService userService;
+	
+	@Autowired
+	public PermissionService permissionService;
 	
 	@RequestMapping("/ajax/getUserMenu")
 	public String getUserMenu(){
@@ -58,5 +63,12 @@ public class MenuController {
 			}
 		}
 		json.add("child", array);
+	}
+	
+	@RequestMapping("/ajax/getRight")
+	@ResponseBody
+	@RequiresAuthentication
+	public String getRight(Long id){
+		return permissionService.getRightByUrlId(id).toString();
 	}
 }

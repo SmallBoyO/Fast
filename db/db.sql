@@ -31,11 +31,11 @@ CREATE TABLE `permission` (
   `name` varchar(20) DEFAULT NULL,
   `component` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `permission` */
 
-insert  into `permission`(`id`,`type`,`url`,`permission`,`parent_id`,`parent_ids`,`status`,`name`,`component`) values (1,'right','index','system:index',0,NULL,1,NULL,NULL),(2,'menu','','',NULL,NULL,1,'系统管理',NULL),(3,'url','/home/userquery','system:user:query',2,NULL,1,'用户管理','/home/UserList'),(4,'url','',NULL,2,NULL,1,'菜单管理',NULL),(5,'right',NULL,'system:user:query',2,NULL,NULL,'用户查询',NULL),(6,'right',NULL,'system:user:update',2,NULL,NULL,'用户修改',NULL),(7,'right',NULL,'system:user:checkUserName',2,NULL,NULL,'用户名检查',NULL),(8,'right',NULL,'system:user:checkName',2,NULL,NULL,'昵称检查',NULL),(9,'right',NULL,'system:user:add',2,NULL,NULL,'添加用户',NULL),(10,'url',NULL,'system:role:query',2,NULL,1,'角色管理','/home/RoleList'),(11,'right',NULL,'system:role:query',10,NULL,NULL,'角色查询',NULL);
+insert  into `permission`(`id`,`type`,`url`,`permission`,`parent_id`,`parent_ids`,`status`,`name`,`component`) values (1,'right','index','system:index',0,NULL,0,NULL,NULL),(2,'menu','','',NULL,NULL,1,'系统管理',NULL),(3,'url','/home/userquery','',2,NULL,1,'用户管理','/home/UserList'),(4,'url','',NULL,2,NULL,1,'菜单管理',NULL),(5,'right',NULL,'system:user:query',3,NULL,1,'用户查询',NULL),(6,'right',NULL,'system:user:update',3,NULL,1,'用户修改',NULL),(7,'right',NULL,'system:user:checkUserName',3,NULL,1,'用户名检查',NULL),(8,'right',NULL,'system:user:checkName',3,NULL,1,'昵称检查',NULL),(9,'right',NULL,'system:user:add',3,NULL,1,'添加用户',NULL),(10,'url',NULL,'',2,NULL,1,'角色管理','/home/RoleList'),(11,'right',NULL,'system:role:query',10,NULL,1,'角色查询',NULL),(12,'right',NULL,'system:user:delete',3,NULL,1,'用户删除',NULL),(13,'right',NULL,'system:role:edit',10,NULL,1,'角色编辑',NULL);
 
 /*Table structure for table `role` */
 

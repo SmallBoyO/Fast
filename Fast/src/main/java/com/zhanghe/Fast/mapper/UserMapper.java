@@ -22,10 +22,10 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select * from role where id in (select role from user_role where user=#{id}) ")
     public List<Role> getRoleByUserId(@Param(value = "id") Long id);
 
-    @Select("SELECT * FROM permission WHERE id IN( SELECT permission FROM role_permission WHERE role IN(SELECT id FROM role WHERE id IN (SELECT role FROM user_role WHERE user=#{id}) )) and type = 'right'")
+    @Select("SELECT * FROM permission WHERE status=1 and id IN( SELECT permission FROM role_permission WHERE role IN(SELECT id FROM role WHERE id IN (SELECT role FROM user_role WHERE user=#{id}) )) and type = 'right'")
     public List<Permission> getPermissionByUserId(@Param(value = "id") Long id);
     
-    @Select("SELECT * FROM permission WHERE id IN( SELECT permission FROM role_permission WHERE role IN(SELECT id FROM role WHERE id IN (SELECT role FROM user_role t,user u WHERE u.id = t.user AND u.userName = #{username})));")
+    @Select("SELECT * FROM permission WHERE status=1 and id IN( SELECT permission FROM role_permission WHERE role IN(SELECT id FROM role WHERE id IN (SELECT role FROM user_role t,user u WHERE u.id = t.user AND u.userName = #{username})));")
     public List<Permission> getPermissionByUserName(@Param(value = "username") String username);
 
     @Select("select * from user where UserName=#{UserName}")
