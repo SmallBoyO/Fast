@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gson.JsonObject;
 import com.zhanghe.Fast.entity.Permission;
+import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.mapper.PermissionMapper;
 import com.zhanghe.Fast.service.PermissionService;
 @Service
@@ -18,11 +19,13 @@ public class PermissionServiceImpl implements PermissionService {
 	public PermissionMapper permissionMapper;
 	
 	@Override
-	public JsonObject getRightByUrlId(Long id) {
-		List<Permission> list = permissionMapper.getRightListByUrlId(id);
+	public JsonObject getRightByUrlId(Long id,List<Role> rolelist) {
 		JsonObject json = new JsonObject();
-		for(Permission permission:list){
-			json.addProperty(permission.getPermission().replaceAll(":", ""), true);
+		for(Role role : rolelist){
+			List<Permission> list = permissionMapper.getRightListByUrlId(id,role.getId());
+			for(Permission permission:list){
+				json.addProperty(permission.getPermission().replaceAll(":", ""), true);
+			}
 		}
 		return json;
 	}

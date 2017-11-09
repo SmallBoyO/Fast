@@ -125,7 +125,7 @@ public class FastApplicationTests {
     }
     @Test
     public void testgetRightListByUrlId(){
-    	System.out.println(permissionMapper.getRightListByUrlId(2L));
-    	System.out.println(permissionService.getRightByUrlId(2L));
+    	/*System.out.println(permissionMapper.getRightListByUrlId(2L));
+    	System.out.println(permissionService.getRightByUrlId(2L));*/
     }
 }

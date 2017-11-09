@@ -254,6 +254,7 @@
                             this.search();
                         } else if (data.ret == -100) {
                             this.listLoading = false;
+                            this.$store.commit('setMenu',null);
                             this.$router.push('/login');
                         } else{
                             this.$alert(data.message,"");
@@ -286,6 +287,7 @@
                         this.listLoading = false;
                     } else if (data.ret == -100) {
                         this.listLoading = false;
+                        this.$store.commit('setMenu',null);
                         this.$router.push('/login');
                     }
                 });
@@ -315,6 +317,7 @@
                                 });
                                 this.dialogFormVisible = false;
                             } else if (data.ret == -100) {
+                                this.$store.commit('setMenu',null);
                                 this.$router.push('/login');
                             } else {
                                 this.$alert(data.message, '', {
@@ -345,6 +348,7 @@
                                 });
                                 this.search();
                             }else if (res.data.ret == -100) {
+                                this.$store.commit('setMenu',null);
                                 this.$router.push('/login');
                             } else {
                                 this.$alert(res.data.message, '', {

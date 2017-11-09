@@ -21,7 +21,11 @@ const mutations = {
 		state.correntUser.name=data.name;
 	},
   setMenu(state,data){
-    state.menu=data.menu;
+    if(data!=null){
+      state.menu=data.menu;
+    }else{
+      state.menu=null;
+    }
   }
 }
 // 创建 store 实例

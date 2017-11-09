@@ -1,4 +1,28 @@
 <template>
+	<section>
+	<!--工具条-->
+	<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+			<el-form :inline="true">
+					<el-form-item>
+							<el-input v-model="searchData.role" placeholder="角色"></el-input>
+					</el-form-item>
+					<el-form-item>
+							<el-input v-model="searchData.description" placeholder="描述"></el-input>
+					</el-form-item>
+					<el-form-item>
+							<el-select v-model="searchData.status" placeholder="请选择">
+									<el-option
+													v-for="item in options"
+													:key="item.value"
+													:label="item.label"
+													:value="item.value">
+									</el-option>
+							</el-select>
+					</el-form-item>
+					<el-button @click="search">搜索</el-button>
+					<el-button v-if="right.systemroleadd" @click="addRole">添加角色</el-button>
+			</el-form>
+	</el-col>
 	<el-table
 		:data="listdata"
 		stripe
@@ -25,6 +49,24 @@
 				</template>
 		</el-table-column>
 	</el-table>
+
+	<el-dialog title="添加角色" :visible.sync="addRoleVisible">
+			<el-form :inline="false"  ref="addRoleDorm" :model="addData" label-width="80px">
+					<el-form-item label="角色名" prop="name">
+							<el-input placeholder="角色名" v-model="addData.name"></el-input>
+					</el-form-item>
+					<el-form-item label="描述" prop="name">
+							<el-input placeholder="描述" v-model="addData.description"></el-input>
+					</el-form-item>
+					<el-form-item label="状态">
+							<el-select v-model="addData.status" placeholder="请选择">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+									</el-option>
+							</el-select>
+					</el-form-item>
+			</el-form>
+	</el-dialog>
+	</section>
 </template>
 
 <script type="text/ecmascript-6">
@@ -38,11 +80,27 @@
 					listdata:[{id:1,role:'admin',description:'admin',status:1}],
 					searchData: {
 							role: '',
+							description:'',
 							status: '',
 							correntPage:1,
 							pageSize:10,
 							total:10
 					},
+					options: [
+							{
+									value: '1',
+									label: '启用'
+							}, {
+									value: '2',
+									label: '禁用'
+							}
+					],
+					addRoleVisible:false,
+					addData:{
+							name:'',
+							status:0,
+							description:'',
+					}
 			}
 		},
 		methods:{
@@ -63,6 +121,11 @@
 						this.searchData.pageSize = data.pageSize;
 						this.searchData.total = data.total;
 				});
+			},
+			addRole(){
+					this.addRoleVisible = true;
+
+					console.log('addRole');
 			}
 		},
 		created(){

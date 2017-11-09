@@ -14,6 +14,6 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 	@Select("SELECT * FROM permission WHERE id IN(SELECT permission FROM role_permission WHERE role = #{id})")
 	List<Permission> getPermissionByRoleId(@Param("id")Long id);
 	
-	@Select("SELECT * FROM permission WHERE status=1 and type = 'right' and id IN(SELECT id FROM permission where parent_id = #{id})")
-	List<Permission> getRightListByUrlId(@Param("id")Long id);
+	@Select("SELECT * FROM permission WHERE status=1 and type = 'right' and id IN(SELECT id FROM permission where parent_id = #{id}) and id IN(SELECT permission FROM role_permission WHERE role = #{roleid})")
+	List<Permission> getRightListByUrlId(@Param("id")Long id,@Param("roleid")Long roleid);
 }

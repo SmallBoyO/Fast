@@ -18,13 +18,16 @@ public class RoleController {
 	
 	@RequestMapping(value = "/ajax/roleManager/roleList")
 	@RequiresPermissions(value = "system:role:query")
-	public String getRoleList(String role,Integer status,PageUtil page){
+	public String getRoleList(String role,String description,Integer status,PageUtil page){
 		EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
     	if(role!=null&&!"".equals(role)){
     		wrapper.like(Role.ROLE, role, SqlLike.CUSTOM);
     	}
     	if(status!=null){
     		wrapper.eq(Role.STATUS, status);
+    	}
+    	if(description!=null&&!"".equals(description)){
+    		wrapper.eq(Role.DESCRIPTION, description);
     	}
     	page = roleService.getRoleListByPage(page, wrapper);
 		return page.toString();

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.zhanghe.Fast.entity.Permission;
+import com.zhanghe.Fast.entity.Role;
+import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.service.PermissionService;
 import com.zhanghe.Fast.service.UserService;
 
@@ -69,6 +71,10 @@ public class MenuController {
 	@ResponseBody
 	@RequiresAuthentication
 	public String getRight(Long id){
-		return permissionService.getRightByUrlId(id).toString();
+		Subject currentUser = SecurityUtils.getSubject();
+		User user = userService.getUserByUserName(currentUser.getPrincipal().toString());
+		List<Role> rolelist = userService.getRoleByUserId(user.getId());
+		
+		return permissionService.getRightByUrlId(id,rolelist).toString();
 	}
 }
