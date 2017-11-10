@@ -123,9 +123,15 @@ public class FastApplicationTests {
     	page.setPageSize(2L);
     	System.out.println(roleService.getRoleListByPage(page, wrapper));
     }
-    @Test
+    //@Test
     public void testgetRightListByUrlId(){
     	/*System.out.println(permissionMapper.getRightListByUrlId(2L));
     	System.out.println(permissionService.getRightByUrlId(2L));*/
+    	System.out.println(permissionService.getAllRight());
+    }
+    
+    @Test
+    public void testgetAllRight(){
+    	System.out.println(permissionService.getAllRight());
     }
 }

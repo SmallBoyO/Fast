@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.zhanghe.Fast.entity.Permission;
@@ -77,4 +78,27 @@ public class MenuController {
 		
 		return permissionService.getRightByUrlId(id,rolelist).toString();
 	}
+	
+	@RequestMapping("/ajax/getAllRight")
+	@ResponseBody
+	@RequiresAuthentication
+	public String getAllRight(){
+		List<Permission> list = permissionService.getAllRight();
+		JsonArray array = new JsonArray();
+		for(Permission permission:list){
+			if(permission.getParent_id()==null||permission.getParent_id()==0){
+				JsonObject json = new JsonObject();
+				json.addProperty("id", permission.getId());
+				json.addProperty("name", permission.getName());
+				json.addProperty("url", permission.getUrl());
+				json.addProperty("type", permission.getType());
+				json.addProperty("component", permission.getComponent());
+				buidChild(json,list);
+				//rootlist.add(permission);
+				array.add(json);
+			}
+		}
+		return array.toString();
+	}
+	
 }

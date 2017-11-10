@@ -50,7 +50,7 @@
 		</el-table-column>
 	</el-table>
 
-	<el-dialog title="添加角色" :visible.sync="addRoleVisible">
+	<el-dialog title="添加角色" size='tiny' :visible.sync="addRoleVisible">
 			<el-form :inline="false"  ref="addRoleDorm" :model="addData" label-width="80px">
 					<el-form-item label="角色名" prop="name">
 							<el-input placeholder="角色名" v-model="addData.name"></el-input>
@@ -63,6 +63,20 @@
 									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
 									</el-option>
 							</el-select>
+					</el-form-item>
+					<el-form-item label="权限">
+						<el-tree
+						  :data="data2"
+						  show-checkbox
+						  default-expand-all
+						  node-key="id"
+						  ref="tree"
+						  highlight-current
+						  :props="defaultProps">
+						</el-tree>
+					</el-form-item>
+					<el-form-item>
+							<el-button size="small" type="danger" @click="submitAdd('addRoleDorm')">添加</el-button>
 					</el-form-item>
 			</el-form>
 	</el-dialog>
@@ -100,7 +114,12 @@
 							name:'',
 							status:0,
 							description:'',
-					}
+					},
+					data2: [],
+					defaultProps: {
+	          children: 'child',
+	          label: 'name'
+	        }
 			}
 		},
 		methods:{
@@ -108,6 +127,10 @@
 				axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
 						console.log(data);
 						this.right = data;
+				});
+				axios.post(`http://127.0.0.1:8081/ajax/getAllRight`,qs.stringify({})).then(res => res.data).then(data => {
+						console.log(data);
+						this.data2 = data;
 				});
 			},
 			handleEdit(index, row) {
@@ -126,6 +149,9 @@
 					this.addRoleVisible = true;
 
 					console.log('addRole');
+			},
+			submitAdd(formName){
+				console.log(this.$refs.tree.getCheckedKeys());
 			}
 		},
 		created(){

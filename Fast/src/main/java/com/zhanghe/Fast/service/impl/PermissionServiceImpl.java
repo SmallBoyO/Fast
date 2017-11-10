@@ -30,4 +30,9 @@ public class PermissionServiceImpl implements PermissionService {
 		return json;
 	}
 
+	@Override
+	public List<Permission> getAllRight() {
+		return permissionMapper.getAllRight();
+	}
+
 }
