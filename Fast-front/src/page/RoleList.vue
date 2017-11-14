@@ -49,13 +49,16 @@
 				</template>
 		</el-table-column>
 	</el-table>
-
+	<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+								 :current-page="searchData.correntPage" :page-sizes="[10, 20, 50, 100, 200]" :page-size="searchData.pageSize"
+								 layout="total, sizes, prev, pager, next, jumper" :total="searchData.total">
+	</el-pagination>
 	<el-dialog title="添加角色" size='tiny' :visible.sync="addRoleVisible">
-			<el-form :inline="false"  ref="addRoleDorm" :model="addData" label-width="80px">
+			<el-form :inline="false" :rules="addrules" ref="addRoleDorm" :model="addData" label-width="80px">
 					<el-form-item label="角色名" prop="name">
 							<el-input placeholder="角色名" v-model="addData.name"></el-input>
 					</el-form-item>
-					<el-form-item label="描述" prop="name">
+					<el-form-item label="描述" prop="description">
 							<el-input placeholder="描述" v-model="addData.description"></el-input>
 					</el-form-item>
 					<el-form-item label="状态">
@@ -66,12 +69,13 @@
 					</el-form-item>
 					<el-form-item label="权限">
 						<el-tree
-						  :data="data2"
+						  :data="rightlist"
 						  show-checkbox
 						  default-expand-all
 						  node-key="id"
 						  ref="tree"
 						  highlight-current
+							@check-change = "changeCheck"
 						  :props="defaultProps">
 						</el-tree>
 					</el-form-item>
@@ -89,7 +93,38 @@
 	axios.defaults.withCredentials=true;
 	export default {
 		data() {
+			var validateAddRole = (rule, value, callback) => {
+				if (value == '') {
+						callback(new Error('请输入角色名！'));
+				} else if (value.length < 5 || value.length > 16) {
+						callback(new Error('角色名长度在4到16之间！'));
+				}else{
+					axios.post(`http://127.0.0.1:8081/ajax/roleManager/checkRoleName`, qs.stringify({role: value})).then(res => res.data).then(data => {
+							console.log(data);
+							if (data.ret == -1) {
+									callback(new Error(data.message));
+							} else {
+									callback();
+							}
+					});
+				}
+			};
+			var validateAdddescription = (rule, value, callback) => {
+				if ( value.length > 16) {
+						callback(new Error('描述长度必须小于64！'));
+				}else{
+						callback();
+				}
+			};
 			return {
+					addrules:{
+							name:[
+									{validator: validateAddRole, trigger: 'blur'}
+							],
+							description:[
+									{validator: validateAdddescription, trigger: 'blur'}
+							]
+					},
 					right:{},
 					listdata:[{id:1,role:'admin',description:'admin',status:1}],
 					searchData: {
@@ -114,8 +149,9 @@
 							name:'',
 							status:0,
 							description:'',
+							rightlist:[]
 					},
-					data2: [],
+					rightlist: [],
 					defaultProps: {
 	          children: 'child',
 	          label: 'name'
@@ -123,6 +159,18 @@
 			}
 		},
 		methods:{
+			handleSizeChange(val) {
+					this.searchData.pageSize = val;
+					console.log(`每页 ${val} 条`);
+					this.search();
+					console.log(this.searchData.pageSize);
+			},
+			handleCurrentChange(val) {
+					this.searchData.correntPage = val;
+					this.search();
+					console.log(`当前页: ${val}`);
+					console.log(this.searchData.correntPage);
+			},
 			getRight(){
 				axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
 						console.log(data);
@@ -130,7 +178,7 @@
 				});
 				axios.post(`http://127.0.0.1:8081/ajax/getAllRight`,qs.stringify({})).then(res => res.data).then(data => {
 						console.log(data);
-						this.data2 = data;
+						this.rightlist = data;
 				});
 			},
 			handleEdit(index, row) {
@@ -150,8 +198,38 @@
 
 					console.log('addRole');
 			},
+			changeCheck(sd,sds,s){
+				this.addData.rightlist = this.$refs.tree.getCheckedKeys();
+			},
 			submitAdd(formName){
-				console.log(this.$refs.tree.getCheckedKeys());
+				console.log(this.addData);
+				let data={
+						role:this.addData.name,
+						description:this.addData.description,
+						status:this.addData.status,
+				}
+				let rightstr='';
+				for(let right in this.addData.rightlist){
+					rightstr+=('&'+'rightlist='+this.addData.rightlist[right]);
+				}
+				console.log(rightstr);
+				axios.post(`http://127.0.0.1:8081/ajax/roleManager/addRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
+						console.log(data);
+						if(data.ret==1){
+								this.addRoleVisible = false;
+								this.$alert(data.message, '', {
+										confirmButtonText: '确定'
+								});
+								this.search();
+						}else if (data.ret == -100) {
+								this.$store.commit('setMenu',null);
+								this.$router.push('/login');
+						} else {
+								this.$alert(data.message, '', {
+										confirmButtonText: '确定'
+								});
+						}
+				});
 			}
 		},
 		created(){

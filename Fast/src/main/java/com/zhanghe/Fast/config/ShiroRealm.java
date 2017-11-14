@@ -13,6 +13,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zhanghe.Fast.entity.Permission;
@@ -75,7 +76,9 @@ public class ShiroRealm extends AuthorizingRealm {
 		//查出是否有此用户
         User user=userService.getUserByUserName(usernamePasswordToken.getUsername());
         if(user != null){
-        	 return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), getName());
+        	//return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
+        	//8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
+        	return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), getName());
         }
 		return null;
 	}

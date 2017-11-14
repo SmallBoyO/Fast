@@ -1,5 +1,8 @@
 package com.zhanghe.Fast.entity;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
+@TableName("role_permission")
 public class RolePermission {
     public Long role;
     public Long permission;
@@ -14,7 +17,5 @@ public class RolePermission {
 	}
 	public void setPermission( Long permission ) {
 		this.permission = permission;
-	}
-
-    
+	} 
 }

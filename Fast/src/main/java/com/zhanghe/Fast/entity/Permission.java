@@ -18,7 +18,17 @@ public class Permission {
     private String parent_ids;
     private Integer status;
     private String component;
-
+    
+    public static final String ID="id";
+    public static final String NAME="name";
+    public static final String TYPE="type";
+    public static final String URL="url";
+    public static final String PERMISSION="permission";
+    public static final String PARENT_ID="parent_id";
+    public static final String PARENT_IDS="parent_ids";
+    public static final String STATUS="status";
+    public static final String COMPONENT="component";
+    
     public Long getId() {
         return id;
     }

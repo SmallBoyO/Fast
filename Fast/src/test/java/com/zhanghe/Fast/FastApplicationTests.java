@@ -1,5 +1,6 @@
 package com.zhanghe.Fast;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.zhanghe.Fast.util.PageUtil;
@@ -13,10 +14,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.google.gson.Gson;
+import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
+import com.zhanghe.Fast.entity.RolePermission;
 import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.mapper.PermissionMapper;
 import com.zhanghe.Fast.mapper.RoleMapper;
+import com.zhanghe.Fast.mapper.RolePermissionMapper;
 import com.zhanghe.Fast.mapper.UserMapper;
 import com.zhanghe.Fast.service.PermissionService;
 import com.zhanghe.Fast.service.RoleService;
@@ -39,14 +43,22 @@ public class FastApplicationTests {
 	public PermissionMapper permissionMapper;
 	@Autowired
 	public PermissionService permissionService;
+	@Autowired
+	public RolePermissionMapper rolePermissionMapper;
+	
+	//@Test
     public void contextLoads() {
+		/*
     	User user=new User();
     	user.setUserName("zhang");
     	Gson gson = new Gson();
 		PageUtil page = new PageUtil();
 		page.setPageSize(3L);
 		page.setCorrentPage(2L);
-    	System.out.println(gson.toJson(userService.getUserListByPage(user,page)));
+    	System.out.println(gson.toJson(userService.getUserListByPage(user,page)));*/
+		User user = userService.getUserByid(1L);
+		System.out.println(user);
+		System.out.println(new Sha256Hash("123456", user.getSalt()).toHex());
     }
    // @Test
     public void testGetUserList() {
@@ -130,8 +142,39 @@ public class FastApplicationTests {
     	System.out.println(permissionService.getAllRight());
     }
     
-    @Test
+   // @Test
     public void testgetAllRight(){
     	System.out.println(permissionService.getAllRight());
+    }
+   // @Test
+    public void testinsertRoleRight(){
+    	long[] rights = {5};
+    	HashMap<Long,Long> map = new HashMap<Long,Long>();
+    	for(long id : rights){
+    		addParent(id,map);
+    	}
+    	System.out.println(map);
+    }
+    
+    public void addParent(Long id,HashMap<Long,Long> map){
+    	EntityWrapper<Permission> wrapper = new EntityWrapper<Permission>();
+    	Permission permission = permissionMapper.selectById(id);
+    	if(permission!=null){
+    		map.put(id, 1L);
+	    	if(permission.getParent_id()!=null){
+				addParent(permission.getParent_id(),map);
+			}
+    	}
+    }
+   // @Test
+    public void testinsertRolePermission(){
+    	RolePermission r = new RolePermission();
+    	r.setPermission(2L);
+    	r.setRole(2L);
+    	rolePermissionMapper.insert(r);
+    }
+    @Test
+    public void testgetRoleByRoleName(){
+    	System.out.println(roleService.getRoleByRoleName("ss"));
     }
 }

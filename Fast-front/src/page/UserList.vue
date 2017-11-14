@@ -89,8 +89,8 @@
 </template>
 <script type="text/ecmascript-6">
     import axios from 'axios';
-    import qs from 'qs';
-
+    //import qs from 'qs';
+    var qs = require('querystring')
     axios.defaults.withCredentials = true;
     export default {
         data() {

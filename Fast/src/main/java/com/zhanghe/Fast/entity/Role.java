@@ -3,7 +3,9 @@ package com.zhanghe.Fast.entity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 /**
  * 权限表
@@ -12,6 +14,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
  */
 @TableName("role")
 public class Role {
+	@TableId(type = IdType.AUTO)
     private Long id;
     private String role;
     private String description;

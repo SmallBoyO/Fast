@@ -20,7 +20,7 @@ import com.zhanghe.Fast.service.PermissionService;
 import com.zhanghe.Fast.service.UserService;
 
 @RestController
-public class MenuController {
+public class MenuController extends BaseController {
 	@Autowired
 	public UserService userService;
 	

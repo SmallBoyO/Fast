@@ -80,8 +80,13 @@ public class LoginController {
     	User user=new User();
     	user.setUserName(username);
     	user.setPassword(password);
-    	System.out.println(new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
+    	User databaseUser = userService.getUserByUserName(username);
+    	if(databaseUser==null){
+    		ReturnValue<User> returnvalue=new ReturnValue<User>(-1,"账号不存在!");
+        	return returnvalue.toJson();
+    	}
+        //UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
+    	UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(),new Sha256Hash(password, databaseUser.getSalt()).toHex());
         //获取当前的Subject  
         Subject currentUser = SecurityUtils.getSubject();
         try {
