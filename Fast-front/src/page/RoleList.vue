@@ -53,10 +53,10 @@
 								 :current-page="searchData.correntPage" :page-sizes="[10, 20, 50, 100, 200]" :page-size="searchData.pageSize"
 								 layout="total, sizes, prev, pager, next, jumper" :total="searchData.total">
 	</el-pagination>
-	<el-dialog title="添加角色" size='tiny' :visible.sync="addRoleVisible">
-			<el-form :inline="false" :rules="addrules" ref="addRoleDorm" :model="addData" label-width="80px">
-					<el-form-item label="角色名" prop="name">
-							<el-input placeholder="角色名" v-model="addData.name"></el-input>
+	<el-dialog v-if="right.systemroleadd" title="添加角色" size='tiny' :visible.sync="addRoleVisible">
+			<el-form :inline="false" :rules="addrules" ref="addRoleForm" :model="addData" label-width="80px">
+					<el-form-item label="角色名" prop="role">
+							<el-input placeholder="角色名" v-model="addData.role"></el-input>
 					</el-form-item>
 					<el-form-item label="描述" prop="description">
 							<el-input placeholder="描述" v-model="addData.description"></el-input>
@@ -80,7 +80,39 @@
 						</el-tree>
 					</el-form-item>
 					<el-form-item>
-							<el-button size="small" type="danger" @click="submitAdd('addRoleDorm')">添加</el-button>
+							<el-button size="small" type="danger" @click="submitAdd('addRoleForm')">添加</el-button>
+					</el-form-item>
+			</el-form>
+	</el-dialog>
+
+	<el-dialog v-if="right.systemroleedit" title="编辑角色" size='tiny' :visible.sync="editRoleVisible">
+			<el-form :inline="false" :rules="editrules" ref="editRoleForm" :model="editData" label-width="80px">
+					<el-form-item label="角色名" prop="role">
+							<el-input placeholder="角色名" v-model="editData.role"></el-input>
+					</el-form-item>
+					<el-form-item label="描述" prop="description">
+							<el-input placeholder="描述" v-model="editData.description"></el-input>
+					</el-form-item>
+					<el-form-item label="状态">
+							<el-select v-model="editData.status" placeholder="请选择">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+									</el-option>
+							</el-select>
+					</el-form-item>
+					<el-form-item label="权限">
+						<el-tree
+						  :data="rightlist"
+						  show-checkbox
+						  default-expand-all
+						  node-key="id"
+						  ref="edittree"
+						  highlight-current
+							@check-change = "changeeditCheck"
+						  :props="defaultProps">
+						</el-tree>
+					</el-form-item>
+					<el-form-item>
+							<el-button size="small" type="danger" @click="submitEdit('editRoleForm')">提交</el-button>
 					</el-form-item>
 			</el-form>
 	</el-dialog>
@@ -109,8 +141,24 @@
 					});
 				}
 			};
+			var validateEditRole = (rule, value, callback) => {
+				if (value == '') {
+						callback(new Error('请输入角色名！'));
+				} else if (value.length < 4 || value.length > 16) {
+						callback(new Error('角色名长度在4到16之间！'));
+				}else{
+					axios.post(`http://127.0.0.1:8081/ajax/roleManager/checkRoleName`, qs.stringify({role: value,id:this.editData.id})).then(res => res.data).then(data => {
+							console.log(data);
+							if (data.ret == -1) {
+									callback(new Error(data.message));
+							} else {
+									callback();
+							}
+					});
+				}
+			};
 			var validateAdddescription = (rule, value, callback) => {
-				if ( value.length > 16) {
+				if ( value.length > 64) {
 						callback(new Error('描述长度必须小于64！'));
 				}else{
 						callback();
@@ -118,8 +166,16 @@
 			};
 			return {
 					addrules:{
-							name:[
+							role:[
 									{validator: validateAddRole, trigger: 'blur'}
+							],
+							description:[
+									{validator: validateAdddescription, trigger: 'blur'}
+							]
+					},
+					editrules:{
+							role:[
+									{validator: validateEditRole, trigger: 'blur'}
 							],
 							description:[
 									{validator: validateAdddescription, trigger: 'blur'}
@@ -145,8 +201,16 @@
 							}
 					],
 					addRoleVisible:false,
+					editRoleVisible:false,
 					addData:{
-							name:'',
+							role:'',
+							status:0,
+							description:'',
+							rightlist:[]
+					},
+					editData:{
+							id:0,
+							role:'',
 							status:0,
 							description:'',
 							rightlist:[]
@@ -182,6 +246,15 @@
 				});
 			},
 			handleEdit(index, row) {
+					this.editRoleVisible=true;
+					this.editData.id = row.id;
+					this.editData.role = row.role;
+					this.editData.description = row.description;
+					this.editData.status = row.status;
+					axios.post(`http://127.0.0.1:8081/ajax/roleManager/getRolePermission`,qs.stringify({roleId:row.id})).then(res => res.data).then(data => {
+							console.log(data);
+							this.$refs.edittree.setCheckedKeys(data.obj);
+					});
 					console.log(index, row);
 			},
 			search(){
@@ -201,33 +274,74 @@
 			changeCheck(sd,sds,s){
 				this.addData.rightlist = this.$refs.tree.getCheckedKeys();
 			},
+			changeeditCheck(sd,sds,s){
+				this.editData.rightlist = this.$refs.edittree.getCheckedKeys();
+			},
 			submitAdd(formName){
-				console.log(this.addData);
-				let data={
-						role:this.addData.name,
-						description:this.addData.description,
-						status:this.addData.status,
-				}
-				let rightstr='';
-				for(let right in this.addData.rightlist){
-					rightstr+=('&'+'rightlist='+this.addData.rightlist[right]);
-				}
-				console.log(rightstr);
-				axios.post(`http://127.0.0.1:8081/ajax/roleManager/addRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
-						console.log(data);
-						if(data.ret==1){
-								this.addRoleVisible = false;
-								this.$alert(data.message, '', {
-										confirmButtonText: '确定'
-								});
-								this.search();
-						}else if (data.ret == -100) {
-								this.$store.commit('setMenu',null);
-								this.$router.push('/login');
-						} else {
-								this.$alert(data.message, '', {
-										confirmButtonText: '确定'
-								});
+				this.$refs[formName].validate((valid) => {
+						if(valid){
+							console.log(this.addData);
+							let data={
+									role:this.addData.role,
+									description:this.addData.description,
+									status:this.addData.status,
+							}
+							let rightstr='';
+							for(let right in this.addData.rightlist){
+								rightstr+=('&'+'rightlist='+this.addData.rightlist[right]);
+							}
+							console.log(rightstr);
+							axios.post(`http://127.0.0.1:8081/ajax/roleManager/addRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
+									console.log(data);
+									if(data.ret==1){
+											this.addRoleVisible = false;
+											this.$alert(data.message, '', {
+													confirmButtonText: '确定'
+											});
+											this.search();
+									}else if (data.ret == -100) {
+											this.$store.commit('setMenu',null);
+											this.$router.push('/login');
+									} else {
+											this.$alert(data.message, '', {
+													confirmButtonText: '确定'
+											});
+									}
+							});
+						}
+				 });
+			},
+			submitEdit(formName){
+				this.$refs[formName].validate((valid) => {
+						if(valid){
+							let data={
+									roleId:this.editData.id,
+									role:this.editData.role,
+									description:this.editData.description,
+									status:this.editData.status,
+							}
+							let rightstr='';
+							for(let right in this.editData.rightlist){
+								rightstr+=('&'+'rightlist='+this.editData.rightlist[right]);
+							}
+							console.log(this.editData);
+							axios.post(`http://127.0.0.1:8081/ajax/roleManager/editRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
+									console.log(data);
+									if(data.ret==1){
+											this.editRoleVisible = false;
+											this.$alert(data.message, '', {
+													confirmButtonText: '确定'
+											});
+											this.search();
+									}else if (data.ret == -100) {
+											this.$store.commit('setMenu',null);
+											this.$router.push('/login');
+									} else {
+											this.$alert(data.message, '', {
+													confirmButtonText: '确定'
+											});
+									}
+							});
 						}
 				});
 			}

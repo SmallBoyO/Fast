@@ -59,6 +59,11 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="角色" prop="role">
+                    <el-checkbox-group v-model="editRoles">
+                        <el-checkbox v-for="item in rolelist" :label="item.role" name="sss"></el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
                 <el-form-item>
                     <el-button size="small" type="danger" @click="submitEdit('editform')">提交修改</el-button>
                 </el-form-item>
@@ -78,6 +83,11 @@
                 </el-form-item>
                 <el-form-item  label="密码确认" prop="password2">
                     <el-input type="password" placeholder="请再次输入密码" v-model="addData.password2"></el-input>
+                </el-form-item>
+                <el-form-item label="角色" prop="role">
+                    <el-checkbox-group v-model="addRoles">
+                        <el-checkbox v-for="item in rolelist" :label="item.role" name="sss"></el-checkbox>
+                    </el-checkbox-group>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('addform')">提交</el-button>
@@ -176,6 +186,7 @@
                 tableData: [],
                 multipleSelection: [],
                 right:{},
+      					rolelist:[],
                 searchData: {
                     name: '',
                     status: '',
@@ -190,6 +201,7 @@
                     password2: '',
                     status: 1
                 },
+                addRoles:[],
                 editData: {
                     id: 0,
                     userName: '',
@@ -197,6 +209,7 @@
                     name: '',
                     status: '1'
                 },
+                editRoles:[],
                 options: [
                     {
                         value: '1',
@@ -234,14 +247,22 @@
                   this.right = data;
         			});
             },
+            getRoleList(){
+        			axios.post(`http://127.0.0.1:8081/ajax/UserManager/getRoleList`,qs.stringify({})).then(res => res.data).then(data => {
+        					this.rolelist = data.result;
+        			});
+      			},
             handleSelectionChange(val) {
                 multipleSelection = val;
             },
             handleEdit(index, row) {
-                this.dialogFormVisible = true;
-                this.editData.id = row.id;
-                this.editData.name = row.name;
-                this.editData.status = row.status;
+                axios.post(`http://127.0.0.1:8081/ajax/UserManager/getUserRoleList`,qs.stringify({id:row.id})).then(res => res.data).then(data => {
+                    this.editRoles = data.obj;
+                    this.dialogFormVisible = true;
+                    this.editData.id = row.id;
+                    this.editData.name = row.name;
+                    this.editData.status = row.status;
+                });
                 console.log(index, row);
             },
             handleDelete(index, row) {
@@ -298,7 +319,11 @@
             submitEdit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        axios.post(`http://127.0.0.1:8081/ajax/UserManager/updateUser`, qs.stringify(this.editData)).then(res => res.data).then(data => {
+                        let rolestr='';
+                        for(let role in this.editRoles){
+                          rolestr+=('&'+'rolelist='+this.editRoles[role]);
+                        }
+                        axios.post(`http://127.0.0.1:8081/ajax/UserManager/updateUser`, qs.stringify(this.editData)+rolestr).then(res => res.data).then(data => {
                             if (data.ret == 1) {
                                 this.$alert(data.message, '', {
                                     confirmButtonText: '确定'
@@ -329,18 +354,23 @@
                 });
             },
             resetForm(formName){
+                this.addRoles = [];
                 this.$refs[formName].resetFields();
             },
             submitForm(formName){
                 this.$refs[formName].validate((valid) => {
                     if(valid){
+                        let rolestr='';
+                        for(let role in this.addRoles){
+                          rolestr+=('&'+'rolelist='+this.addRoles[role]);
+                        }
                         var data = {
                             name:this.addData.name,
                             userName:this.addData.userName,
                             status:this.addData.status,
                             password:this.addData.password
                         }
-                        axios.post("http://127.0.0.1:8081/ajax/UserManager/addUser",qs.stringify(data)).then(res =>{
+                        axios.post("http://127.0.0.1:8081/ajax/UserManager/addUser",qs.stringify(data)+rolestr).then(res =>{
                             if(res.data.ret==1){
                                 this.dialogaddFormVisible = false;
                                 this.$alert(res.data.message, '', {
@@ -363,6 +393,7 @@
         created(){
           console.log("--------------------");
           this.getRight();
+          this.getRoleList();
           console.log(this.$route);
         }
     }

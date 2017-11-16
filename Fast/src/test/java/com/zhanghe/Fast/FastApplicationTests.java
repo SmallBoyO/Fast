@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.zhanghe.Fast.util.PageUtil;
+import com.zhanghe.Fast.util.ReturnValue;
+
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,7 +78,7 @@ public class FastApplicationTests {
     	User user=new User();
     	user.setId(1L);
     	user.setName("zhang");
-    	userService.updateUser(user);
+    	userService.updateUser(user,null);
     }
     
     //@Test
@@ -87,7 +89,7 @@ public class FastApplicationTests {
     	user.setSalt("45645646");
     	user.setPassword(new Sha256Hash("123456", user.getSalt()).toHex());
     	user.setStatus(1);
-    	userService.insertUser(user);
+    	userService.insertUser(user,null);
     }
     
    // @Test
@@ -173,8 +175,21 @@ public class FastApplicationTests {
     	r.setRole(2L);
     	rolePermissionMapper.insert(r);
     }
-    @Test
+   // @Test
     public void testgetRoleByRoleName(){
-    	System.out.println(roleService.getRoleByRoleName("ss"));
+    	System.out.println(roleService.checkRoleByRoleNameAndId("ss",null));
+    }
+    //@Test
+    public void testgetRolePermission(){
+    	Gson gson = new Gson();
+    	System.out.println(gson.toJson(roleService.getRolePermission(3L)));
+    	long[] res = roleService.getRolePermission(1L);
+		ReturnValue result =new ReturnValue<>(1, "");
+		result.setObj(res);
+		System.out.println(result.toJson());
+    }
+    @Test
+    public void testgetAllRole(){
+    	System.out.println(roleService.getAllRole());
     }
 }

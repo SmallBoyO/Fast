@@ -3,6 +3,7 @@ package com.zhanghe.Fast.service;
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.util.PageUtil;
 
@@ -12,5 +13,11 @@ public interface RoleService {
 
 	void addRole(Role role,Long[] rightIds);
 
-	Role getRoleByRoleName(String name);
+	boolean checkRoleByRoleNameAndId( String name ,Long id);
+	
+	long[] getRolePermission(Long roleId);
+	
+	void updateRole(Role role,Long[] rightIds);
+	
+	List<Role> getAllRole();
 }

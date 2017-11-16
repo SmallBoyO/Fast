@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.enums.IdType;
  */
 @TableName("role")
 public class Role {
+	
 	@TableId(type = IdType.AUTO)
     private Long id;
     private String role;

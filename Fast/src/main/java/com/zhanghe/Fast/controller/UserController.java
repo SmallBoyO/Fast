@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
+import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.service.UserService;
 import com.zhanghe.Fast.util.ReturnValue;
 @RestController
@@ -25,6 +27,9 @@ public class UserController extends BaseController {
 	
 	@Autowired
 	public UserService userService;
+	
+	@Autowired
+	public RoleService roleService;
 
 	@RequestMapping(value = "/ajax/UserManager/userList")
 	@RequiresPermissions(value = "system:user:query")
@@ -40,13 +45,13 @@ public class UserController extends BaseController {
 	}
 	@RequestMapping(value = "/ajax/UserManager/updateUser")
 	@RequiresPermissions(value = "system:user:update")
-	public String updateUser(String name,Integer status,Long id){
+	public String updateUser(String name,Integer status,Long id,String[] rolelist){
 		User user = new User();
 		user.setName(name);
 		user.setStatus(status);
 		user.setId(id);
 		try{
-			userService.updateUser(user);
+			userService.updateUser(user,rolelist);
 			ReturnValue<Object> returnValue = new ReturnValue<>(1,"修改成功");
 			return returnValue.toJson();
 		}catch(Exception e){
@@ -58,8 +63,7 @@ public class UserController extends BaseController {
 	}
 	@RequestMapping(value = "/ajax/UserManager/addUser")
 	@RequiresPermissions(value = "system:user:add")
-	public String addUser(String userName,String name,String password,Integer status){
-		System.out.println(userName+","+name+","+password+","+status);
+	public String addUser(String userName,String name,String password,Integer status,String[] rolelist){
 		User user = new User();
 		user.setName(name);
 		user.setStatus(status);
@@ -67,9 +71,10 @@ public class UserController extends BaseController {
 		user.setSalt("15643513");
 		user.setPassword(new Sha256Hash(password, user.getSalt()).toHex());
 		try {
-			userService.insertUser(user);
+			userService.insertUser(user,rolelist);
 			return new ReturnValue<>(1,"添加成功").toJson();
 		}catch(Exception e){
+			e.printStackTrace();
 			return new ReturnValue<>(-1,"添加失败").toJson();
 		}
 	}
@@ -78,6 +83,27 @@ public class UserController extends BaseController {
 	public String deleteUser(Long id){
 		userService.deleteUserById(id);
 		return new ReturnValue<>(1,"删除成功").toJson();
+	}
+	@RequestMapping(value = "/ajax/UserManager/getRoleList")
+	@RequiresPermissions(value = {"system:user:add","system:user:update"})
+	public String getRoleList(){
+		List<Role> list = roleService.getAllRole();
+		ReturnValue result = new ReturnValue<>(1,"");
+		result.setResult(list);
+		return result.toJson();
+	}
+	
+	@RequestMapping(value = "/ajax/UserManager/getUserRoleList")
+	@RequiresPermissions(value = {"system:user:update"})
+	public String getUserRoleList(Long id){
+		List<Role> list = userService.getRoleByUserId(id);
+		String[] obj = new String[list.size()];
+		for(int i= 0 ;i<list.size();i++){
+			obj[i] = list.get(i).getRole();
+		}
+		ReturnValue result = new ReturnValue<>(1,"");
+		result.setObj(obj);
+		return result.toJson();
 	}
 	
 	@RequestMapping(value = "/ajax/UserManager/checkUserName")
@@ -93,8 +119,8 @@ public class UserController extends BaseController {
 	
 	@RequestMapping(value = "/ajax/UserManager/checkName")
 	@RequiresPermissions(value = "system:user:checkName")
-	public String checkName(String name){
-		User user = userService.getUserByName(name,null);
+	public String checkName(String name,Long id){
+		User user = userService.getUserByName(name,id);
 		if(user!=null){
 			 return new ReturnValue<>(-1,"该用户名已存在！").toJson();
 		}else{

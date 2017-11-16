@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotations.TableName;
 public class RolePermission {
     public Long role;
     public Long permission;
+    
+    public static final String ROLE="role";
+    public static final String PERMISSION="permission";
 	public Long getRole() {
 		return role;
 	}

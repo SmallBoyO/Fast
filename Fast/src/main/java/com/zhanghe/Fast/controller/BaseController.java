@@ -30,7 +30,6 @@ public class BaseController {
     }*/
     @ExceptionHandler({UnauthorizedException.class})
     public String unauthorizedException(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("-------into unauthorizedException-------------------");
         /*PrintWriter writer = response.getWriter();
         writer.write(new ReturnValue<>(-100,"请登录!").toJson());
         writer.flush();
@@ -39,7 +38,6 @@ public class BaseController {
     }
 	@ExceptionHandler({AuthorizationException.class})
     public String authenticationException(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("-------into authenticationException-------------------");
         /*PrintWriter writer = response.getWriter();
         writer.write(new ReturnValue<>(-100,"请登录!").toJson());
         writer.flush();

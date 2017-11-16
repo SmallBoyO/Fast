@@ -20,9 +20,9 @@ public interface UserService {
     
     public List<Permission> getPermissionByUserName(String username);
     
-    public void updateUser(User user);
+    public void updateUser(User user,String[] rolelist);
     
-    public void insertUser(User user);
+    public void insertUser(User user,String[] rolelist);
     
     public User getUserByName(String name,Long id);
 

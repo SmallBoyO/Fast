@@ -40,7 +40,6 @@ public class ShiroRealm extends AuthorizingRealm {
      */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-		System.out.println("获取权限:---------------------doGetAuthorizationInfo-----------------");
 		//获取当前登录输入的用户名，等价于(String) principalCollection.fromRealm(getName()).iterator().next();
 		String loginName = (String)super.getAvailablePrincipal(principalCollection); 
 		//到数据库查是否有此对象
@@ -71,7 +70,6 @@ public class ShiroRealm extends AuthorizingRealm {
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken token) throws AuthenticationException {
-		System.out.println("---------------------doGetAuthenticationInfo");
 		UsernamePasswordToken usernamePasswordToken=(UsernamePasswordToken) token;
 		//查出是否有此用户
         User user=userService.getUserByUserName(usernamePasswordToken.getUsername());

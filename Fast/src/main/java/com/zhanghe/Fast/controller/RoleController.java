@@ -1,7 +1,5 @@
 package com.zhanghe.Fast.controller;
 
-import java.util.List;
-
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,14 +45,34 @@ public class RoleController extends BaseController {
 		return new ReturnValue<>(1, "添加成功").toJson();
 	}
 	
+	@RequestMapping(value = "/ajax/roleManager/editRole")
+	@RequiresPermissions(value = "system:role:edit")
+	public String editRole(Long roleId,String role,String description,Integer status,Long[] rightlist){
+		Role editrole = new Role();
+		editrole.setId(roleId);
+		editrole.setRole(role);
+		editrole.setDescription(description);
+		editrole.setStatus(status);
+		roleService.updateRole(editrole, rightlist);
+		return new ReturnValue<>(1, "修改成功").toJson();
+	}
 	
 	@RequestMapping(value = "/ajax/roleManager/checkRoleName")
-	@RequiresPermissions(value = "system:role:add")
-	public String checkRoleName(String role){
-		if(roleService.getRoleByRoleName(role)!=null){
+	//@RequiresPermissions(value = "system:role:checkRoleName")
+	public String checkRoleName(String role,Long id){
+		if(roleService.checkRoleByRoleNameAndId(role,id)){
 			return new ReturnValue<>(-1, "该角色已经存在!").toJson();
 		}else{
 			return new ReturnValue<>(1, "").toJson();
 		}
+	}
+	
+	@RequestMapping(value = "/ajax/roleManager/getRolePermission")
+	//@RequiresPermissions(value = "system:role:getRolePermission")
+	public String getRolePermission(Long roleId){
+		long[] res = roleService.getRolePermission(roleId);
+		ReturnValue<long[]> result =new ReturnValue<long[]>(1, "");
+		result.setObj(res);
+		return result.toJson();
 	}
 }

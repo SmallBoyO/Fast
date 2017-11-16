@@ -23,12 +23,11 @@ public class XssFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		System.out.println("xss filter");
 		//将HttpServletRequest强制类型转换成XssHttpServletRequestWrapper
 		XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest) request);
 		chain.doFilter(xssRequest, response);
 	}
-
+	
 	@Override
 	public void destroy() {
 		

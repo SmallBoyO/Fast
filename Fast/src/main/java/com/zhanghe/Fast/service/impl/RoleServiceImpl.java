@@ -37,7 +37,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public void addRole( Role role ,Long[] rightIds ) {
-		System.out.println(roleMapper.insert(role));
+		roleMapper.insert(role);
 		HashMap<Long,Long> map = new HashMap<Long,Long>();
 		if(rightIds!=null){
 	    	for(long id : rightIds){
@@ -64,9 +64,56 @@ public class RoleServiceImpl implements RoleService {
     }
 
 	@Override
-	public Role getRoleByRoleName( String name ) {
+	public boolean checkRoleByRoleNameAndId( String name ,Long id) {
 		Role role = new Role();
 		role.setRole(name);
-		return roleMapper.selectOne(role);
+		EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
+		wrapper.eq(Role.ROLE, name);
+		if(id!=null){
+			wrapper.ne(Role.ID, id);
+		}
+		List<Role> list= roleMapper.selectList(wrapper);
+		return list.size()>0 ? true : false;
+	}
+
+	@Override
+	public long[] getRolePermission( Long roleId ) {
+		List<Permission> list = roleMapper.getRolePermission(roleId);
+		long[] result = new long[list.size()];
+		for(int i=0;i<list.size();i++){
+			result[i] = list.get(i).getId();
+		}
+		return result;
+	}
+
+	@Override
+	public void updateRole( Role role ,Long[] rightIds ) {
+		int total = roleMapper.updateById(role);
+		if(total>0){
+			//清除权限
+			EntityWrapper<RolePermission> deletewrapper = new EntityWrapper<RolePermission>();
+			deletewrapper.eq(RolePermission.ROLE, role.getId());
+			rolePermissionMapper.delete(deletewrapper);
+			//添加新的权限
+			HashMap<Long,Long> map = new HashMap<Long,Long>();
+			if(rightIds!=null){
+		    	for(long id : rightIds){
+		    		addParent(id,map);
+		    	}
+			}
+	    	for(long rightid:map.keySet()){
+	    		RolePermission rolePermission = new RolePermission();
+	    		rolePermission.setRole(role.getId());
+	    		rolePermission.setPermission(rightid);
+	    		rolePermissionMapper.insert(rolePermission);
+	    	}
+		}
+	}
+
+	@Override
+	public List<Role> getAllRole() {
+		EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
+		wrapper.eq(Role.STATUS, 1);
+		return roleMapper.selectList(wrapper);
 	}
 }

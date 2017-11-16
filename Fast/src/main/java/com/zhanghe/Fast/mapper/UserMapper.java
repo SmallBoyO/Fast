@@ -19,7 +19,7 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select * from user where id=#{id}")
     public User getUserByid(@Param(value = "id") Long id);
 
-    @Select("select * from role where id in (select role from user_role where user=#{id}) ")
+    @Select("select * from role where id in (select role from user_role where user=#{id}) and status = 1")
     public List<Role> getRoleByUserId(@Param(value = "id") Long id);
 
     @Select("SELECT * FROM permission WHERE status=1 and id IN( SELECT permission FROM role_permission WHERE role IN(SELECT id FROM role WHERE id IN (SELECT role FROM user_role WHERE user=#{id}) )) and type = 'right'")

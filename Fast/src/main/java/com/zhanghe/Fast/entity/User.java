@@ -7,18 +7,19 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 
 /**
  * 用户信息
  *
  * @author admin
  */
-@TableName("User")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = 2574268644675415277L;
-
+@TableName("user")
+public class User {
+	
+    @TableId(type = IdType.AUTO)
     private Long id;
     private String userName;
     private String name;
@@ -74,10 +75,6 @@ public class User implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
     public List<Role> getRoles() {
