@@ -19,7 +19,7 @@ public class RoleController extends BaseController {
 	
 	@RequestMapping(value = "/ajax/roleManager/roleList")
 	@RequiresPermissions(value = "system:role:query")
-	public String getRoleList(String role,String description,Integer status,PageUtil page){
+	public String getRoleList(String role,String description,Integer status,PageUtil<Role> page){
 		EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
     	if(role!=null&&!"".equals(role)){
     		wrapper.like(Role.ROLE, role, SqlLike.CUSTOM);

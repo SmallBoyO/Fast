@@ -1,18 +1,11 @@
 package com.zhanghe.Fast.controller;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.zhanghe.Fast.util.PageUtil;
-import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +26,7 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = "/ajax/UserManager/userList")
 	@RequiresPermissions(value = "system:user:query")
-	public String getUserList(String name, Integer status, PageUtil page) throws InterruptedException{
+	public String getUserList(String name, Integer status, PageUtil<User> page) throws InterruptedException{
 		User user = new User();
 		user.setName(name);
 		user.setStatus(status);
@@ -88,7 +81,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions(value = {"system:user:add","system:user:update"})
 	public String getRoleList(){
 		List<Role> list = roleService.getAllRole();
-		ReturnValue result = new ReturnValue<>(1,"");
+		ReturnValue<Role> result = new ReturnValue<>(1,"");
 		result.setResult(list);
 		return result.toJson();
 	}
@@ -101,7 +94,7 @@ public class UserController extends BaseController {
 		for(int i= 0 ;i<list.size();i++){
 			obj[i] = list.get(i).getRole();
 		}
-		ReturnValue result = new ReturnValue<>(1,"");
+		ReturnValue<Object> result = new ReturnValue<>(1,"");
 		result.setObj(obj);
 		return result.toJson();
 	}

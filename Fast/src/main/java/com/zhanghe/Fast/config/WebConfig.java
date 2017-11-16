@@ -1,17 +1,8 @@
 package com.zhanghe.Fast.config;
 
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
-
 import com.zhanghe.Fast.filter.ControlAllowOriginFilter;
 import com.zhanghe.Fast.filter.XssFilter;
 

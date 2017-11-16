@@ -3,7 +3,6 @@ package com.zhanghe.Fast.config;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;

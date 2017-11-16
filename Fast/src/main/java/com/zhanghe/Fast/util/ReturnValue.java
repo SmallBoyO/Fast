@@ -27,11 +27,11 @@ public class ReturnValue<T> {
 	public List<T> result;
 	public PageUtil<T> page;
 
-	public PageUtil getPage() {
+	public PageUtil<T> getPage() {
 		return page;
 	}
 
-	public void setPage(PageUtil page) {
+	public void setPage(PageUtil<T> page) {
 		this.page = page;
 	}
 

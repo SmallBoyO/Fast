@@ -159,7 +159,6 @@ public class FastApplicationTests {
     }
     
     public void addParent(Long id,HashMap<Long,Long> map){
-    	EntityWrapper<Permission> wrapper = new EntityWrapper<Permission>();
     	Permission permission = permissionMapper.selectById(id);
     	if(permission!=null){
     		map.put(id, 1L);
