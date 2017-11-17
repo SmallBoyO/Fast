@@ -1,11 +1,14 @@
 package com.zhanghe.Fast.controller;
 
+import io.swagger.annotations.ApiOperation;
+
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +29,8 @@ public class MenuController extends BaseController {
 	@Autowired
 	public PermissionService permissionService;
 	
-	@RequestMapping("/ajax/getUserMenu")
+	@ApiOperation(value="获取当前登录用户菜单列表", notes="获取当前登录用户菜单列表")
+	@PostMapping("/ajax/getUserMenu")
 	public String getUserMenu(){
 		Subject currentUser = SecurityUtils.getSubject();
 		List<Permission> list = userService.getPermissionByUserName(currentUser.getPrincipal().toString());
@@ -67,7 +71,8 @@ public class MenuController extends BaseController {
 		json.add("child", array);
 	}
 	
-	@RequestMapping("/ajax/getRight")
+	@ApiOperation(value="获取当前菜单下该用户所有的权限", notes="获取当前菜单下该用户所有的权限")
+	@PostMapping("/ajax/getRight")
 	@ResponseBody
 	@RequiresAuthentication
 	public String getRight(Long id){
@@ -78,7 +83,8 @@ public class MenuController extends BaseController {
 		return permissionService.getRightByUrlId(id,rolelist).toString();
 	}
 	
-	@RequestMapping("/ajax/getAllRight")
+	@ApiOperation(value="获取所有的权限", notes="获取所有的权限")
+	@PostMapping("/ajax/getAllRight")
 	@ResponseBody
 	@RequiresAuthentication
 	public String getAllRight(){

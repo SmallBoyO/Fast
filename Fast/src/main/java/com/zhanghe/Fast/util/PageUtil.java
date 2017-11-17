@@ -1,14 +1,23 @@
 package com.zhanghe.Fast.util;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
+
 import java.util.List;
+
+import springfox.documentation.annotations.ApiIgnore;
 
 import com.google.gson.Gson;
 
 public class PageUtil<T> {
+	
     private Long correntPage;
     private Long pageSize;
     private Long total;
-
+    
+    private List<T> result;
+    
     public List<T> getResult() {
         return result;
     }
@@ -17,7 +26,6 @@ public class PageUtil<T> {
         this.result = result;
     }
 
-    private List<T> result;
     public Long getCorrentPage() {
         return correntPage;
     }

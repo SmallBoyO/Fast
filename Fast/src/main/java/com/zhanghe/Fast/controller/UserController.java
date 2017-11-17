@@ -1,11 +1,14 @@
 package com.zhanghe.Fast.controller;
 
+import io.swagger.annotations.ApiOperation;
+
 import java.util.List;
 
 import com.zhanghe.Fast.util.PageUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +18,7 @@ import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.service.UserService;
 import com.zhanghe.Fast.util.ReturnValue;
+import com.zhanghe.Fast.vo.PageVO;
 @RestController
 public class UserController extends BaseController {
 	
@@ -23,20 +27,24 @@ public class UserController extends BaseController {
 	
 	@Autowired
 	public RoleService roleService;
-
-	@RequestMapping(value = "/ajax/UserManager/userList")
+	
+	@ApiOperation(value="查询用户列表", notes="查询用户列表")
+	@PostMapping(value = "/ajax/UserManager/userList")
 	@RequiresPermissions(value = "system:user:query")
-	public String getUserList(String name, Integer status, PageUtil<User> page) throws InterruptedException{
+	public String getUserList(String name, Integer status,PageVO<User> pagevo) throws InterruptedException{
 		User user = new User();
 		user.setName(name);
 		user.setStatus(status);
+		PageUtil<User> page = pagevo.toPageUtil();
 		page = userService.getUserListByPage(user,page);
 		ReturnValue<User> returnValue = new ReturnValue<User>(1,"");
 		returnValue.setPage(page);
 		Gson gson = new Gson();
 		return gson.toJson(returnValue);
 	}
-	@RequestMapping(value = "/ajax/UserManager/updateUser")
+	
+	@ApiOperation(value="更新用户信息", notes="更新用户信息")
+	@PostMapping(value = "/ajax/UserManager/updateUser")
 	@RequiresPermissions(value = "system:user:update")
 	public String updateUser(String name,Integer status,Long id,String[] rolelist){
 		User user = new User();
@@ -54,7 +62,9 @@ public class UserController extends BaseController {
 
 		}
 	}
-	@RequestMapping(value = "/ajax/UserManager/addUser")
+	
+	@ApiOperation(value="添加用户", notes="添加用户")
+	@PostMapping(value = "/ajax/UserManager/addUser")
 	@RequiresPermissions(value = "system:user:add")
 	public String addUser(String userName,String name,String password,Integer status,String[] rolelist){
 		User user = new User();
@@ -71,13 +81,17 @@ public class UserController extends BaseController {
 			return new ReturnValue<>(-1,"添加失败").toJson();
 		}
 	}
-	@RequestMapping(value = "/ajax/UserManager/deleteUser")
+	
+	@ApiOperation(value="删除用户", notes="删除用户")
+	@PostMapping(value = "/ajax/UserManager/deleteUser")
 	@RequiresPermissions(value = "system:user:delete")
 	public String deleteUser(Long id){
 		userService.deleteUserById(id);
 		return new ReturnValue<>(1,"删除成功").toJson();
 	}
-	@RequestMapping(value = "/ajax/UserManager/getRoleList")
+	
+	@ApiOperation(value="获取可用角色列表", notes="获取可用角色列表")
+	@PostMapping(value = "/ajax/UserManager/getRoleList")
 	@RequiresPermissions(value = {"system:user:add","system:user:update"})
 	public String getRoleList(){
 		List<Role> list = roleService.getAllRole();
@@ -86,7 +100,9 @@ public class UserController extends BaseController {
 		return result.toJson();
 	}
 	
-	@RequestMapping(value = "/ajax/UserManager/getUserRoleList")
+	
+	@ApiOperation(value="获取用户可用角色列表", notes="获取用户可用角色列表")
+	@PostMapping(value = "/ajax/UserManager/getUserRoleList")
 	@RequiresPermissions(value = {"system:user:update"})
 	public String getUserRoleList(Long id){
 		List<Role> list = userService.getRoleByUserId(id);
@@ -99,7 +115,8 @@ public class UserController extends BaseController {
 		return result.toJson();
 	}
 	
-	@RequestMapping(value = "/ajax/UserManager/checkUserName")
+	@ApiOperation(value="检查账号是否可用", notes="检查账号是否可用")
+	@PostMapping(value = "/ajax/UserManager/checkUserName")
 	@RequiresPermissions(value = "system:user:checkUserName")
 	public String checkUserName(String userName){
 		User user = userService.getUserByUserName(userName);
@@ -110,7 +127,8 @@ public class UserController extends BaseController {
 		}
 	}
 	
-	@RequestMapping(value = "/ajax/UserManager/checkName")
+	@ApiOperation(value="检查用户名是否可用", notes="检查用户名是否可用")
+	@PostMapping(value = "/ajax/UserManager/checkName")
 	@RequiresPermissions(value = "system:user:checkName")
 	public String checkName(String name,Long id){
 		User user = userService.getUserByName(name,id);

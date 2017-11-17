@@ -1,8 +1,12 @@
 package com.zhanghe.Fast.controller;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.enums.SqlLike;
@@ -11,30 +15,41 @@ import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.util.PageUtil;
 import com.zhanghe.Fast.util.ReturnValue;
+import com.zhanghe.Fast.vo.PageVO;
+import com.zhanghe.Fast.vo.Role.RoleListVO;
 @RestController
 public class RoleController extends BaseController {
 	
 	@Autowired
 	public RoleService roleService;
 	
-	@RequestMapping(value = "/ajax/roleManager/roleList")
-	@RequiresPermissions(value = "system:role:query")
-	public String getRoleList(String role,String description,Integer status,PageUtil<Role> page){
+	@ApiOperation(value="查询角色列表", notes="查询角色列表")
+	@PostMapping(value = "/ajax/roleManager/roleList")
+	//@RequiresPermissions(value = "system:role:query")
+	public String getRoleList(RoleListVO vo,PageVO<Role> pagevo){
 		EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
-    	if(role!=null&&!"".equals(role)){
-    		wrapper.like(Role.ROLE, role, SqlLike.CUSTOM);
+    	if(vo.getRole()!=null&&!"".equals(vo.getRole())){
+    		wrapper.like(Role.ROLE, vo.getRole(), SqlLike.CUSTOM);
     	}
-    	if(status!=null){
-    		wrapper.eq(Role.STATUS, status);
+    	if(vo.getStatus()!=null){
+    		wrapper.eq(Role.STATUS, vo.getStatus());
     	}
-    	if(description!=null&&!"".equals(description)){
-    		wrapper.eq(Role.DESCRIPTION, description);
+    	if(vo.getDescription()!=null&&!"".equals(vo.getDescription())){
+    		wrapper.eq(Role.DESCRIPTION, vo.getDescription());
     	}
+    	PageUtil<Role> page = pagevo.toPageUtil();
     	page = roleService.getRoleListByPage(page, wrapper);
 		return page.toString();
 	}
 	
-	@RequestMapping(value = "/ajax/roleManager/addRole")
+	@ApiOperation(value="添加角色", notes="添加角色")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "role", value = "角色名", required = false, dataType = "String",paramType="form"),
+		@ApiImplicitParam(name = "description", value = "描述", required = false, dataType = "String",paramType="form"),
+		@ApiImplicitParam(name = "status", value = "状态", required = false, dataType = "Integer",paramType="form"),
+		@ApiImplicitParam(name = "rightlist", value = "角色列表", required = false, dataType = "Long[]",paramType="form"),
+	})
+	@PostMapping(value = "/ajax/roleManager/addRole")
 	@RequiresPermissions(value = "system:role:add")
 	public String addRole(String role,String description,Integer status,Long[] rightlist){
 		Role newrole = new Role();
@@ -44,9 +59,9 @@ public class RoleController extends BaseController {
 		roleService.addRole(newrole, rightlist);
 		return new ReturnValue<>(1, "添加成功").toJson();
 	}
-	
-	@RequestMapping(value = "/ajax/roleManager/editRole")
-	@RequiresPermissions(value = "system:role:edit")
+	@ApiOperation(value="编辑角色", notes="编辑角色")
+	@PostMapping(value = "/ajax/roleManager/editRole")
+	//@RequiresPermissions(value = "system:role:edit")
 	public String editRole(Long roleId,String role,String description,Integer status,Long[] rightlist){
 		Role editrole = new Role();
 		editrole.setId(roleId);
@@ -56,8 +71,12 @@ public class RoleController extends BaseController {
 		roleService.updateRole(editrole, rightlist);
 		return new ReturnValue<>(1, "修改成功").toJson();
 	}
-	
-	@RequestMapping(value = "/ajax/roleManager/checkRoleName")
+	@ApiOperation(value="检查角色名", notes="检查角色名")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "role", value = "角色名", required = true, dataType = "String",paramType="form"),
+		@ApiImplicitParam(name = "id", value = "id", required = false, dataType = "Long",paramType="form")
+	})
+	@PostMapping(value = "/ajax/roleManager/checkRoleName")
 	//@RequiresPermissions(value = "system:role:checkRoleName")
 	public String checkRoleName(String role,Long id){
 		if(roleService.checkRoleByRoleNameAndId(role,id)){
@@ -67,7 +86,7 @@ public class RoleController extends BaseController {
 		}
 	}
 	
-	@RequestMapping(value = "/ajax/roleManager/getRolePermission")
+	@PostMapping(value = "/ajax/roleManager/getRolePermission")
 	//@RequiresPermissions(value = "system:role:getRolePermission")
 	public String getRolePermission(Long roleId){
 		long[] res = roleService.getRolePermission(roleId);
