@@ -24,7 +24,8 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiInfo apiInfo() {
+    @SuppressWarnings("deprecation")
+	private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Fast RESTful APIs")
                 .description("")

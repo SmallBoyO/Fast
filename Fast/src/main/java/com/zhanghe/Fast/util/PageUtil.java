@@ -1,12 +1,6 @@
 package com.zhanghe.Fast.util;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
-
 import java.util.List;
-
-import springfox.documentation.annotations.ApiIgnore;
 
 import com.google.gson.Gson;
 

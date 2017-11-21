@@ -4,12 +4,14 @@ import io.swagger.annotations.ApiOperation;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.zhanghe.Fast.util.PageUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
@@ -19,6 +21,9 @@ import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.service.UserService;
 import com.zhanghe.Fast.util.ReturnValue;
 import com.zhanghe.Fast.vo.PageVO;
+import com.zhanghe.Fast.vo.user.AddUserVO;
+import com.zhanghe.Fast.vo.user.UpdateUserVO;
+import com.zhanghe.Fast.vo.user.UserListVO;
 @RestController
 public class UserController extends BaseController {
 	
@@ -31,10 +36,10 @@ public class UserController extends BaseController {
 	@ApiOperation(value="查询用户列表", notes="查询用户列表")
 	@PostMapping(value = "/ajax/UserManager/userList")
 	@RequiresPermissions(value = "system:user:query")
-	public String getUserList(String name, Integer status,PageVO<User> pagevo) throws InterruptedException{
+	public String getUserList(UserListVO userListVO,PageVO<User> pagevo) throws InterruptedException{
 		User user = new User();
-		user.setName(name);
-		user.setStatus(status);
+		user.setName(userListVO.getName());
+		user.setStatus(userListVO.getStatus());
 		PageUtil<User> page = pagevo.toPageUtil();
 		page = userService.getUserListByPage(user,page);
 		ReturnValue<User> returnValue = new ReturnValue<User>(1,"");
@@ -46,13 +51,13 @@ public class UserController extends BaseController {
 	@ApiOperation(value="更新用户信息", notes="更新用户信息")
 	@PostMapping(value = "/ajax/UserManager/updateUser")
 	@RequiresPermissions(value = "system:user:update")
-	public String updateUser(String name,Integer status,Long id,String[] rolelist){
+	public String updateUser(@Valid UpdateUserVO updateUserVO,BindingResult result){
 		User user = new User();
-		user.setName(name);
-		user.setStatus(status);
-		user.setId(id);
+		user.setName(updateUserVO.getName());
+		user.setStatus(updateUserVO.getStatus());
+		user.setId(updateUserVO.getId());
 		try{
-			userService.updateUser(user,rolelist);
+			userService.updateUser(user,updateUserVO.getRolelist());
 			ReturnValue<Object> returnValue = new ReturnValue<>(1,"修改成功");
 			return returnValue.toJson();
 		}catch(Exception e){
@@ -66,15 +71,15 @@ public class UserController extends BaseController {
 	@ApiOperation(value="添加用户", notes="添加用户")
 	@PostMapping(value = "/ajax/UserManager/addUser")
 	@RequiresPermissions(value = "system:user:add")
-	public String addUser(String userName,String name,String password,Integer status,String[] rolelist){
+	public String addUser(@Valid AddUserVO addUserVO,BindingResult result){
 		User user = new User();
-		user.setName(name);
-		user.setStatus(status);
-		user.setUserName(userName);
+		user.setName(addUserVO.getName());
+		user.setStatus(addUserVO.getStatus());
+		user.setUserName(addUserVO.getUserName());
 		user.setSalt("15643513");
-		user.setPassword(new Sha256Hash(password, user.getSalt()).toHex());
+		user.setPassword(new Sha256Hash(addUserVO.getPassword(), user.getSalt()).toHex());
 		try {
-			userService.insertUser(user,rolelist);
+			userService.insertUser(user,addUserVO.getRolelist());
 			return new ReturnValue<>(1,"添加成功").toJson();
 		}catch(Exception e){
 			e.printStackTrace();
