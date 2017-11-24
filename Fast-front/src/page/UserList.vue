@@ -108,7 +108,7 @@
                 if (value == '') {
                     callback(new Error('请输入账号！'));
                 } else if (value.length < 5 || value.length > 16) {
-                    callback(new Error('用户名长度在5到16之间！'));
+                    callback(new Error('账号长度在5到16之间！'));
                 } else {
                     axios.post(`http://127.0.0.1:8081/ajax/UserManager/checkUserName`, qs.stringify({userName: value})).then(res => res.data).then(data => {
                         console.log(data);
