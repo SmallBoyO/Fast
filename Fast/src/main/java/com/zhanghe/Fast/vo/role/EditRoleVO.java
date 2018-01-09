@@ -9,6 +9,13 @@ import com.zhanghe.Fast.validator.RoleName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Arrays;
+/**
+ * EditRoleVO
+ *
+ * @author Clevo
+ * @date 2018/1/9 21:33
+ */
 @ApiModel
 public class EditRoleVO {
 	
@@ -61,6 +68,16 @@ public class EditRoleVO {
 	public void setRightlist( Long[] rightlist ) {
 		this.rightlist = rightlist;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("EditRoleVO{");
+		sb.append("roleId=").append(roleId);
+		sb.append(", role='").append(role).append('\'');
+		sb.append(", description='").append(description).append('\'');
+		sb.append(", status=").append(status);
+		sb.append(", rightlist=").append(rightlist == null ? "null" : Arrays.asList(rightlist).toString());
+		sb.append('}');
+		return sb.toString();
+	}
 }

@@ -4,6 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+/**  
+ * ControlAllowOriginInterceptor
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:23
+ */  
 public class ControlAllowOriginInterceptor extends HandlerInterceptorAdapter  {
 
 	@Override

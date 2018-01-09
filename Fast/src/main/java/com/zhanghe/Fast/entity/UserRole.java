@@ -1,7 +1,12 @@
 package com.zhanghe.Fast.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
-
+/**  
+ * UserRole
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33 
+ */  
 @TableName("user_role")
 public class UserRole {
 	

@@ -7,6 +7,13 @@ import org.hibernate.validator.constraints.Length;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Arrays;
+/**  
+ * AddUserVO
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:22
+ */  
 @ApiModel
 public class AddUserVO {
 	
@@ -61,5 +68,16 @@ public class AddUserVO {
 	public void setRolelist( String[] rolelist ) {
 		this.rolelist = rolelist;
 	}
-	
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("AddUserVO{");
+		sb.append("userName='").append(userName).append('\'');
+		sb.append(", name='").append(name).append('\'');
+		sb.append(", password='").append(password).append('\'');
+		sb.append(", status=").append(status);
+		sb.append(", rolelist=").append(rolelist == null ? "null" : Arrays.asList(rolelist).toString());
+		sb.append('}');
+		return sb.toString();
+	}
 }

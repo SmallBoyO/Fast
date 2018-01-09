@@ -17,8 +17,15 @@ import com.zhanghe.Fast.mapper.RoleMapper;
 import com.zhanghe.Fast.mapper.RolePermissionMapper;
 import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.util.PageUtil;
+
+/**  
+ * RoleServiceImpl
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:32
+ */  
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class RoleServiceImpl implements RoleService {
 	
 	@Autowired
@@ -27,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
 	private PermissionMapper permissionMapper;
 	@Autowired
 	public RolePermissionMapper rolePermissionMapper;
-	
+	@Override
 	public PageUtil<Role> getRoleListByPage(PageUtil<Role> page,EntityWrapper<Role> wrapper){
 		Page<Role> querypage = new Page<Role>(page.getCorrentPage().intValue(), page.getPageSize().intValue());
 		page.setResult(roleMapper.selectPage(querypage, wrapper));
@@ -38,7 +45,7 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public void addRole( Role role ,Long[] rightIds ) {
 		roleMapper.insert(role);
-		HashMap<Long,Long> map = new HashMap<Long,Long>();
+		HashMap<Long,Long> map = new HashMap<Long,Long>(50);
 		if(rightIds!=null){
 	    	for(long id : rightIds){
 	    		addParent(id,map);
@@ -94,7 +101,7 @@ public class RoleServiceImpl implements RoleService {
 			deletewrapper.eq(RolePermission.ROLE, role.getId());
 			rolePermissionMapper.delete(deletewrapper);
 			//添加新的权限
-			HashMap<Long,Long> map = new HashMap<Long,Long>();
+			HashMap<Long,Long> map = new HashMap<Long,Long>(50);
 			if(rightIds!=null){
 		    	for(long id : rightIds){
 		    		addParent(id,map);

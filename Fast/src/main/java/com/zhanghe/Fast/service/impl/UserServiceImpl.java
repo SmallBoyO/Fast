@@ -17,9 +17,14 @@ import com.zhanghe.Fast.mapper.RoleMapper;
 import com.zhanghe.Fast.mapper.UserMapper;
 import com.zhanghe.Fast.mapper.UserRoleMapper;
 import com.zhanghe.Fast.service.UserService;
-
+/**  
+ * UserServiceImpl
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33 
+ */  
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
     @Autowired
     public UserMapper userMapper;
@@ -43,8 +48,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserName(String UserName) {
-        return userMapper.getUserByUserName(UserName);
+    public User getUserByUserName(String userName) {
+        return userMapper.getUserByUserName(userName);
     }
 
     @Override
@@ -54,11 +59,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageUtil<User> getUserListByPage(User user, PageUtil<User> page){
-        /*PageHelper.startPage(page.getCorrentPage().intValue(),page.getPageSize().intValue());
-        List<User> result = userMapper.getUserList(user);
-        long total = ((Page) result).getTotal();
-        page.setResult(result);
-        page.setTotal(total);*/
     	Page<User> querypage = new Page<>(page.getCorrentPage().intValue(), page.getPageSize().intValue());
     	List<User> result = userMapper.getUserListByPage(querypage, user);
     	page.setResult(result);

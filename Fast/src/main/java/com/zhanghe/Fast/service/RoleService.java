@@ -5,7 +5,12 @@ import java.util.List;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.util.PageUtil;
-
+/**  
+ * RoleService
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:32
+ */  
 public interface RoleService {
 	
 	PageUtil<Role>  getRoleListByPage(PageUtil<Role> page,EntityWrapper<Role> wrapper);

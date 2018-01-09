@@ -3,7 +3,12 @@ package com.zhanghe.Fast.util;
 import java.util.List;
 
 import com.google.gson.Gson;
-
+/**  
+ * ReturnValue
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:24
+ */  
 public class ReturnValue<T> {
 	
 	

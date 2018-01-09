@@ -24,6 +24,12 @@ import com.zhanghe.Fast.vo.PageVO;
 import com.zhanghe.Fast.vo.user.AddUserVO;
 import com.zhanghe.Fast.vo.user.UpdateUserVO;
 import com.zhanghe.Fast.vo.user.UserListVO;
+/**
+ * UserController
+ *
+ * @author Clevo
+ * @date 2018/1/9 21:33
+ */
 @RestController
 public class UserController extends BaseController {
 	

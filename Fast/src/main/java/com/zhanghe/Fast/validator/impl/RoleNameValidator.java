@@ -6,7 +6,12 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.zhanghe.Fast.service.RoleService;
 import com.zhanghe.Fast.validator.RoleName;
-
+/**  
+ * RoleNameValidator
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:32
+ */  
 public class RoleNameValidator implements ConstraintValidator<RoleName, String> {
 
 	@Autowired  

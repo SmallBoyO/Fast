@@ -16,7 +16,12 @@ import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.service.UserService;
-
+/**  
+ * ShiroRealm
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33
+ */  
 public class ShiroRealm extends AuthorizingRealm {
 	 @Autowired
 	public UserService userService;
@@ -71,7 +76,6 @@ public class ShiroRealm extends AuthorizingRealm {
         User user=userService.getUserByUserName(usernamePasswordToken.getUsername());
         if(user != null){
         	//return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
-        	//8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92
         	return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), getName());
         }
 		return null;

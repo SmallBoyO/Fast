@@ -4,7 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.springframework.web.util.HtmlUtils;
-
+/**  
+ * XssHttpServletRequestWrapper
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33 
+ */  
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	public XssHttpServletRequestWrapper(HttpServletRequest request) {

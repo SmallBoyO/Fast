@@ -14,6 +14,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
+/**  
+ * ShiroConfig
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33
+ */  
 @Configuration
 public class ShiroConfig {
 	/**
@@ -51,7 +57,7 @@ public class ShiroConfig {
        //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
        //filterChainDefinitionMap.put("/**", "authc");
        
-       // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+       // 如果不设置默认会自动寻找Web工程根目录下的/login.jsp页面
        shiroFilterFactoryBean.setLoginUrl("/login");
        // 登录成功后要跳转的链接
        shiroFilterFactoryBean.setSuccessUrl("/index");
@@ -70,7 +76,7 @@ public class ShiroConfig {
        //defaultSessionManager.setSessionValidationInterval(60000);//间隔多久检查一次session的有效性
       // defaultSessionManager.setGlobalSessionTimeout(60000);//session有效时间
        //defaultSessionManager.setDeleteInvalidSessions(true);//是否删除无效的
-     //  securityManager.setSessionManager(defaultSessionManager);
+      //  securityManager.setSessionManager(defaultSessionManager);
        ServletContainerSessionManager servletContainerSessionManager = new ServletContainerSessionManager();
        securityManager.setSessionManager(servletContainerSessionManager);
        return securityManager;

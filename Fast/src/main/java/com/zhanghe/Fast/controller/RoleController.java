@@ -22,6 +22,12 @@ import com.zhanghe.Fast.vo.PageVO;
 import com.zhanghe.Fast.vo.role.AddRoleVO;
 import com.zhanghe.Fast.vo.role.EditRoleVO;
 import com.zhanghe.Fast.vo.role.RoleListVO;
+/**  
+ * RoleController
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:24
+ */  
 @RestController
 public class RoleController extends BaseController {
 	

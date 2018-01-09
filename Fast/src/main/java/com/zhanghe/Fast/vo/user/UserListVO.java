@@ -2,7 +2,12 @@ package com.zhanghe.Fast.vo.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
+/**  
+ * UserListVO
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33 
+ */  
 @ApiModel
 public class UserListVO {
 	
@@ -23,5 +28,14 @@ public class UserListVO {
 	}
 	public void setStatus( Integer status ) {
 		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("UserListVO{");
+		sb.append("name='").append(name).append('\'');
+		sb.append(", status=").append(status);
+		sb.append('}');
+		return sb.toString();
 	}
 }

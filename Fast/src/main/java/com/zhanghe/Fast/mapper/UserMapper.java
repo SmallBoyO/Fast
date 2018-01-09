@@ -13,7 +13,12 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
-
+/**  
+ * UserMapper
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33 
+ */  
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     @Select("select * from user where id=#{id}")

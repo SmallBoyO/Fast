@@ -19,7 +19,12 @@ import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.service.PermissionService;
 import com.zhanghe.Fast.service.UserService;
-
+/**  
+ * MenuController
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:23
+ */  
 @RestController
 public class MenuController extends BaseController {
 	@Autowired
@@ -43,7 +48,6 @@ public class MenuController extends BaseController {
 				json.addProperty("type", permission.getType());
 				json.addProperty("component", permission.getComponent());
 				buidChild(json,list);
-				//rootlist.add(permission);
 				array.add(json);
 			}
 		}
@@ -62,7 +66,6 @@ public class MenuController extends BaseController {
 					childjson.addProperty("type", permission.getType());
 					childjson.addProperty("component", permission.getComponent());
 					buidChild(childjson,list);
-					//rootlist.add(permission);
 					array.add(childjson);
 				}
 			}
@@ -98,7 +101,6 @@ public class MenuController extends BaseController {
 				json.addProperty("type", permission.getType());
 				json.addProperty("component", permission.getComponent());
 				buidChild(json,list);
-				//rootlist.add(permission);
 				array.add(json);
 			}
 		}

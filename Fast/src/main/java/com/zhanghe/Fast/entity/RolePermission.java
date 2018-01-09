@@ -1,7 +1,12 @@
 package com.zhanghe.Fast.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
-
+/**  
+ * RolePermission
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:32
+ */  
 @TableName("role_permission")
 public class RolePermission {
     public Long role;

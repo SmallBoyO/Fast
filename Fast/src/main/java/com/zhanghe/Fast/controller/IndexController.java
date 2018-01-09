@@ -9,7 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zhanghe.Fast.service.TestService;
 import com.zhanghe.Fast.service.UserService;
-
+/**  
+ * IndexController
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:23
+ */  
 @Controller
 public class IndexController extends BaseController {
     @Autowired

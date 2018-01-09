@@ -9,6 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+/**  
+ * ControlAllowOriginFilter
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:22 
+ */  
 public class ControlAllowOriginFilter implements Filter{
 
 	@Override

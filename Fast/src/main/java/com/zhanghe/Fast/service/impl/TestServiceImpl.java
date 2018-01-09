@@ -7,8 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zhanghe.Fast.entity.Test;
 import com.zhanghe.Fast.mapper.TestMapper;
 import com.zhanghe.Fast.service.TestService;
+/**
+ * TestServiceImpl
+ *
+ * @author Clevo
+ * @date 2018/1/9 21:33
+ */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class TestServiceImpl implements TestService {
 	@Autowired
 	public TestMapper testMapper;

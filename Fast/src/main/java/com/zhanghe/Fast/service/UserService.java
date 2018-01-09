@@ -6,7 +6,12 @@ import com.zhanghe.Fast.util.PageUtil;
 import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
-
+/**  
+ * UserService
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:33 
+ */  
 public interface UserService {
     public User getUserByid(Long id);
 
@@ -14,7 +19,7 @@ public interface UserService {
 
     public List<Permission> getPermissionByUserId(Long id);
 
-    public User getUserByUserName(String UserName);
+    public User getUserByUserName(String userName);
     
     public List<Permission> getPermissionByUserName(String username);
     

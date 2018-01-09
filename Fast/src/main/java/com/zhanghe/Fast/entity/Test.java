@@ -1,5 +1,10 @@
 package com.zhanghe.Fast.entity;
-
+/**
+ * Test
+ *
+ * @author Clevo
+ * @date 2018/1/9 21:33
+ */
 public class Test {
     public int id;
     public String name;

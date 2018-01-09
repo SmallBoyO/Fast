@@ -4,6 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import com.zhanghe.Fast.util.PageUtil;
+/**  
+ * PageVO
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:23
+ */  
 @ApiModel
 public class PageVO<T> {
 	
@@ -30,5 +36,14 @@ public class PageVO<T> {
 		page.setCorrentPage(correntPage);
 		page.setPageSize(pageSize);
 		return page;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("PageVO{");
+		sb.append("correntPage=").append(correntPage);
+		sb.append(", pageSize=").append(pageSize);
+		sb.append('}');
+		return sb.toString();
 	}
 }

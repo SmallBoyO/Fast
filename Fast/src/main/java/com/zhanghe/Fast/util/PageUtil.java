@@ -3,7 +3,12 @@ package com.zhanghe.Fast.util;
 import java.util.List;
 
 import com.google.gson.Gson;
-
+/**  
+ * PageUtil
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:23
+ */  
 public class PageUtil<T> {
 	
     private Long correntPage;

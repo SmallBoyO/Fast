@@ -20,7 +20,12 @@ import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.http.stat.WebAppStat;
 import com.alibaba.druid.wall.WallConfig;
 import com.alibaba.druid.wall.WallFilter;
-
+/**  
+ * DruidConfig
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:23
+ */  
 @Configuration
 public class DruidConfig {
 
@@ -151,7 +156,7 @@ public class DruidConfig {
     }
 
     @Bean
-    public FilterRegistrationBean DruidWebStatFilter() {
+    public FilterRegistrationBean druidWebStatFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         WebStatFilter filter = new WebStatFilter();
         filter.setWebAppStat(new WebAppStat("**", 1000));

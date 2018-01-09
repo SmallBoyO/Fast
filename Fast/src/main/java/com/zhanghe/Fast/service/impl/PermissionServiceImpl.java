@@ -11,8 +11,14 @@ import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.mapper.PermissionMapper;
 import com.zhanghe.Fast.service.PermissionService;
+/**  
+ * PermissionServiceImpl
+ *   
+ * @author Clevo  
+ * @date 2018/1/9 21:23 
+ */  
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PermissionServiceImpl implements PermissionService {
 	
 	@Autowired
