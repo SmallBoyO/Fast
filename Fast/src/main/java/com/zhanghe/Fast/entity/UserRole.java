@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotations.TableName;
  * UserRole
  *   
  * @author Clevo  
- * @date 2018/1/9 21:33 
+ * @date 2018/1/9 21:47
  */  
 @TableName("user_role")
 public class UserRole {

@@ -10,7 +10,7 @@ import com.zhanghe.Fast.entity.User;
  * UserService
  *   
  * @author Clevo  
- * @date 2018/1/9 21:33 
+ * @date 2018/1/9 22:08
  */  
 public interface UserService {
     public User getUserByid(Long id);

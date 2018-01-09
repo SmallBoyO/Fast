@@ -21,7 +21,7 @@ import com.zhanghe.Fast.service.UserService;
  * UserServiceImpl
  *   
  * @author Clevo  
- * @date 2018/1/9 21:33 
+ * @date 2018/1/9 22:08
  */  
 @Service
 @Transactional(rollbackFor = Exception.class)

@@ -20,7 +20,6 @@ var app = new Vue({
   },
   methods:{
     checkLogin(){
-		console.log("2");
         this.$router.push('/login');
     }
   }
