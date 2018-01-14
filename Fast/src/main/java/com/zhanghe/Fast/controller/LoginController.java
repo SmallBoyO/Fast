@@ -141,7 +141,22 @@ public class LoginController {
             return  gson.toJson(returnvalue);
         }
     }
-    
+    /**
+     * @return   
+     * @author Clevo  
+     * @date 2018/1/14 15:15  
+    */
+    @PostMapping("/ajax/checklogin")
+    @ResponseBody
+    public String checkLogin(){
+        Subject currentUser = SecurityUtils.getSubject();
+        if(currentUser.isAuthenticated()){
+            return new ReturnValue<>(1,"").toJson();
+        }else{
+            return new ReturnValue<>(-100,"未登录").toJson();
+        }
+    }
+
     public SavedRequest getSavedRequest(ServletRequest request) {  
         SavedRequest savedRequest = null;  
         Subject subject = SecurityUtils.getSubject();  

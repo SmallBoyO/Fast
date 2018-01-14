@@ -8,6 +8,11 @@ import MenuManage from '../page/MenuManage.vue'
 Vue.use(VueRouter)
 
 const routes = [{
+        path: '',
+        component: login,
+        name: '',
+        hidden: true
+    },{
         path: '/login',
         component: login,
         name: '',

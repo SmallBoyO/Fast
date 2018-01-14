@@ -77,21 +77,21 @@
 	</el-row>
 </template>
 <script type="text/ecmascript-6">
-	import axios from 'axios';
 	import qs from 'qs';
-	axios.defaults.withCredentials=true;
     export default {
         data() {
 			return{
 				searchCriteria: '',
-                breadcrumbItems: ['导航一'],
-                menu: []
+                breadcrumbItems: ['导航一']
 			}
 		},
 		computed:{
 			correntUserName:function(){
 				return this.$store.state.correntUser.name;
-			}
+			},
+      menu:function(){
+        return this.$store.state.menu;
+      }
 		},
 		methods:{
 			handleSelect(key,keyPath) {
@@ -110,8 +110,8 @@
 		created(){
 			console.log(this.$store.state.menu);
 			if(this.$store.state.menu === null){
-				axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
-						this.menu=data;
+				this.$axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
+						//this.menu=data;
             this.$store.commit('setMenu',{menu:data});
 					});
 			}

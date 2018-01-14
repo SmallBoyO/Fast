@@ -120,9 +120,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-	import axios from 'axios';
 	import qs from 'qs';
-	axios.defaults.withCredentials=true;
 	export default {
 		data() {
 			var validateAddRole = (rule, value, callback) => {
@@ -131,7 +129,7 @@
 				} else if (value.length < 5 || value.length > 16) {
 						callback(new Error('角色名长度在4到16之间！'));
 				}else{
-					axios.post(`http://127.0.0.1:8081/ajax/roleManager/checkRoleName`, qs.stringify({role: value})).then(res => res.data).then(data => {
+					this.$axios.post(`http://127.0.0.1:8081/ajax/roleManager/checkRoleName`, qs.stringify({role: value})).then(res => res.data).then(data => {
 							console.log(data);
 							if (data.ret == -1) {
 									callback(new Error(data.message));
@@ -147,7 +145,7 @@
 				} else if (value.length < 4 || value.length > 16) {
 						callback(new Error('角色名长度在4到16之间！'));
 				}else{
-					axios.post(`http://127.0.0.1:8081/ajax/roleManager/checkRoleName`, qs.stringify({role: value,id:this.editData.id})).then(res => res.data).then(data => {
+					this.$axios.post(`http://127.0.0.1:8081/ajax/roleManager/checkRoleName`, qs.stringify({role: value,id:this.editData.id})).then(res => res.data).then(data => {
 							console.log(data);
 							if (data.ret == -1) {
 									callback(new Error(data.message));
@@ -236,11 +234,11 @@
 					console.log(this.searchData.correntPage);
 			},
 			getRight(){
-				axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
+				this.$axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
 						console.log(data);
 						this.right = data;
 				});
-				axios.post(`http://127.0.0.1:8081/ajax/getAllRight`,qs.stringify({})).then(res => res.data).then(data => {
+				this.$axios.post(`http://127.0.0.1:8081/ajax/getAllRight`,qs.stringify({})).then(res => res.data).then(data => {
 						console.log(data);
 						this.rightlist = data;
 				});
@@ -251,14 +249,14 @@
 					this.editData.role = row.role;
 					this.editData.description = row.description;
 					this.editData.status = row.status;
-					axios.post(`http://127.0.0.1:8081/ajax/roleManager/getRolePermission`,qs.stringify({roleId:row.id})).then(res => res.data).then(data => {
+					this.$axios.post(`http://127.0.0.1:8081/ajax/roleManager/getRolePermission`,qs.stringify({roleId:row.id})).then(res => res.data).then(data => {
 							console.log(data);
 							this.$refs.edittree.setCheckedKeys(data.obj);
 					});
 					console.log(index, row);
 			},
 			search(){
-				axios.post(`http://127.0.0.1:8081/ajax/roleManager/roleList`,qs.stringify(this.searchData)).then(res => res.data).then(data => {
+				this.$axios.post(`http://127.0.0.1:8081/ajax/roleManager/roleList`,qs.stringify(this.searchData)).then(res => res.data).then(data => {
 						console.log(data);
 						this.listdata=data.result;
 						this.searchData.correntPage = data.correntPage;
@@ -291,7 +289,7 @@
 								rightstr+=('&'+'rightlist='+this.addData.rightlist[right]);
 							}
 							console.log(rightstr);
-							axios.post(`http://127.0.0.1:8081/ajax/roleManager/addRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
+							this.$axios.post(`http://127.0.0.1:8081/ajax/roleManager/addRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
 									console.log(data);
 									if(data.ret==1){
 											this.addRoleVisible = false;
@@ -325,7 +323,7 @@
 								rightstr+=('&'+'rightlist='+this.editData.rightlist[right]);
 							}
 							console.log(this.editData);
-							axios.post(`http://127.0.0.1:8081/ajax/roleManager/editRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
+							this.$axios.post(`http://127.0.0.1:8081/ajax/roleManager/editRole`,qs.stringify(data)+rightstr).then(res => res.data).then(data => {
 									console.log(data);
 									if(data.ret==1){
 											this.editRoleVisible = false;

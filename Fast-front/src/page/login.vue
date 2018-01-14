@@ -15,9 +15,7 @@
 
 </template>
 <script type="text/ecmascript-6">
-	import axios from 'axios';
 	import qs from 'qs';
-	axios.defaults.withCredentials=true;
 
     export default {
         data() {
@@ -46,10 +44,14 @@
 				this.$refs[formName].validate((valid) => {
 				  if (valid) {
 					this.loading=true;
-					axios.post(`http://127.0.0.1:8081/ajax/loginajax`,qs.stringify(this.formdata)).then(res => res.data).then(data => {
+					this.$axios.post(`http://127.0.0.1:8081/ajax/loginajax`,qs.stringify(this.formdata)).then(res => res.data).then(data => {
 						if(data.ret == 1){
 							this.loading=false;
 							this.$store.commit('login',{username:data.obj.userName,name:data.obj.name});
+              this.$axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
+      						//this.menu=data;
+                  this.$store.commit('setMenu',{menu:data});
+      					});
 							this.$router.push({path:'/home'});
 						}else{
 							this.loading=false;

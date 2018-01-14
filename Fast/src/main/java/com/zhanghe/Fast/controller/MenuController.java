@@ -35,6 +35,7 @@ public class MenuController{
 	
 	@ApiOperation(value="获取当前登录用户菜单列表", notes="获取当前登录用户菜单列表")
 	@PostMapping("/ajax/getUserMenu")
+	@RequiresAuthentication
 	public String getUserMenu(){
 		Subject currentUser = SecurityUtils.getSubject();
 		List<Permission> list = userService.getPermissionByUserName(currentUser.getPrincipal().toString());

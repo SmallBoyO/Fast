@@ -98,10 +98,8 @@
     </section>
 </template>
 <script type="text/ecmascript-6">
-    import axios from 'axios';
     //import qs from 'qs';
     var qs = require('querystring')
-    axios.defaults.withCredentials = true;
     export default {
         data() {
             var validateUserName = (rule, value, callback) => {
@@ -110,7 +108,7 @@
                 } else if (value.length < 5 || value.length > 16) {
                     callback(new Error('账号长度在5到16之间！'));
                 } else {
-                    axios.post(`http://127.0.0.1:8081/ajax/UserManager/checkUserName`, qs.stringify({userName: value})).then(res => res.data).then(data => {
+                    this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/checkUserName`, qs.stringify({userName: value})).then(res => res.data).then(data => {
                         console.log(data);
                         if (data.ret == -1) {
                             callback(new Error(data.message));
@@ -127,7 +125,7 @@
                 } else if (value.length < 5 || value.length > 16) {
                     callback(new Error('用户名长度在5到16之间！'));
                 } else {
-                    axios.post(`http://127.0.0.1:8081/ajax/UserManager/checkName`, qs.stringify({
+                    this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/checkName`, qs.stringify({
                         name: value,
                         id: this.editData.id
                     })).then(res => res.data).then(data => {
@@ -147,7 +145,7 @@
                 } else if (value.length < 5 || value.length > 16) {
                     callback(new Error('用户名长度在5到16之间！'));
                 } else {
-                    axios.post(`http://127.0.0.1:8081/ajax/UserManager/checkName`, qs.stringify({name: value})).then(res => res.data).then(data => {
+                    this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/checkName`, qs.stringify({name: value})).then(res => res.data).then(data => {
                         console.log(data);
                         if (data.ret == -1) {
                             callback(new Error(data.message));
@@ -242,13 +240,13 @@
         },
         methods: {
             getRight(){
-              axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
+              this.$axios.post(`http://127.0.0.1:8081/ajax/getRight`,qs.stringify({id:this.$route.params.rightid})).then(res => res.data).then(data => {
         					console.log(data);
                   this.right = data;
         			});
             },
             getRoleList(){
-        			axios.post(`http://127.0.0.1:8081/ajax/UserManager/getRoleList`,qs.stringify({})).then(res => res.data).then(data => {
+        			this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/getRoleList`,qs.stringify({})).then(res => res.data).then(data => {
         					this.rolelist = data.result;
         			});
       			},
@@ -256,7 +254,7 @@
                 multipleSelection = val;
             },
             handleEdit(index, row) {
-                axios.post(`http://127.0.0.1:8081/ajax/UserManager/getUserRoleList`,qs.stringify({id:row.id})).then(res => res.data).then(data => {
+                this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/getUserRoleList`,qs.stringify({id:row.id})).then(res => res.data).then(data => {
                     this.editRoles = data.obj;
                     this.dialogFormVisible = true;
                     this.editData.id = row.id;
@@ -268,7 +266,7 @@
             handleDelete(index, row) {
                 this.$confirm('确认删除？')
                 .then(()=> {
-                    axios.post(`http://127.0.0.1:8081/ajax/UserManager/deleteUser`, qs.stringify({id:row.id}))
+                    this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/deleteUser`, qs.stringify({id:row.id}))
                     .then(res =>res.data).then(data => {
                         if (data.ret == 1) {
                             this.$alert(data.message,"");
@@ -299,7 +297,7 @@
             },
             search() {
                 this.listLoading = true;
-                axios.post(`http://127.0.0.1:8081/ajax/UserManager/userList`, qs.stringify(this.searchData)).then(res => res.data).then(data => {
+                this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/userList`, qs.stringify(this.searchData)).then(res => res.data).then(data => {
                     if (data.ret == 1) {
                         this.tableData = data.page.result;
                         this.searchData.correntPage = data.page.correntPage;
@@ -332,7 +330,7 @@
             							description:this.editData.description,
             							rolelist:this.editRoles
                         }
-                        axios.post(`http://127.0.0.1:8081/ajax/UserManager/updateUser`, qs.stringify(postdata)).then(res => res.data).then(data => {
+                        this.$axios.post(`http://127.0.0.1:8081/ajax/UserManager/updateUser`, qs.stringify(postdata)).then(res => res.data).then(data => {
                             if (data.ret == 1) {
                                 this.$alert(data.message, '', {
                                     confirmButtonText: '确定'
@@ -379,7 +377,7 @@
                             status:this.addData.status,
                             password:this.addData.password
                         }
-                        axios.post("http://127.0.0.1:8081/ajax/UserManager/addUser",qs.stringify(data)+rolestr).then(res =>{
+                        this.$axios.post("http://127.0.0.1:8081/ajax/UserManager/addUser",qs.stringify(data)+rolestr).then(res =>{
                             if(res.data.ret==1){
                                 this.dialogaddFormVisible = false;
                                 this.$alert(res.data.message, '', {
