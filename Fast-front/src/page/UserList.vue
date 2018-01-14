@@ -323,7 +323,16 @@
                         for(let role in this.editRoles){
                           rolestr+=('&'+'rolelist='+this.editRoles[role]);
                         }
-                        axios.post(`http://127.0.0.1:8081/ajax/UserManager/updateUser`, qs.stringify(this.editData)+rolestr).then(res => res.data).then(data => {
+                        console.log(qs.stringify({list:['1','2']}));
+                        let postdata = {
+                          id:this.editData.id,
+            							role:this.editData.role,
+                          name:this.editData.name,
+            							status:this.editData.status,
+            							description:this.editData.description,
+            							rolelist:this.editRoles
+                        }
+                        axios.post(`http://127.0.0.1:8081/ajax/UserManager/updateUser`, qs.stringify(postdata)).then(res => res.data).then(data => {
                             if (data.ret == 1) {
                                 this.$alert(data.message, '', {
                                     confirmButtonText: '确定'

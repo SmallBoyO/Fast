@@ -16,7 +16,7 @@ import com.zhanghe.Fast.service.UserService;
  * @date 2018/1/9 21:23
  */  
 @Controller
-public class IndexController extends BaseController {
+public class IndexController {
     @Autowired
     public TestService testService;
     @Autowired

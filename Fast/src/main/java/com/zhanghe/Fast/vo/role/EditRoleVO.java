@@ -24,7 +24,6 @@ public class EditRoleVO {
 	Long roleId;
 	
 	@Length(min=4,max=16)
-	@RoleName
 	@ApiModelProperty(value="角色名")
 	String role;
 	

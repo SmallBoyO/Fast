@@ -26,7 +26,7 @@ import com.zhanghe.Fast.service.UserService;
  * @date 2018/1/9 21:23
  */  
 @RestController
-public class MenuController extends BaseController {
+public class MenuController{
 	@Autowired
 	public UserService userService;
 	
@@ -88,7 +88,7 @@ public class MenuController extends BaseController {
 	@ApiOperation(value="获取所有的权限", notes="获取所有的权限")
 	@PostMapping("/ajax/getAllRight")
 	@ResponseBody
-	@RequiresAuthentication
+	//@RequiresAuthentication
 	public String getAllRight(){
 		List<Permission> list = permissionService.getAllRight();
 		JsonArray array = new JsonArray();

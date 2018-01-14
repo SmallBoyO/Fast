@@ -31,7 +31,7 @@ import com.zhanghe.Fast.vo.user.UserListVO;
  * @date 2018/1/9 21:33
  */
 @RestController
-public class UserController extends BaseController {
+public class UserController{
 	
 	@Autowired
 	public UserService userService;
@@ -55,7 +55,7 @@ public class UserController extends BaseController {
 	}
 	
 	@ApiOperation(value="更新用户信息", notes="更新用户信息")
-	@PostMapping(value = "/ajax/UserManager/updateUser")
+	@PostMapping(value = "/ajax/UserManager/updateUser",produces="text/html;charset=UTF-8")
 	@RequiresPermissions(value = "system:user:update")
 	public String updateUser(@Valid UpdateUserVO updateUserVO,BindingResult result){
 		User user = new User();

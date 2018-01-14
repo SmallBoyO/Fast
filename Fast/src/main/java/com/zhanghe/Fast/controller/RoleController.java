@@ -29,7 +29,7 @@ import com.zhanghe.Fast.vo.role.RoleListVO;
  * @date 2018/1/9 21:24
  */  
 @RestController
-public class RoleController extends BaseController {
+public class RoleController{
 	
 	@Autowired
 	public RoleService roleService;

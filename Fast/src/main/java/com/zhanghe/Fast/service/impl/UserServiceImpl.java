@@ -68,10 +68,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user,String[] rolelist) {
-    	if(rolelist!=null){
-    		EntityWrapper<UserRole> wrapper =  new EntityWrapper<>();
-    		wrapper.eq(UserRole.USER, user.getId());
-    		userRoleMapper.delete(wrapper);
+        EntityWrapper<UserRole> wrapper =  new EntityWrapper<>();
+        wrapper.eq(UserRole.USER, user.getId());
+        userRoleMapper.delete(wrapper);
+        if(rolelist!=null){
     		for(String rolename:rolelist){
     			Role role = new Role();
     			role.setRole(rolename);
