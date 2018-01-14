@@ -13,6 +13,7 @@ import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -155,6 +156,15 @@ public class LoginController {
         }else{
             return new ReturnValue<>(-100,"未登录").toJson();
         }
+    }
+
+    @PostMapping("/ajax/loginOut")
+    @ResponseBody
+    @RequiresAuthentication
+    public String loginOut(){
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
+        return new ReturnValue<>(1,"").toJson();
     }
 
     public SavedRequest getSavedRequest(ServletRequest request) {  

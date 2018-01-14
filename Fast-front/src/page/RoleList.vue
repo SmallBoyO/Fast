@@ -26,7 +26,7 @@
 	<el-table
 		:data="listdata"
 		stripe
-		style="width: 100%">
+		style="width: 100%" height="700">
 		<el-table-column
 			prop="role"
 			label="角色"

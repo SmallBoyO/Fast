@@ -10,12 +10,12 @@
 				</div>
 			</el-col>
 			<el-col :span="4" class="userinfo">
-				<el-dropdown trigger="hover">
+				<el-dropdown trigger="hover"  @command="handleCommand">
 					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{correntUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
-						<el-dropdown-item>我的消息</el-dropdown-item>
-						<el-dropdown-item>设置</el-dropdown-item>
-						<el-dropdown-item divided>退出登录</el-dropdown-item>
+						<el-dropdown-item command="info">我的消息</el-dropdown-item>
+						<el-dropdown-item command="setting">设置</el-dropdown-item>
+						<el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</el-dropdown>
 			</el-col>
@@ -96,7 +96,7 @@
 		methods:{
 			handleSelect(key,keyPath) {
 				console.log(key);
-  				console.log(key.split('-')[1]);
+  			console.log(key.split('-')[1]);
 				console.log(keyPath);
 				console.log(keyPath);
 				if((key.split('-')[1])!='null'){
@@ -105,7 +105,15 @@
             },
 			getname(){
 				return this.$store.state.correntUser.name;
-			}
+			},
+      handleCommand(command) {
+        console.log(command);
+        if(command == 'loginOut'){
+          this.$axios.post('http://127.0.0.1:8081/ajax/loginOut').then(()=>{
+            this.$router.push("/login");
+          });
+        }
+      }
 		},
 		created(){
 			console.log(this.$store.state.menu);
