@@ -98,8 +98,17 @@
     </section>
 </template>
 <script type="text/ecmascript-6">
-    //import qs from 'qs';
-    var qs = require('querystring')
+    //这个会将数组转换成下面的格式
+    //rolelist[0]:admin
+    //rolelist[1]:省道222
+    //rolelist[2]:ceshi22312
+    import qs from 'qs';
+
+    //这个会将数组转换成下面的格式
+    //rolelist:省道222
+    //rolelist:admin
+    //rolelist:test5
+    //var qs = require('querystring')
     export default {
         data() {
             var validateUserName = (rule, value, callback) => {
