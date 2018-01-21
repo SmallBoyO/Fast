@@ -77,6 +77,7 @@
 	</el-row>
 </template>
 <script type="text/ecmascript-6">
+  import {loginOut,getmenu} from '../api/login.js'
 	import qs from 'qs';
     export default {
         data() {
@@ -109,7 +110,7 @@
       handleCommand(command) {
         console.log(command);
         if(command == 'loginOut'){
-          this.$axios.post('http://127.0.0.1:8081/ajax/loginOut').then(()=>{
+          loginOut().then(()=>{
             this.$router.push("/login");
           });
         }
@@ -118,7 +119,7 @@
 		created(){
 			console.log(this.$store.state.menu);
 			if(this.$store.state.menu === null){
-				this.$axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
+				getmenu().then(data => {
 						//this.menu=data;
             this.$store.commit('setMenu',{menu:data});
 					});

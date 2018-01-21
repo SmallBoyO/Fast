@@ -15,6 +15,7 @@
 
 </template>
 <script type="text/ecmascript-6">
+  import {login,getmenu} from '../api/login.js'
 	import qs from 'qs';
 
     export default {
@@ -44,11 +45,11 @@
 				this.$refs[formName].validate((valid) => {
 				  if (valid) {
 					this.loading=true;
-					this.$axios.post(`http://127.0.0.1:8081/ajax/loginajax`,qs.stringify(this.formdata)).then(res => res.data).then(data => {
+					login(this.formdata).then(data => {
 						if(data.ret == 1){
 							this.loading=false;
 							this.$store.commit('login',{username:data.obj.userName,name:data.obj.name});
-              this.$axios.post(`http://127.0.0.1:8081/ajax/getUserMenu`).then(res => res.data).then(data => {
+              getmenu().then(data => {
       						//this.menu=data;
                   this.$store.commit('setMenu',{menu:data});
       					});
