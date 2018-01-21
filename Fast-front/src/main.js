@@ -6,21 +6,9 @@ import App from './app.vue'
 import router from './router/router'
 import Vuex from 'vuex'
 import store from './vuex/store'
-import axios from 'axios';
-axios.defaults.withCredentials=true;
-axios.interceptors.response.use(function (response) {
-    if(response.data.ret== -100){
-      router.push("/login");
-      console.log("interceptors 未登录");
-    }
-    return response
-  }, function (error) {
-    // Do something with response error
-    return Promise.reject(error);
-  });
+import {axios} from './api/api.js';
 Vue.use(ElementUI)
 Vue.use(Vuex)
-Vue.prototype.$axios = axios
 
 var app = new Vue({
   el: '#app',
