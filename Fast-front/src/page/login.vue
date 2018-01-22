@@ -16,7 +16,7 @@
 </template>
 <script type="text/ecmascript-6">
   import {login,getmenu} from '../api/login.js'
-	import qs from 'qs';
+	//import qs from 'qs';
 
     export default {
         data() {
