@@ -21,6 +21,20 @@ public class ReturnValue<T> {
 		this.message = message;
 	}
 	
+	public ReturnValue( Integer ret, String message,T obj ){
+		super();
+		this.ret = ret;
+		this.message = message;
+		this.obj = obj;
+	}
+	
+	public ReturnValue( Integer ret, String message,List<T> result ){
+		super();
+		this.ret = ret;
+		this.message = message;
+		this.result = result;
+	}
+	
 	public String toJson(){
 		Gson gson = new Gson();
 		return gson.toJson(this);

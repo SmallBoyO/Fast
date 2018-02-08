@@ -3,6 +3,7 @@ package com.zhanghe.Fast.util;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.zhanghe.Fast.entity.User;
 /**  
  * PageUtil
  *   
@@ -55,5 +56,10 @@ public class PageUtil<T> {
 		return gson.toJson(this);
 	}
     
+	public ReturnValue<T> toReturnValue(int ret){
+		ReturnValue<T> returnValue = new ReturnValue<T>(1,"");
+		returnValue.setPage(this);
+		return returnValue;
+	}
     
 }

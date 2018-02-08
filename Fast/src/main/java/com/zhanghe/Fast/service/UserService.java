@@ -3,6 +3,10 @@ package com.zhanghe.Fast.service;
 import java.util.List;
 
 import com.zhanghe.Fast.util.PageUtil;
+import com.zhanghe.Fast.vo.PageVO;
+import com.zhanghe.Fast.vo.user.AddUserVO;
+import com.zhanghe.Fast.vo.user.UpdateUserVO;
+import com.zhanghe.Fast.vo.user.UserListVO;
 import com.zhanghe.Fast.entity.Permission;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
@@ -23,13 +27,13 @@ public interface UserService {
     
     public List<Permission> getPermissionByUserName(String username);
     
-    public void updateUser(User user,String[] rolelist);
+    public void updateUser(UpdateUserVO updateUserVO);
     
-    public void insertUser(User user,String[] rolelist);
+    public void insertUser(AddUserVO addUserVO);
     
     public User getUserByName(String name,Long id);
 
-	PageUtil<User> getUserListByPage( User user ,PageUtil<User> page );
+	PageUtil<User> getUserListByPage( UserListVO userListVO,PageVO<User> pagevo );
 	
 	void deleteUserById(Long id);
 }

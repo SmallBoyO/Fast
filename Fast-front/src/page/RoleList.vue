@@ -259,10 +259,10 @@
 			search(){
 				roleList(this.searchData).then(data => {
 						console.log(data);
-						this.listdata=data.result;
-						this.searchData.correntPage = data.correntPage;
-						this.searchData.pageSize = data.pageSize;
-						this.searchData.total = data.total;
+						this.listdata=data.page.result;
+						this.searchData.correntPage = data.page.correntPage;
+						this.searchData.pageSize = data.page.pageSize;
+						this.searchData.total = data.page.total;
 				});
 			},
 			addRole(){

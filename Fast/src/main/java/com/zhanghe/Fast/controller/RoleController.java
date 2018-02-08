@@ -12,11 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.baomidou.mybatisplus.enums.SqlLike;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.service.RoleService;
-import com.zhanghe.Fast.util.PageUtil;
 import com.zhanghe.Fast.util.ReturnValue;
 import com.zhanghe.Fast.vo.PageVO;
 import com.zhanghe.Fast.vo.role.AddRoleVO;
@@ -38,42 +35,22 @@ public class RoleController{
 	@PostMapping(value = "/ajax/roleManager/roleList")
 	@RequiresPermissions(value = "system:role:query")
 	public String getRoleList(RoleListVO vo,PageVO<Role> pagevo){
-		EntityWrapper<Role> wrapper = new EntityWrapper<Role>();
-    	if(vo.getRole()!=null&&!"".equals(vo.getRole())){
-    		wrapper.like(Role.ROLE, vo.getRole(), SqlLike.CUSTOM);
-    	}
-    	if(vo.getStatus()!=null){
-    		wrapper.eq(Role.STATUS, vo.getStatus());
-    	}
-    	if(vo.getDescription()!=null&&!"".equals(vo.getDescription())){
-    		wrapper.eq(Role.DESCRIPTION, vo.getDescription());
-    	}
-    	PageUtil<Role> page = pagevo.toPageUtil();
-    	page = roleService.getRoleListByPage(page, wrapper);
-		return page.toString();
+		return roleService.getRoleListByPage(vo,pagevo).toReturnValue(1).toJson();
 	}
 	
 	@ApiOperation(value="添加角色", notes="添加角色")
 	@PostMapping(value = "/ajax/roleManager/addRole")
 	@RequiresPermissions(value = "system:role:add")
 	public String addRole(AddRoleVO addRoleVO){
-		Role newrole = new Role();
-		newrole.setRole(addRoleVO.getRole());
-		newrole.setDescription(addRoleVO.getDescription());
-		newrole.setStatus(addRoleVO.getStatus());
-		roleService.addRole(newrole, addRoleVO.getRightlist());
+		roleService.addRole(addRoleVO);
 		return new ReturnValue<>(1, "添加成功").toJson();
 	}
+	
 	@ApiOperation(value="编辑角色", notes="编辑角色")
 	@PostMapping(value = "/ajax/roleManager/editRole")
 	@RequiresPermissions(value = "system:role:edit")
 	public String editRole(@Valid EditRoleVO editRoleVO,BindingResult result){
-		Role editrole = new Role();
-		editrole.setId(editRoleVO.getRoleId());
-		editrole.setRole(editRoleVO.getRole());
-		editrole.setDescription(editRoleVO.getDescription());
-		editrole.setStatus(editRoleVO.getStatus());
-		roleService.updateRole(editrole, editRoleVO.getRightlist());
+		roleService.updateRole(editRoleVO);
 		return new ReturnValue<>(1, "修改成功").toJson();
 	}
 	
@@ -97,8 +74,6 @@ public class RoleController{
 	//@RequiresPermissions(value = "system:role:getRolePermission")
 	public String getRolePermission(Long roleId){
 		long[] res = roleService.getRolePermission(roleId);
-		ReturnValue<long[]> result =new ReturnValue<long[]>(1, "");
-		result.setObj(res);
-		return result.toJson();
+		return new ReturnValue<long[]>(1, "",res).toJson();
 	}
 }

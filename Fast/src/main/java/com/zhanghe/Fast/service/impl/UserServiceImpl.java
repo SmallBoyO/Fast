@@ -5,6 +5,12 @@ import java.util.List;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.zhanghe.Fast.util.PageUtil;
+import com.zhanghe.Fast.vo.PageVO;
+import com.zhanghe.Fast.vo.user.AddUserVO;
+import com.zhanghe.Fast.vo.user.UpdateUserVO;
+import com.zhanghe.Fast.vo.user.UserListVO;
+
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,21 +64,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageUtil<User> getUserListByPage(User user, PageUtil<User> page){
-    	Page<User> querypage = new Page<>(page.getCorrentPage().intValue(), page.getPageSize().intValue());
+    public PageUtil<User> getUserListByPage(UserListVO userListVO,PageVO<User> pagevo){
+    	User user = new User();
+		user.setName(userListVO.getName());
+		user.setStatus(userListVO.getStatus());
+    	Page<User> querypage = new Page<>(pagevo.getCorrentPage().intValue(), pagevo.getPageSize().intValue());
     	List<User> result = userMapper.getUserListByPage(querypage, user);
+    	PageUtil<User> page = new PageUtil<User>();
     	page.setResult(result);
     	page.setTotal((long) querypage.getTotal());
         return page;
     }
 
     @Override
-    public void updateUser(User user,String[] rolelist) {
+    public void updateUser(UpdateUserVO updateUserVO) {
+		User user = new User();
+		user.setName(updateUserVO.getName());
+		user.setStatus(updateUserVO.getStatus());
+		user.setId(updateUserVO.getId());
+		
         EntityWrapper<UserRole> wrapper =  new EntityWrapper<>();
         wrapper.eq(UserRole.USER, user.getId());
         userRoleMapper.delete(wrapper);
-        if(rolelist!=null){
-    		for(String rolename:rolelist){
+        if(updateUserVO.getRolelist()!=null){
+    		for(String rolename:updateUserVO.getRolelist()){
     			Role role = new Role();
     			role.setRole(rolename);
         		role = roleMapper.selectOne(role);
@@ -85,10 +100,16 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(user);
     }
     @Override
-    public void insertUser(User user,String[] rolelist) {
+    public void insertUser(AddUserVO addUserVO) {
+		User user = new User();
+		user.setName(addUserVO.getName());
+		user.setStatus(addUserVO.getStatus());
+		user.setUserName(addUserVO.getUserName());
+		user.setSalt("15643513");
+		user.setPassword(new Sha256Hash(addUserVO.getPassword(), user.getSalt()).toHex());
         userMapper.insert(user);
-        if(rolelist!=null){
-	        for(String rolename:rolelist){
+        if(addUserVO.getRolelist()!=null){
+	        for(String rolename:addUserVO.getRolelist()){
 				Role role = new Role();
 				role.setRole(rolename);
 	    		role = roleMapper.selectOne(role);
