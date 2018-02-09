@@ -39,7 +39,7 @@ public class UserController{
 	
 	@ApiOperation(value="查询用户列表", notes="查询用户列表")
 	@PostMapping(value = "/ajax/UserManager/userList")
-	@RequiresPermissions(value = "system:user:query")
+	//@RequiresPermissions(value = "system:user:query")
 	public String getUserList(UserListVO userListVO,PageVO<User> pagevo) throws InterruptedException{
 		PageUtil<User> page = userService.getUserListByPage(userListVO,pagevo);
 		return page.toReturnValue(1).toJson();
