@@ -121,7 +121,7 @@
 			if(this.$store.state.menu === null){
 				getmenu().then(data => {
 						//this.menu=data;
-            this.$store.commit('setMenu',{menu:data});
+            this.$store.commit('setMenu',{menu:data.obj});
 					});
 			}
 		}

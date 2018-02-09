@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +18,7 @@ import com.zhanghe.Fast.entity.Role;
 import com.zhanghe.Fast.entity.User;
 import com.zhanghe.Fast.service.PermissionService;
 import com.zhanghe.Fast.service.UserService;
+import com.zhanghe.Fast.util.ReturnValue;
 /**  
  * MenuController
  *   
@@ -35,7 +35,7 @@ public class MenuController{
 	
 	@ApiOperation(value="获取当前登录用户菜单列表", notes="获取当前登录用户菜单列表")
 	@PostMapping("/ajax/getUserMenu")
-	@RequiresAuthentication
+	//@RequiresAuthentication
 	public String getUserMenu(){
 		Subject currentUser = SecurityUtils.getSubject();
 		List<Permission> list = userService.getPermissionByUserName(currentUser.getPrincipal().toString());
@@ -52,7 +52,7 @@ public class MenuController{
 				array.add(json);
 			}
 		}
-		return array.toString();
+		return new ReturnValue<>(1, "", array).toJson();
 	}
 	
 	public void buidChild(JsonObject json,List<Permission> list){
@@ -77,13 +77,13 @@ public class MenuController{
 	@ApiOperation(value="获取当前菜单下该用户所有的权限", notes="获取当前菜单下该用户所有的权限")
 	@PostMapping("/ajax/getRight")
 	@ResponseBody
-	@RequiresAuthentication
+	//@RequiresAuthentication
 	public String getRight(Long id){
 		Subject currentUser = SecurityUtils.getSubject();
 		User user = userService.getUserByUserName(currentUser.getPrincipal().toString());
 		List<Role> rolelist = userService.getRoleByUserId(user.getId());
-		
-		return permissionService.getRightByUrlId(id,rolelist).toString();
+		JsonObject json  = permissionService.getRightByUrlId(id,rolelist);
+		return new ReturnValue<JsonObject>(1, "", json).toJson();
 	}
 	
 	@ApiOperation(value="获取所有的权限", notes="获取所有的权限")
@@ -105,7 +105,7 @@ public class MenuController{
 				array.add(json);
 			}
 		}
-		return array.toString();
+		return new ReturnValue<JsonArray>(1, "", array).toJson();
 	}
 	
 }

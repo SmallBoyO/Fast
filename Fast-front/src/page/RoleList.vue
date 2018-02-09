@@ -237,11 +237,11 @@
 			getRight(){
 				getRight({id:this.$route.params.rightid}).then(data => {
 						console.log(data);
-						this.right = data;
+						this.right = data.obj;
 				});
 				getAllRight({}).then(data => {
 						console.log(data);
-						this.rightlist = data;
+						this.rightlist = data.obj;
 				});
 			},
 			handleEdit(index, row) {

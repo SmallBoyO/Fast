@@ -1,5 +1,7 @@
 package com.zhanghe.Fast.entity;
 
+import java.util.List;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -18,6 +20,8 @@ public class Permission {
     private String parent_ids;
     private Integer status;
     private String component;
+    
+    private List<Permission> subPermissions;
     
     public static final String ID="id";
     public static final String NAME="name";
@@ -100,7 +104,17 @@ public class Permission {
     public void setParent_ids(String parent_ids) {
         this.parent_ids = parent_ids;
     }
-    @Override
+    
+    
+    public List<Permission> getSubPermissions() {
+		return subPermissions;
+	}
+
+	public void setSubPermissions( List<Permission> subPermissions ) {
+		this.subPermissions = subPermissions;
+	}
+
+	@Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
     }

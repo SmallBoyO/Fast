@@ -39,49 +39,6 @@ import com.zhanghe.Fast.util.ReturnValue;
 public class LoginController {
 	@Autowired
 	public UserService userService;
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return "/login";
-    }
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@Valid User user,HttpServletRequest request) {
-        String username = user.getUserName();
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(), new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
-        //获取当前的Subject  
-        Subject currentUser = SecurityUtils.getSubject();
-        try {
-            //在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查  
-            //每个Realm都能在必要时对提交的AuthenticationTokens作出反应  
-            //所以这一步在调用login(token)方法时,它会走到MyRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法  
-            currentUser.login(token);
-        } catch (UnknownAccountException uae) {
-           // System.out.println("对用户[" + username + "]进行登录验证..验证未通过,错误的凭证");
-           // return "redirect:/login";
-        } catch (LockedAccountException lae) {
-           // System.out.println("对用户[" + username + "]进行登录验证..验证未通过,账户已锁定");
-           // return "redirect:/login";
-        } catch (ExcessiveAttemptsException eae) {
-           // System.out.println("对用户[" + username + "]进行登录验证..验证未通过,错误次数过多");
-           // return "redirect:/login";
-        } catch (AuthenticationException ae) {
-            //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景  
-           // System.out.println("对用户[" + username + "]进行登录验证..验证未通过,堆栈轨迹如下");
-           // ae.printStackTrace();
-           // return "redirect:/login";
-        }
-        /**
-         * 验证是否登录成功
-         */
-        if (currentUser.isAuthenticated()) {
-            System.out.println("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");
-            // 此方法不处理登录成功,由shiro进行处理.
-            return "redirect:"+getSavedRequest(request).getRequestUrl();
-        } else {
-            token.clear();
-            return "redirect:/login";
-        }
-    }
-    
     
     @ApiOperation(value="登录", notes="登录")
     @PostMapping(value = "/ajax/loginajax")
@@ -91,6 +48,7 @@ public class LoginController {
     	user.setUserName(username);
     	user.setPassword(password);
     	User databaseUser = userService.getUserByUserName(username);
+    	
     	if(databaseUser==null){
     		ReturnValue<User> returnvalue=new ReturnValue<User>(-1,"账号不存在!");
         	return returnvalue.toJson();
@@ -98,28 +56,10 @@ public class LoginController {
         UsernamePasswordToken token = new UsernamePasswordToken(user.getUserName(),new Sha256Hash(password, databaseUser.getSalt()).toHex());
         //获取当前的Subject  
         Subject currentUser = SecurityUtils.getSubject();
-        try {
-            //在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查  
-            //每个Realm都能在必要时对提交的AuthenticationTokens作出反应  
-            //所以这一步在调用login(token)方法时,它会走到MyRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法  
-            currentUser.login(token);
-        } catch (UnknownAccountException uae) {
-           // System.out.println("对用户[" + username + "]进行登录验证..验证未通过,错误的凭证");
-            //return "redirect:/login";
-        } catch (LockedAccountException lae) {
-           // System.out.println("对用户[" + username + "]进行登录验证..验证未通过,账户已锁定");
-           // return "redirect:/login";
-        } catch (ExcessiveAttemptsException eae) {
-          //  System.out.println("对用户[" + username + "]进行登录验证..验证未通过,错误次数过多");
-           // return "redirect:/login";
-        } catch (AuthenticationException ae) {
-            //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景  
-            ae.printStackTrace();
-            ReturnValue<User> returnvalue=new ReturnValue<>(-1,"账号密码不正确!");
-            token.clear();
-            Gson gson = new Gson();
-            return  gson.toJson(returnvalue);
-        }
+        //在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查  
+        //每个Realm都能在必要时对提交的AuthenticationTokens作出反应  
+        //所以这一步在调用login(token)方法时,它会走到MyRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法  
+        currentUser.login(token);
         //验证是否登录成功  
         if (currentUser.isAuthenticated()) {
             System.out.println("用户[" + username + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");

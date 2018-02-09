@@ -3,20 +3,13 @@ package com.zhanghe.Fast.aop;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -37,7 +30,6 @@ public class SystemLogAop {
         String SERVLET = request.getServletPath();
         String IP = request.getRemoteAddr();
         String ARGS = Arrays.toString(joinPoint.getArgs());
-        StringBuffer sb = new StringBuffer();
         Object ret = joinPoint.proceed();
         logger.debug("{} {} {} : {} Res:{}", IP,HTTP_METHOD, SERVLET,ARGS,ret);
         return ret;

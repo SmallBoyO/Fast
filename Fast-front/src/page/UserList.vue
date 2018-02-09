@@ -252,7 +252,7 @@
             getRight(){
               getRight({id:this.$route.params.rightid}).then(data => {
         					console.log(data);
-                  this.right = data;
+                  this.right = data.obj;
         			});
             },
             getRoleList(){

@@ -51,7 +51,7 @@
 							this.$store.commit('login',{username:data.obj.userName,name:data.obj.name});
               getmenu().then(data => {
       						//this.menu=data;
-                  this.$store.commit('setMenu',{menu:data});
+                  this.$store.commit('setMenu',{menu:data.obj});
       					});
 							this.$router.push({path:'/home'});
 						}else{
