@@ -87,9 +87,7 @@ public class UserController{
 		for(int i= 0 ;i<list.size();i++){
 			obj[i] = list.get(i).getRole();
 		}
-		ReturnValue<Object> result = new ReturnValue<>(1,"");
-		result.setObj(obj);
-		return result.toJson();
+		return new ReturnValue<String[]>(1,"",obj).toJson();
 	}
 	
 	@ApiOperation(value="检查账号是否可用", notes="检查账号是否可用")
