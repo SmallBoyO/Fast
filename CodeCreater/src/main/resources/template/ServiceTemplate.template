@@ -1,0 +1,15 @@
+package $!{packageName}.service;
+
+import com.zhanghe.fast.starter.util.PageUtil;
+import com.zhanghe.fast.starter.vo.PageVO;
+import $!{packageName}.model.$!{ModelClass};
+import $!{packageName}.vo.Search$!{ModelClass}Vo;
+
+public interface $!{ModelClass}Service {
+
+	public int insert$!{ModelClass}($!{ModelClass} $!{ModelClassLower});
+	
+	public PageUtil<$!{ModelClass}> get$!{ModelClass}ByPage(Search$!{ModelClass}Vo vo,PageVO<$!{ModelClass}> pagevo);
+	
+	public Integer update$!{ModelClass}($!{ModelClass} $!{ModelClassLower});
+}

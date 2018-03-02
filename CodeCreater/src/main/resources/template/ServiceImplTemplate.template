@@ -1,0 +1,55 @@
+package $!{packageName}.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.zhanghe.fast.starter.util.PageUtil;
+import com.zhanghe.fast.starter.vo.PageVO;
+import $!{packageName}.mapper.$!{ModelClass}Mapper;
+import $!{packageName}.model.$!{ModelClass};
+import $!{packageName}.service.$!{ModelClass}Service;
+import $!{packageName}.vo.Search$!{ModelClass}Vo;
+
+@Service
+@Transactional(rollbackFor=Exception.class)
+public class $!{ModelClass}ServiceImpl implements $!{ModelClass}Service {
+
+	@Autowired
+	private $!{ModelClass}Mapper $!{ModelClassLower}Mapper;
+	
+	public int insert$!{ModelClass}( $!{ModelClass} $!{ModelClassLower} ) {
+		return $!{ModelClassLower}Mapper.insert($!{ModelClassLower});
+	}
+
+	public PageUtil<$!{ModelClass}> get$!{ModelClass}ByPage( Search$!{ModelClass}Vo vo,PageVO<$!{ModelClass}> pagevo ) {
+		EntityWrapper<$!{ModelClass}> wrapper = new EntityWrapper<$!{ModelClass}>();
+#foreach ($LongColomn in $LongColomns)
+	#set($newStringColomn=($StringColomn.substring(0,1).toUpperCase()+$StringColomn.substring(1,$StringColomn.length())))
+	#set($UpperStringColomn=($StringColomn.toUpperCase()))
+		if(vo.get$!{newStringColomn}()!=null){
+			wrapper.eq($!{ModelClass}.$!{UpperStringColomn}, vo.get$!{newStringColomn}());
+		}
+#end
+#foreach ($StringColomn in $StringColomns)
+	#set($newStringColomn=($StringColomn.substring(0,1).toUpperCase()+$StringColomn.substring(1,$StringColomn.length())))
+	#set($UpperStringColomn=($StringColomn.toUpperCase()))
+		if(vo.get$!{newStringColomn}()!=null&&!"".equals(vo.get$!{newStringColomn}())){
+			wrapper.like($!{ModelClass}.$!{UpperStringColomn}, vo.get$!{newStringColomn}());
+		}
+#end
+		
+		PageUtil<$!{ModelClass}> page = pagevo.toPageUtil();
+		Page<$!{ModelClass}> querypage = new Page<$!{ModelClass}>(page.getCorrentPage().intValue(), page.getPageSize().intValue());
+		page.setResult($!{ModelClassLower}Mapper.selectPage(querypage, wrapper));
+		page.setTotal((long)querypage.getTotal());
+		return page;
+	}
+
+	public Integer update$!{ModelClass}( $!{ModelClass} $!{ModelClassLower} ) {
+		return $!{ModelClassLower}Mapper.updateById($!{ModelClassLower});
+	}
+
+}

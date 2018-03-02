@@ -1,0 +1,31 @@
+package $!{packageName}.vo;
+
+
+public class Add$!{ModelClass}Vo{
+#foreach ($LongColomn in $LongColomns)
+#set($UpperLongColomn=($LongColomn.toUpperCase()))
+    private Long $!{LongColomn};
+#end
+#foreach ($StringColomn in $StringColomns)
+#set($UpperStringColomn=($StringColomn.toUpperCase()))
+    private String $!{StringColomn};
+#end	
+#foreach ($LongColomn in $LongColomns)
+	#set($newLongColomn=($LongColomn.substring(0,1).toUpperCase()+$LongColomn.substring(1,$LongColomn.length())))
+    public void set$!{newLongColomn}(Long $!{LongColomn}){
+    	this.$!{LongColomn} = $!{LongColomn};
+    }
+    public Long get$!{newLongColomn}(){
+    	return this.$!{LongColomn};
+    }
+#end
+#foreach ($StringColomn in $StringColomns)
+	#set($newStringColomn=($StringColomn.substring(0,1).toUpperCase()+$StringColomn.substring(1,$StringColomn.length())))
+    public void set$!{newStringColomn}(String $!{StringColomn}){
+    	this.$!{StringColomn} = $!{StringColomn};
+    }
+    public String get$!{newStringColomn}(){
+    	return this.$!{StringColomn};
+    }
+#end
+}
