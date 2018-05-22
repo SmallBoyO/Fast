@@ -72,6 +72,8 @@ public class UserServiceImpl implements UserService {
     	List<User> result = userMapper.getUserListByPage(querypage, user);
     	PageUtil<User> page = new PageUtil<User>();
     	page.setResult(result);
+        page.setCorrentPage((long)querypage.getCurrent());
+        page.setPageSize((long)querypage.getSize());
     	page.setTotal((long) querypage.getTotal());
         return page;
     }

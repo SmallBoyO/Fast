@@ -7,14 +7,12 @@
             <!-- daily rollover -->
             <FileNamePattern>fast.%d{yyyy-MM-dd}.log</FileNamePattern>
             <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>1</maxHistory>
         </rollingPolicy>
         <encoder>
             <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} -%5p ${PID:-} [%15.15t] %-40.40logger{39} : %m%n</Pattern>
         </encoder>
     </appender>
-
-    <logger name="org.springframework.web" level="INFO"/>
     <logger name="org.springboot.sample" level="TRACE" />
     <!-- 开发、测试环境 -->
     <springProfile name="dev,prod">

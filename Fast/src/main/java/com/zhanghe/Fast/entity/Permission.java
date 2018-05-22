@@ -21,7 +21,7 @@ public class Permission {
     private Integer status;
     private String component;
     
-    private List<Permission> subPermissions;
+    //private List<Permission> subPermissions;
     
     public static final String ID="id";
     public static final String NAME="name";
@@ -106,13 +106,13 @@ public class Permission {
     }
     
     
-    public List<Permission> getSubPermissions() {
-		return subPermissions;
-	}
-
-	public void setSubPermissions( List<Permission> subPermissions ) {
-		this.subPermissions = subPermissions;
-	}
+//    public List<Permission> getSubPermissions() {
+//		return subPermissions;
+//	}
+//
+//	public void setSubPermissions( List<Permission> subPermissions ) {
+//		this.subPermissions = subPermissions;
+//	}
 
 	@Override
     public String toString() {
