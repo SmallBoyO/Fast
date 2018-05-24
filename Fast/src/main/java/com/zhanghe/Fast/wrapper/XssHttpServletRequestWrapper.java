@@ -23,7 +23,11 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	
 	@Override
 	public String getParameter(String name) {
-		return HtmlUtils.htmlEscape(super.getParameter(name));
+		if(super.getParameter(name)!=null){
+			return HtmlUtils.htmlEscape(super.getParameter(name));
+		}else{
+			return null;
+		}
 	}
 	
 	@Override
@@ -32,8 +36,10 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 		if(values!=null){
 			int len = values.length;
 			String[] newvalues = new String[len];
-			for(int i=0;i<len;i++){
-				newvalues[i] = HtmlUtils.htmlEscape(values[i]);
+			if(newvalues!=null){
+				for(int i=0;i<len;i++){
+					newvalues[i] = HtmlUtils.htmlEscape(values[i]);
+				}
 			}
 			return newvalues;
 		}else{

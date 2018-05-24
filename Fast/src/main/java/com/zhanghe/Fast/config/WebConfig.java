@@ -21,7 +21,7 @@ public class WebConfig {
 		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
 		filterRegistrationBean.setFilter(new XssFilter());
 		filterRegistrationBean.addUrlPatterns("/*");
-		
+
 		return filterRegistrationBean;
 	}
 	@Bean

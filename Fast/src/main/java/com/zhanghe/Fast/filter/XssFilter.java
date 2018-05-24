@@ -18,14 +18,13 @@ import com.zhanghe.Fast.wrapper.XssHttpServletRequestWrapper;
  * @author Clevo
  * @date 2018/1/9 21:33
  */
-@WebFilter(filterName = "XssFilter" ,urlPatterns = "/*" ,asyncSupported = true)
 public class XssFilter implements Filter{
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		
+
 	}
-	
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
@@ -33,10 +32,10 @@ public class XssFilter implements Filter{
 		XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper((HttpServletRequest) request);
 		chain.doFilter(xssRequest, response);
 	}
-	
+
 	@Override
 	public void destroy() {
-		
+
 	}
 
 }
